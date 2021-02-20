@@ -1,0 +1,54 @@
+Home Screen
+Browse experiments [main tab] (Counts, Binomial Trials, Non-negative integer counts, measurement trials) 
+Subscribed experiments [2nd tab] (list of subscribed experiments)
+Settings button
+Add experiment button (you become the owner of that experiment) [fragment pop up to create experiment?] (can decide if location is needed)
+Delete/read only experiment button (allows you to delete experiment if, only available for experiments you own)
+Search bar (fragment)
+Experiment (pop up to warn of location requirement)
+Qr code scanner button
+
+
+
+Counts Experiment screen (from home screen) 
+-Conduct trials tab
+-List of participants tab (owner can ignore certain participants submissions)
+- increase count button 
+-Map tab
+-Assign QR code
+-Generate QR code
+
+Binomial Experiment screen (from home screen) 
+-Conduct trials tab
+-List of participants tab (owner can ignore certain participants submissions)
+- pass/ fail button
+-Map tab
+-Assign QR code
+-Generate QR code
+
+Non-negative int Experiment screen (from home screen) 
+-Conduct trials tab
+-List of participants tab (owner can ignore certain participants submissions)
+-Map tab
+-Assign QR code
+-Generate QR code
+
+Measurement trials Experiment screen (from home screen)
+-Conduct trials tab
+-List of participants tab (owner can ignore certain participants submissions)
+-Map tab
+-Assign QR code
+-Generate QR code
+
+Chat screen (from an experiment activity) 
+-ui like eclass forums or something idk
+
+
+Settings screen (from home)
+Location 
+User profile  (unique user name, cc info,   edit those info)  ** usernames will lead to/show the profile associated with it
+
+Stats activity [from experiment screen]
+
+
+WINNER: one activity and the xml dynamically changes depending on comparisons with the intent    imageView (graphView library)
