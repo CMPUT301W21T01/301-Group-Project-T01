@@ -33,8 +33,9 @@ public class ExperimentController {
     }
 
     //Creates new experiment and appends it to the ArrayList
-    public void addExperiment(String desc, String date) {
-        //pass
+    public void addExperiment(String desc, String name, String date) {
+        experiments.add(new Experiment(desc, name, date));
+        listAdapter.notifyDataSetChanged();
     }
 
     //Inserts an existing experiment into the ArrayList
@@ -44,7 +45,8 @@ public class ExperimentController {
 
     //Removes an experiment
     public void deleteExperiment(int pos) {
-        //pass
+        experiments.remove(pos);
+        listAdapter.notifyDataSetChanged();
     }
 
     //Brings user to ConductTrial activity associated with the experiment that was clicked
