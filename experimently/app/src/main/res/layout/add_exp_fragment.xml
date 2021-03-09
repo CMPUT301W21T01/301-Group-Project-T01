@@ -37,29 +37,24 @@
         android:id="@+id/date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="588dp"
+        android:layout_marginBottom="584dp"
         android:ems="10"
         android:hint="yyyy mm dd"
         android:inputType="date"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
+    <Spinner
         android:id="@+id/expType"
-        android:layout_width="411dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:ems="10"
-        android:hint="ExperimentType"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="60dp"
+        android:hint="Experiment Type"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/date"
-        app:layout_constraintVertical_bias="0.0" />
+
+        app:layout_constraintTop_toTopOf="@+id/date" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

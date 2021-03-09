@@ -8,9 +8,13 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +22,7 @@ import androidx.fragment.app.DialogFragment;
 
 import java.util.Calendar;
 
-public class AddExpFragment extends DialogFragment {
+public class AddExpFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
     private EditText experimentName;
     private EditText region;
@@ -26,6 +30,18 @@ public class AddExpFragment extends DialogFragment {
     private EditText expType;
     private DatePickerDialog.OnDateSetListener selectDate;
     private OnFragmentInteractionListener listener;
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String txt = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(), txt, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 
     public interface OnFragmentInteractionListener {
         void onOkPressed(Experiment newExp);
@@ -53,6 +69,12 @@ public class AddExpFragment extends DialogFragment {
         region = view.findViewById(R.id.region);
         expType = view.findViewById(R.id.expType);
 
+        Spinner spinner = view.findViewById(R.id.expType);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.experiments, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+
         //creating a date picker dialog using DatePickerDialog class
         date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +97,7 @@ public class AddExpFragment extends DialogFragment {
 
         };
 
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
                 .setView(view)
@@ -87,7 +110,7 @@ public class AddExpFragment extends DialogFragment {
                         String name = experimentName.getText().toString();
                         String date1 = date.getText().toString();
                        // String region1 = region
-                        listener.onOkPressed(new Experiment(name, "North America", date1);
+                        listener.onOkPressed(new Experiment(name, "North America", date1));
                     }}).create();
     }
 
