@@ -3,9 +3,10 @@ package com.example.experimentify;
 import android.location.Location;
 import android.media.Image;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Experiment {
+public class Experiment implements Serializable {
     private boolean viewable;
     private int ownerID;
     private Image graph;
