@@ -16,17 +16,21 @@ public class Experiment implements Serializable {
     private String name;
     private String date;
     private long minTrials; //db takes in a long not an int
+    private boolean locationRequired;
+
 
     //Setting region to a string for now until we implement location
     private String region;
     //private Location region;
 
-    public Experiment(String description, String name, String region, long minTrials, String date) {
+  
+    public Experiment(String description, String name, String region, long minTrials, String date. @Nullable boolean locationRequired) {
         this.description = description;
         this.name = name;
         this.date = date;
         this.region = region;
         this.minTrials = minTrials;
+        this.locationRequired = locationRequired;
     }
 
     public String getDate() {
