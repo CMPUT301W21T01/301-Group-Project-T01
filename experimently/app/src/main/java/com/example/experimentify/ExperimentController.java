@@ -3,6 +3,7 @@ package com.example.experimentify;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class ExperimentController {
         listAdapter = new ExperimentListAdapter(context, experiments);
 
         //This block of code is for testing
-        testExperiment = new Experiment("Test description", "Test name", "Test date");
+        testExperiment = new Experiment("Test description", "test name", "Test region", 0, "2021/01/01");
         experiments.add(testExperiment);
     }
 
@@ -33,8 +34,8 @@ public class ExperimentController {
     }
 
     //Creates new experiment and appends it to the ArrayList
-    public void addExperiment(String desc, String name, String date) {
-        experiments.add(new Experiment(desc, name, date));
+    public void addExperiment(Experiment ex) {
+        experiments.add(ex);
         listAdapter.notifyDataSetChanged();
     }
 
