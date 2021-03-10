@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "990448954590",
+    "project_id": "witdaboyz-4f04c",
+    "storage_bucket": "witdaboyz-4f04c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990448954590:android:5667d3b2ff95d115db664f",
+        "android_client_info": {
+          "package_name": "com.example.experimentify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "990448954590-e9kr8j88uhjmiof8nvshj0c7jc5op73l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDD_wwoepojanfKJfNpg-uN-Qi68VqNAOI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "990448954590-e9kr8j88uhjmiof8nvshj0c7jc5op73l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

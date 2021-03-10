@@ -12,12 +12,19 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements AddExpFragment.OnFragmentInteractionListener {
     private ExperimentController experimentController;
     private ListView exListView;
     private FloatingActionButton showAddExpUiButton;
+    FirebaseFirestore db;
 
 
     //Shows fragment for creating new experiment
@@ -35,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        db = FirebaseFirestore.getInstance();
+
         exListView = findViewById(R.id.exListView);
         showAddExpUiButton = findViewById(R.id.showAddExpUiButton);
 
@@ -51,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     @Override
     public void onOkPressed(Experiment newExp) {
-        addExperiment(newExp);
+        experimentController.addExperimentToDB(newExp, db);
     }
 
     @Override

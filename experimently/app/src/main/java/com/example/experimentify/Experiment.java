@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Experiment implements Serializable {
     private boolean viewable;
-    private int ownerID;
+    private String ownerID;
     private Image graph;
     private String experimentId;
     private ArrayList<Trial> trials;
@@ -44,7 +44,16 @@ public class Experiment implements Serializable {
     public String getRegion() {
         return region;
     }
-//TODO Ask about the variables below
+
+    public int getMinTrials() {
+        return minTrials;
+    }
+
+    public String getOwnerID() {
+        return ownerID;
+    }
+
+    //TODO Ask about the variables below
     //private Location region //Region? - from requirements
     //private int minTrials //ex wont be shown until this amount of trials are submitted
 
