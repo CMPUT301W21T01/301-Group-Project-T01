@@ -70,7 +70,7 @@ public class ExperimentController{
         Map<String, Object> enterData = new HashMap<>();
 
         ArrayList<String> description = new ArrayList();
-        description.add(newExp.getName().toLowerCase().trim());
+        description.add(newExp.getDescription().toLowerCase().trim());
 
         ArrayList<String> name = new ArrayList();
         name.add(newExp.getName().toLowerCase().trim());
@@ -80,12 +80,13 @@ public class ExperimentController{
         CollectionReference experiments = db.collection("Experiment");
 //        DatabaseReference postRef = ;
         enterData.put("displayDescription", newExp.getDescription());
+        enterData.put("description", description);
         enterData.put("isEnded", false);
         enterData.put("minTrials", newExp.getMinTrials());
         enterData.put("ownerID", 0);
         enterData.put("region", newExp.getRegion());
         enterData.put("displayName", newExp.getName());
-        enterData.put("name", newExp.getName().toLowerCase());
+        enterData.put("name", name);
         enterData.put("editable", true);
         // UID?
         enterData.put("viewable", true);
