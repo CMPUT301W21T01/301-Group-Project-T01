@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                     String region      = (String) doc.getData().get("region");
                     Long minTrials      = (Long) doc.getData().get("minTrials");
                     String date        = (String) doc.getData().get("date");
-                    experimentList.add(new Experiment(description, displayName, region, minTrials, date));
+                    experimentList.add(new Experiment(description, displayName, region, minTrials, date,true));
                 }
                 experimentController.getAdapter().notifyDataSetChanged();
             }

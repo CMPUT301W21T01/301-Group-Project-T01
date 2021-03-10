@@ -3,6 +3,8 @@ package com.example.experimentify;
 import android.location.Location;
 import android.media.Image;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -21,7 +23,7 @@ public class Experiment implements Serializable {
     private String region;
     //private Location region;
 
-    public Experiment(String description, String name, String region, long minTrials, String date) {
+    public Experiment(String description, String name, String region, long minTrials, String date, boolean locationRequired) {
         this.description = description;
         this.name = name;
         this.date = date;
