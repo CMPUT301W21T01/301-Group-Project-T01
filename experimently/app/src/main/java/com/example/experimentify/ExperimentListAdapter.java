@@ -43,7 +43,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
         dateBox = view.findViewById(R.id.generalExDate);
 
         nameBox.setText(experiment.getName());
-        //regionBox.setText(experiment.getRegion());
+        regionBox.setText(experiment.getRegion());
         dateBox.setText(experiment.getDate());
 
         return view;
