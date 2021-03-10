@@ -15,13 +15,12 @@ public class ExperimentController {
     private Experiment testExperiment;
 
 
-
     public ExperimentController(Context context) {
         experiments = new ArrayList<Experiment>();
         listAdapter = new ExperimentListAdapter(context, experiments);
 
         //This block of code is for testing
-        testExperiment = new Experiment("Test description", "test name", "Test region", 0, "2021/01/01");
+        testExperiment = new Experiment("Test description", "test name", "Test region", 0, "2021/01/01", false);
         experiments.add(testExperiment);
     }
 

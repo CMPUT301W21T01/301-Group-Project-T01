@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
     private AppCompatSpinner expType;
     private DatePickerDialog.OnDateSetListener selectDate;
     private OnFragmentInteractionListener listener;
+    private CheckBox locationRequiredBox;
 
 
     @Override
@@ -71,6 +73,7 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
         date = view.findViewById(R.id.date);
         region = view.findViewById(R.id.region);
         expType = view.findViewById(R.id.expType);
+        locationRequiredBox = view.findViewById(R.id.locationRequiredBox);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.experiments, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -113,6 +116,7 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
                         String region1 = region.getText().toString();
                         String desc = descriptionBox.getText().toString();
                         String minTrialsStr = minTrialsBox.getText().toString();
+                        boolean locationRequired = locationRequiredBox.isChecked();
                         int minTrials;
 
                         //If no number is entered, minTrials is set to 0
@@ -123,7 +127,7 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
                         else {
                             minTrials = 0;
                         }
-                        listener.onOkPressed(new Experiment(desc, name, region1, minTrials, date1));
+                        listener.onOkPressed(new Experiment(desc, name, region1, minTrials, date1, locationRequired));
                     }}).create();
     }
 
