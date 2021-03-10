@@ -21,15 +21,13 @@ public class ExperimentController{
     private Experiment testExperiment;
 
 
-//    db = FirebaseFirestore.getInstance("")
-
     public ExperimentController(Context context) {
         experiments = new ArrayList<Experiment>();
         listAdapter = new ExperimentListAdapter(context, experiments);
 
-        //This block of code is for testing
-        testExperiment = new Experiment("Test description", "test name", "Test region", 0, "2021/01/01");
-        experiments.add(testExperiment);
+//        This block of code is for testing
+//        testExperiment = new Experiment("Test description", "test name", "Test region", 0, "2021/01/01");
+//        experiments.add(testExperiment);
     }
 
     public ArrayAdapter<Experiment> getAdapter() {
@@ -62,9 +60,9 @@ public class ExperimentController{
         //pass
     }
 
-//    public String getUID(FirebaseFirestore db){
-//        ;
-//    }
+    public ArrayList<Experiment> getExperiments() {
+        return experiments;
+    }
 
     public void addExperimentToDB(Experiment newExp, FirebaseFirestore db){
         Map<String, Object> enterData = new HashMap<>();
@@ -90,9 +88,13 @@ public class ExperimentController{
         enterData.put("editable", true);
         // UID?
         enterData.put("viewable", true);
-
+        enterData.put("date", newExp.getDate());
         newRef.set(enterData);
-        System.out.println(newRef.getId());
+        String experimentID = newRef.getId();
+
+        DocumentReference addID = db.collection("Experiments").document(experimentID);
+        addID.update("EID", experimentID);
+//        System.out.println(experimentID);
     }
 }
 

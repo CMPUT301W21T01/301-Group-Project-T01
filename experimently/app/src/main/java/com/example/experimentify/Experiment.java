@@ -15,13 +15,13 @@ public class Experiment implements Serializable {
     private String description;
     private String name;
     private String date;
-    private int minTrials;
+    private long minTrials; //db takes in a long not an int
 
     //Setting region to a string for now until we implement location
     private String region;
     //private Location region;
 
-    public Experiment(String description, String name, String region, int minTrials, String date) {
+    public Experiment(String description, String name, String region, long minTrials, String date) {
         this.description = description;
         this.name = name;
         this.date = date;
@@ -45,7 +45,7 @@ public class Experiment implements Serializable {
         return region;
     }
 
-    public int getMinTrials() {
+    public long getMinTrials() {
         return minTrials;
     }
 
