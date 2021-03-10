@@ -25,12 +25,7 @@ public class Experiment implements Serializable {
     private String region;
     //private Location region;
 
-<<<<<<< HEAD
     public Experiment(String description, String name, String region, long minTrials, String date, boolean locationRequired) {
-=======
-  
-    public Experiment(String description, String name, String region, long minTrials, String date. @Nullable boolean locationRequired) {
->>>>>>> 39df64984602c1663af388f164675eba327f843f
         this.description = description;
         this.name = name;
         this.date = date;
