@@ -4,20 +4,37 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements AddExpFragment.OnFragmentInteractionListener {
     private ExperimentController experimentController;
+    private ExperimentListAdapter experimentAdapter;
     private ListView exListView;
     private FloatingActionButton showAddExpUiButton;
+    private ArrayList<Experiment> experimentList;
+    final String TAG = MainActivity.class.getName();
+    FirebaseFirestore db;
 
 
     //Shows fragment for creating new experiment
@@ -35,23 +52,44 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        db = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReference = db.collection("Experiments");
+
         exListView = findViewById(R.id.exListView);
         showAddExpUiButton = findViewById(R.id.showAddExpUiButton);
 
+//        ExperimentListAdapter experimentAdapter = new ExperimentListAdapter(this, )
         experimentController = new ExperimentController(this);
+        experimentList = experimentController.getExperiments();
         exListView.setAdapter(experimentController.getAdapter());
-
 
         showAddExpUiButton.setOnClickListener((v) -> {
             showAddExpUi();
         });
 
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                experimentController.getExperiments().clear();
+                for (QueryDocumentSnapshot doc : value){
+                    Log.d(TAG, String.valueOf(doc.getData().get("EID")));
+                    //Experiment(String description, String name, String region, int minTrials, String date)
+                    String description = (String) doc.getData().get("displayDescription");
+                    String displayName = (String) doc.getData().get("displayName");
+                    String region      = (String) doc.getData().get("region");
+                    Long minTrials      = (Long) doc.getData().get("minTrials");
+                    String date        = (String) doc.getData().get("date");
+                    experimentList.add(new Experiment(description, displayName, region, minTrials, date,true));
+                }
+                experimentController.getAdapter().notifyDataSetChanged();
+            }
+        });
 
     }
 
     @Override
     public void onOkPressed(Experiment newExp) {
-        addExperiment(newExp);
+        experimentController.addExperimentToDB(newExp, db);
     }
 
     @Override

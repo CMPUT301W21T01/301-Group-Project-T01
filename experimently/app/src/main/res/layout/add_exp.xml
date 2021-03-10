@@ -17,7 +17,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:ems="10"
-        android:hint="Minimun amount of trials"
+        android:hint="Minimum amount of trials"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
