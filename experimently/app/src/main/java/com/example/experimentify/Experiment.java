@@ -14,13 +14,19 @@ public class Experiment implements Serializable {
     private ArrayList<Trial> trials;
     private String description;
     private String name;
-    private Location region;
     private String date;
+    private int minTrials;
 
-    public Experiment(String description, String name, String date) {
+    //Setting region to a string for now until we implement location
+    private String region;
+    //private Location region;
+
+    public Experiment(String description, String name, String region, int minTrials, String date) {
         this.description = description;
         this.name = name;
         this.date = date;
+        this.region = region;
+        this.minTrials = minTrials;
     }
 
     public String getDate() {
@@ -35,7 +41,7 @@ public class Experiment implements Serializable {
         return name;
     }
 
-    public Location getRegion() {
+    public String getRegion() {
         return region;
     }
 //TODO Ask about the variables below
