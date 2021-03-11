@@ -15,19 +15,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class models a list of experiments. It also holds an ArrayAdapter for displaying
+ * experiments in a ListView.
+ */
 public class ExperimentController{
     private ArrayList<Experiment> experiments;
     private ArrayAdapter<Experiment> listAdapter;
-    private Experiment testExperiment;
 
 
     public ExperimentController(Context context) {
         experiments = new ArrayList<Experiment>();
         listAdapter = new ExperimentListAdapter(context, experiments);
-
-//        This block of code is for testing
-//        testExperiment = new Experiment("Test description", "test name", "Test region", 0, "2021/01/01");
-//        experiments.add(testExperiment);
     }
 
     public ArrayAdapter<Experiment> getAdapter() {
@@ -38,24 +37,13 @@ public class ExperimentController{
         return experiments.size();
     }
 
-    //Creates new experiment and appends it to the ArrayList
-    public void addExperiment(Experiment ex) {
-        experiments.add(ex);
-        listAdapter.notifyDataSetChanged();
-    }
-
-    //Inserts an existing experiment into the ArrayList
-    public void insertExperiment(Experiment ex, int pos) {
-        //pass
-    }
-
     //Removes an experiment
+    //TODO implement database delete
     public void deleteExperiment(int pos) {
-        experiments.remove(pos);
-        listAdapter.notifyDataSetChanged();
+       //pass
     }
 
-    //Brings user to ConductTrial activity associated with the experiment that was clicked
+    //TODO set up intent to switch to experiment activity
     public void viewExperiment(Activity activity, int pos) {
         //pass
     }
@@ -64,6 +52,11 @@ public class ExperimentController{
         return experiments;
     }
 
+    /**
+     * This method adds an experiment to the database.
+     * @param newExp
+     * @param db
+     */
     public void addExperimentToDB(Experiment newExp, FirebaseFirestore db){
         Map<String, Object> enterData = new HashMap<>();
 
@@ -76,7 +69,7 @@ public class ExperimentController{
         DocumentReference newRef = db.collection("Experiments").document();
 
         CollectionReference experiments = db.collection("Experiment");
-//        DatabaseReference postRef = ;
+        //DatabaseReference postRef = ;
         enterData.put("displayDescription", newExp.getDescription());
         enterData.put("description", description);
         enterData.put("isEnded", false);
@@ -94,7 +87,7 @@ public class ExperimentController{
 
         DocumentReference addID = db.collection("Experiments").document(experimentID);
         addID.update("EID", experimentID);
-//        System.out.println(experimentID);
+        //System.out.println(experimentID);
     }
 }
 

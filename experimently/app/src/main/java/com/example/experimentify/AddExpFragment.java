@@ -63,6 +63,55 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
         }
     }
 
+    /**
+     * This method creates a new experiment and passes it to the onOkPressed listener.
+     */
+    private void createExperiment() {
+        String name = experimentName.getText().toString();
+        String date1 = date.getText().toString();
+        String region1 = region.getText().toString();
+        String desc = descriptionBox.getText().toString();
+        String minTrialsStr = minTrialsBox.getText().toString();
+        boolean locationRequired = locationRequiredBox.isChecked();
+        int minTrials;
+
+        //If no number is entered, minTrials is set to 0
+        if (!minTrialsStr.isEmpty()) {
+            /*
+                Author: Steve Pierce
+                Date published: Aug 4 '15 at 19:43
+                License: Attribution-ShareAlike 3.0 Unported
+                Link: https://stackoverflow.com/a/3518505
+
+                Used this source to learn how to convert a String to int.
+            */
+            minTrials = Integer.parseInt(minTrialsBox.getText().toString());
+        }
+        else {
+            minTrials = 0;
+        }
+        listener.onOkPressed(new Experiment(desc, name, region1, minTrials, date1, locationRequired));
+    }
+
+    //TODO fix calendar implementation
+    /**
+     * This method creates a new calendar fragment for picking a date.
+     */
+    private void createCalendar() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog calendarDialog = new DatePickerDialog(getContext(), (DatePickerDialog.OnDateSetListener) selectDate, year, month, day);
+        calendarDialog.show();
+    }
+
+    private void setDate() {
+        //String dat = year + "  " + (month + 1) + "  " + dayOfMonth;
+        //date.setText(dat);
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -84,13 +133,7 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog calendarDialog = new DatePickerDialog(getContext(), (DatePickerDialog.OnDateSetListener) selectDate, year, month, day);
-                calendarDialog.show();
+                createCalendar();
             }
         });
         selectDate = new DatePickerDialog.OnDateSetListener(){
@@ -110,24 +153,7 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
-                        String name = experimentName.getText().toString();
-                        String date1 = date.getText().toString();
-                        String region1 = region.getText().toString();
-                        String desc = descriptionBox.getText().toString();
-                        String minTrialsStr = minTrialsBox.getText().toString();
-                        boolean locationRequired = locationRequiredBox.isChecked();
-                        int minTrials;
-
-                        //If no number is entered, minTrials is set to 0
-                        if (!minTrialsStr.isEmpty()) {
-                            //cite https://stackoverflow.com/a/3518505 for line below
-                            minTrials = Integer.parseInt(minTrialsBox.getText().toString());
-                        }
-                        else {
-                            minTrials = 0;
-                        }
-                        listener.onOkPressed(new Experiment(desc, name, region1, minTrials, date1, locationRequired));
+                        createExperiment();
                     }}).create();
     }
 

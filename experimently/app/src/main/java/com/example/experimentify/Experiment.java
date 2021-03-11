@@ -1,13 +1,16 @@
 package com.example.experimentify;
 
-import android.location.Location;
+
 import android.media.Image;
 
-import androidx.annotation.Nullable;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * This is a class that models an experiment in which trials can be conducted on.
+ */
 public class Experiment implements Serializable {
     private boolean viewable;
     private String ownerID;
@@ -19,11 +22,8 @@ public class Experiment implements Serializable {
     private String date;
     private long minTrials; //db takes in a long not an int
     private boolean locationRequired;
-
-
-    //Setting region to a string for now until we implement location
     private String region;
-    //private Location region;
+
 
     public Experiment(String description, String name, String region, long minTrials, String date, boolean locationRequired) {
         this.description = description;

@@ -12,7 +12,17 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-//Class code based on lab 3 code, add citation
+/*
+  Author: Abdul Ali Bangash
+  Date published: Feb. 2, 2021
+  License: Public domain
+  Link: https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
+
+  Code for this class is based on examples from lab 3.
+  */
+/**
+ * This class is an ArrayAdapter for Experiments.
+ */
 public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
     private ArrayList<Experiment> experiments;
     private Context context;
@@ -29,6 +39,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
         this.context = context;
     }
 
+    //TODO add javadocs comment
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
 
