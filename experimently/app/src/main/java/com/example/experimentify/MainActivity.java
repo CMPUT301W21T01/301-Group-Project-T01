@@ -1,18 +1,11 @@
 package com.example.experimentify;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.location.Location;
+
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
@@ -20,13 +13,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 
+
+/**
+ * This activity is a UI in which the user can see a list of published experiments
+ * and add new experiments to the list.
+ */
 public class MainActivity extends AppCompatActivity implements AddExpFragment.OnFragmentInteractionListener {
     private ExperimentController experimentController;
     private ExperimentListAdapter experimentAdapter;
@@ -36,15 +30,23 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     final String TAG = MainActivity.class.getName();
     FirebaseFirestore db;
 
-
-    //Shows fragment for creating new experiment
+    /**
+     * This method shows the fragment that allows a user to create a new experiment.
+     */
     private void showAddExpUi() {
         new AddExpFragment().show(getSupportFragmentManager(), "ADD_EXPERIMENT");
     }
 
-    //Adds new experiment to experiment list
+    /**
+     * This method adds an experiment to the database.
+     * @param experiment
+     */
     private void addExperiment(Experiment experiment) {
-        experimentController.addExperiment(experiment);
+        experimentController.addExperimentToDB(experiment, db);
+    }
+
+    private void delExperiment() {
+        //pass
     }
 
     @Override
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         exListView = findViewById(R.id.exListView);
         showAddExpUiButton = findViewById(R.id.showAddExpUiButton);
 
-//        ExperimentListAdapter experimentAdapter = new ExperimentListAdapter(this, )
+        //ExperimentListAdapter experimentAdapter = new ExperimentListAdapter(this, )
         experimentController = new ExperimentController(this);
         experimentList = experimentController.getExperiments();
         exListView.setAdapter(experimentController.getAdapter());
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     @Override
     public void onOkPressed(Experiment newExp) {
-        experimentController.addExperimentToDB(newExp, db);
+        addExperiment(newExp);
     }
 
     @Override
