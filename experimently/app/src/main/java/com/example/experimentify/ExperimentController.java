@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -89,6 +90,7 @@ public class ExperimentController{
         DocumentReference addID = db.collection("Experiments").document(experimentID);
 
         addID.update("uid", experimentID);
+        addID.update("searchable", FieldValue.arrayUnion(experimentID));
 
     }
     /**
@@ -128,7 +130,7 @@ public class ExperimentController{
         //https://stackoverflow.com/a/36456911 add citation for below
         searchable.addAll(Arrays.asList(newExp.getDescription().toLowerCase().split("\\W+")));
 
-        DocumentReference newRef = db.collection("Experiments").document(uid);
+        DocumentReference newRef = db.collection("Experiments").document(newExp.getUID());
 
         CollectionReference experiments = db.collection("Experiment");
         enterData.put("description", newExp.getDescription());
