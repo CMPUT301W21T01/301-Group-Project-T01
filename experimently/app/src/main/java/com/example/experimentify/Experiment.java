@@ -3,8 +3,6 @@ package com.example.experimentify;
 
 import android.media.Image;
 
-
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -24,6 +22,7 @@ public class Experiment implements Serializable {
     private String region;
     private boolean ended;
     private String uid;
+    private boolean editable;
 
 
     public Experiment(String description, String region, long minTrials, String date, boolean locationRequired) {
@@ -32,6 +31,7 @@ public class Experiment implements Serializable {
         this.region = region;
         this.minTrials = minTrials;
         this.locationRequired = locationRequired;
+        editable = true;
         ended = false;
         viewable = true;
     }
@@ -75,11 +75,22 @@ public class Experiment implements Serializable {
     public boolean isEnded() {
         return ended;
     }
-    public String getUID(){return uid;}
 
-    public void setUID(String id){this.uid = id;}
+    public String getUID() {
+        return uid;
+    }
 
+    public void setUID(String id) {
+        this.uid = id;
+    }
 
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
 
     //TODO Ask about the variables below
     //private Location region //Region? - from requirements
