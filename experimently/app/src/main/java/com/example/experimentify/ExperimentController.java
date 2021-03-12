@@ -146,7 +146,7 @@ public class ExperimentController{
         ArrayList<String> name = new ArrayList();
         name.add(newExp.getName().toLowerCase().trim());
 
-        DocumentReference newRef = db.collection("Experiments").document();
+        DocumentReference newRef = db.collection("Experiments").document(uid);
 
         CollectionReference experiments = db.collection("Experiment");
         //DatabaseReference postRef = ;
