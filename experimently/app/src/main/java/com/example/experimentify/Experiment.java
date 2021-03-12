@@ -33,7 +33,6 @@ public class Experiment implements Serializable {
         this.locationRequired = locationRequired;
         ended = false;
         viewable = true;
-
     }
 
     public String getDate() {
@@ -64,7 +63,9 @@ public class Experiment implements Serializable {
         this.ended = ended;
     }
 
-
+    public boolean isLocationRequired() {
+        return locationRequired;
+    }
 
     public boolean isViewable() {
         return viewable;

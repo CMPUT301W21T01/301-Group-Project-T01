@@ -67,7 +67,6 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
      * This method creates a new experiment and passes it to the onOkPressed listener.
      */
     private void createExperiment() {
-        String name = "TEMP UNTIL WE REMOVE NAME";
         String date1 = date.getText().toString();
         String region1 = region.getText().toString();
         String desc = descriptionBox.getText().toString();
@@ -90,7 +89,7 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
         else {
             minTrials = 0;
         }
-        listener.onOkPressed(new Experiment(desc, name, region1, minTrials, date1, locationRequired));
+        listener.onOkPressed(new Experiment(desc, region1, minTrials, date1, locationRequired));
     }
 
     /**
