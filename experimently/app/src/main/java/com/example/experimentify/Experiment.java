@@ -23,6 +23,7 @@ public class Experiment implements Serializable {
     private boolean locationRequired;
     private String region;
     private boolean ended;
+    private String uid;
 
 
     public Experiment(String description, String region, long minTrials, String date, boolean locationRequired) {
@@ -74,6 +75,9 @@ public class Experiment implements Serializable {
     public boolean isEnded() {
         return ended;
     }
+    public String getUID(){return uid;}
+
+    public void setUID(String id){this.uid = id;}
 
 
 
