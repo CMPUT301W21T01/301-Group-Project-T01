@@ -26,10 +26,9 @@ import java.util.ArrayList;
 public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
     private ArrayList<Experiment> experiments;
     private Context context;
-    private String exName;
     //private String exDescription;
 
-    private TextView nameBox;
+    private TextView descBox;
     private TextView regionBox;
     private TextView dateBox;
 
@@ -49,11 +48,12 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
 
         Experiment experiment = experiments.get(position);
 
-        nameBox = view.findViewById(R.id.generalExName);
+        //TODO show status and owner of experiment in list
+        descBox = view.findViewById(R.id.generalExDescription);
         regionBox = view.findViewById(R.id.generalExLocation);
         dateBox = view.findViewById(R.id.generalExDate);
 
-        nameBox.setText(experiment.getName());
+        descBox.setText(experiment.getDescription());
         regionBox.setText(experiment.getRegion());
         dateBox.setText(experiment.getDate());
 

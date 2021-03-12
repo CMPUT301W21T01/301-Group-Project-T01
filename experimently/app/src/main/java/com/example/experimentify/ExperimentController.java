@@ -9,10 +9,13 @@ import android.widget.ArrayAdapter;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -60,33 +63,30 @@ public class ExperimentController{
     public void addExperimentToDB(Experiment newExp, FirebaseFirestore db){
         Map<String, Object> enterData = new HashMap<>();
 
-        ArrayList<String> description = new ArrayList();
-        description.add(newExp.getDescription().toLowerCase().trim());
-
-        ArrayList<String> name = new ArrayList();
-        name.add(newExp.getName().toLowerCase().trim());
+        List<String> searchable = new ArrayList<String>();
+        //https://stackoverflow.com/a/36456911 add citation for below
+        searchable.addAll(Arrays.asList(newExp.getDescription().toLowerCase().split("\\W+")));
 
         DocumentReference newRef = db.collection("Experiments").document();
 
         CollectionReference experiments = db.collection("Experiment");
-        //DatabaseReference postRef = ;
-        enterData.put("displayDescription", newExp.getDescription());
-        enterData.put("description", description);
+        enterData.put("description", newExp.getDescription());
         enterData.put("isEnded", false);
         enterData.put("minTrials", newExp.getMinTrials());
         enterData.put("ownerID", 0);
         enterData.put("region", newExp.getRegion());
-        enterData.put("displayName", newExp.getName());
-        enterData.put("name", name);
         enterData.put("editable", true);
+        enterData.put("searchable", searchable);
+        enterData.put("locationRequired", newExp.isLocationRequired());
         // UID?
-        enterData.put("viewable", true);
+        enterData.put("viewable", newExp.isViewable());
         enterData.put("date", newExp.getDate());
         newRef.set(enterData);
         String experimentID = newRef.getId();
 
         DocumentReference addID = db.collection("Experiments").document(experimentID);
         addID.update("EID", experimentID);
+        addID.update("searchable", FieldValue.arrayUnion(experimentID));
         //System.out.println(experimentID);
     }
 }

@@ -18,20 +18,21 @@ public class Experiment implements Serializable {
     private String experimentId;
     private ArrayList<Trial> trials;
     private String description;
-    private String name;
     private String date;
     private long minTrials; //db takes in a long not an int
     private boolean locationRequired;
     private String region;
+    private boolean ended;
 
 
-    public Experiment(String description, String name, String region, long minTrials, String date, boolean locationRequired) {
+    public Experiment(String description, String region, long minTrials, String date, boolean locationRequired) {
         this.description = description;
-        this.name = name;
         this.date = date;
         this.region = region;
         this.minTrials = minTrials;
         this.locationRequired = locationRequired;
+        ended = false;
+        viewable = true;
     }
 
     public String getDate() {
@@ -40,10 +41,6 @@ public class Experiment implements Serializable {
 
     public String getDescription() {
         return description;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public String getRegion() {
@@ -57,6 +54,28 @@ public class Experiment implements Serializable {
     public String getOwnerID() {
         return ownerID;
     }
+
+    public void setViewable(boolean viewable) {
+        this.viewable = viewable;
+    }
+
+    public void setEnded(boolean ended) {
+        this.ended = ended;
+    }
+
+    public boolean isLocationRequired() {
+        return locationRequired;
+    }
+
+    public boolean isViewable() {
+        return viewable;
+    }
+
+    public boolean isEnded() {
+        return ended;
+    }
+
+
 
     //TODO Ask about the variables below
     //private Location region //Region? - from requirements
