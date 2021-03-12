@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,9 +25,8 @@ import java.util.Calendar;
 
 public class AddExpFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
-    private EditText experimentName;
     private EditText region;
-    private EditText date;
+    private TextView date;
     private EditText descriptionBox;
     private EditText minTrialsBox;
     private AppCompatSpinner expType;
@@ -67,7 +67,7 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
      * This method creates a new experiment and passes it to the onOkPressed listener.
      */
     private void createExperiment() {
-        String name = experimentName.getText().toString();
+        String name = "TEMP UNTIL WE REMOVE NAME";
         String date1 = date.getText().toString();
         String region1 = region.getText().toString();
         String desc = descriptionBox.getText().toString();
@@ -93,7 +93,6 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
         listener.onOkPressed(new Experiment(desc, name, region1, minTrials, date1, locationRequired));
     }
 
-    //TODO fix calendar implementation
     /**
      * This method creates a new calendar fragment for picking a date.
      */
@@ -116,7 +115,6 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_exp, null);
-        experimentName = view.findViewById(R.id.expName);
         descriptionBox = view.findViewById(R.id.expDescription);
         minTrialsBox = view.findViewById(R.id.minTrials);
         date = view.findViewById(R.id.date);
@@ -139,7 +137,7 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
         selectDate = new DatePickerDialog.OnDateSetListener(){
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String dat = year + "  " + (month + 1) + "  " + dayOfMonth;
+                String dat = year + "/" + (month + 1) + "/" + dayOfMonth;
                 date.setText(dat);
             }
 
