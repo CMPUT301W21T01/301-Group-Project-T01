@@ -3,6 +3,8 @@ package com.example.experimentify;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +23,7 @@ import java.util.ArrayList;
  * This activity is a UI in which the user can see a list of published experiments
  * and add new experiments to the list.
  */
-public class MainActivity extends AppCompatActivity implements AddExpFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements AddExpFragment.OnFragmentInteractionListener, ExpOptionsFragment.OnFragmentInteractionListener {
     private ExperimentController experimentController;
     private ExperimentListAdapter experimentAdapter;
     private ListView exListView;
@@ -35,6 +37,15 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
      */
     private void showAddExpUi() {
         new AddExpFragment().show(getSupportFragmentManager(), "ADD_EXPERIMENT");
+    }
+
+    /**
+     * This method shows the fragment that gives users options for the experiment they long clicked on.
+     */
+    private void showExpOptionsUI(Experiment experiment) {
+        ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment);
+        fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
+
     }
 
     /**
@@ -69,6 +80,14 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
             showAddExpUi();
         });
 
+        exListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> parent, View v, int pos, long id) {
+                Experiment experiment = experimentController.getAdapter().getItem(pos);
+                showExpOptionsUI(experiment);
+                return true;
+            }
+        });
+
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -89,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     }
 
+    //AddExpFragment
     @Override
     public void onOkPressed(Experiment newExp) {
         addExperiment(newExp);
@@ -101,6 +121,12 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     @Override
     public void editItem(Experiment ogItem, Experiment editedItem) {
+
+    }
+
+    //ExpOptionsFragment
+    @Override
+    public void onOkPressed(Experiment newExp, Boolean edit) {
 
     }
 
