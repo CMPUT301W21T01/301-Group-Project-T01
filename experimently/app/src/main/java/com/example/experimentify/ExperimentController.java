@@ -128,7 +128,7 @@ public class ExperimentController{
         //https://stackoverflow.com/a/36456911 add citation for below
         searchable.addAll(Arrays.asList(newExp.getDescription().toLowerCase().split("\\W+")));
 
-        DocumentReference newRef = db.collection("Experiments").document();
+        DocumentReference newRef = db.collection("Experiments").document(uid);
 
         CollectionReference experiments = db.collection("Experiment");
         enterData.put("description", newExp.getDescription());
