@@ -96,11 +96,10 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                     Log.d(TAG, String.valueOf(doc.getData().get("EID")));
                     //Experiment(String description, String name, String region, int minTrials, String date)
                     String description = (String) doc.getData().get("displayDescription");
-                    String displayName = (String) doc.getData().get("displayName");
                     String region      = (String) doc.getData().get("region");
                     Long minTrials      = (Long) doc.getData().get("minTrials");
                     String date        = (String) doc.getData().get("date");
-                    experimentList.add(new Experiment(description, displayName, region, minTrials, date,true));
+                    experimentList.add(new Experiment(description, region, minTrials, date,true));
                 }
                 experimentController.getAdapter().notifyDataSetChanged();
             }

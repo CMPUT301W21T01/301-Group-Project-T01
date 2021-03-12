@@ -26,7 +26,6 @@ import java.util.ArrayList;
 public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
     private ArrayList<Experiment> experiments;
     private Context context;
-    private String exName;
     //private String exDescription;
 
     private TextView descBox;

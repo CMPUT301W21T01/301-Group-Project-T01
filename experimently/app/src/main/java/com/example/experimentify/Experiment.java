@@ -18,7 +18,6 @@ public class Experiment implements Serializable {
     private String experimentId;
     private ArrayList<Trial> trials;
     private String description;
-    private String name;
     private String date;
     private long minTrials; //db takes in a long not an int
     private boolean locationRequired;
@@ -26,9 +25,8 @@ public class Experiment implements Serializable {
     private boolean ended;
 
 
-    public Experiment(String description, String name, String region, long minTrials, String date, boolean locationRequired) {
+    public Experiment(String description, String region, long minTrials, String date, boolean locationRequired) {
         this.description = description;
-        this.name = name;
         this.date = date;
         this.region = region;
         this.minTrials = minTrials;
@@ -44,10 +42,6 @@ public class Experiment implements Serializable {
 
     public String getDescription() {
         return description;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public String getRegion() {
