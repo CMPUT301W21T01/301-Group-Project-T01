@@ -3,7 +3,6 @@ package com.example.experimentify;
 import java.util.ArrayList;
 
 public class User {
-    private int userId;
     private ExperimentController subbedExperiments;
     private String email;
     private String name;
@@ -12,12 +11,14 @@ public class User {
     private String uid;
     private String username;
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public User() {
+        this.uid = "";
+        this.email = "";
+        this.name = "";
+        this.username = "";
+        //this.subbedExperiments = new ExperimentController();
+        this.ownedExperiments = new ArrayList<String>();
+        this.participatingExperiments = new ArrayList<String>();
     }
 
     public ExperimentController getSubbedExperiments() {
