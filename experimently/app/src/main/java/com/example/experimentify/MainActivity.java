@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private ExperimentListAdapter experimentAdapter;
     private ListView exListView;
     private FloatingActionButton showAddExpUiButton;
+    private FloatingActionButton userProfileButton;
     private ArrayList<Experiment> experimentList;
     final String TAG = MainActivity.class.getName();
     FirebaseFirestore db;
@@ -49,6 +50,10 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment);
         fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
 
+    }
+
+    private void showInfoUi() {
+        new UserProfileFragment().show(getSupportFragmentManager(), "SHOW_PROFILE");
     }
 
     /**
@@ -73,11 +78,16 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
         exListView = findViewById(R.id.exListView);
         showAddExpUiButton = findViewById(R.id.showAddExpUiButton);
+        userProfileButton = findViewById(R.id.userProfileButton);
 
         //ExperimentListAdapter experimentAdapter = new ExperimentListAdapter(this, )
         experimentController = new ExperimentController(this);
         experimentList = experimentController.getExperiments();
         exListView.setAdapter(experimentController.getAdapter());
+
+        userProfileButton.setOnClickListener((v) -> {
+            showInfoUi();
+        });
 
         showAddExpUiButton.setOnClickListener((v) -> {
             showAddExpUi();
