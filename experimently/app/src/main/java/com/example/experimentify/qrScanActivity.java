@@ -1,4 +1,4 @@
-package example.zxing;
+package com.example.experimentify;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
@@ -21,7 +21,7 @@ import java.util.Random;
 /**
  * Custom Scannner Activity extending from Activity to display a custom layout form scanner view.
  */
-public class CustomScannerActivity extends MainActivity implements DecoratedBarcodeView.TorchListener {
+public class qrScanActivity extends MainActivity implements DecoratedBarcodeView.TorchListener {
 
     private CaptureManager capture;
     private DecoratedBarcodeView barcodeScannerView;
@@ -36,7 +36,7 @@ public class CustomScannerActivity extends MainActivity implements DecoratedBarc
         barcodeScannerView = findViewById(R.id.zxing_barcode_scanner);
         barcodeScannerView.setTorchListener(this);
 
-        switchFlashlightButton = findViewById(R.id.switch_flashlight);
+        //switchFlashlightButton = findViewById(R.id.switch_flashlight);
 
         viewfinderView = findViewById(R.id.zxing_viewfinder_view);
 
@@ -94,11 +94,11 @@ public class CustomScannerActivity extends MainActivity implements DecoratedBarc
     }
 
     public void switchFlashlight(View view) {
-        if (getString(R.string.turn_on_flashlight).equals(switchFlashlightButton.getText())) {
+        /*if (getString(R.string.turn_on_flashlight).equals(switchFlashlightButton.getText())) {
             barcodeScannerView.setTorchOn();
         } else {
             barcodeScannerView.setTorchOff();
-        }
+        }*/
     }
 
     public void changeMaskColor(View view) {
@@ -113,12 +113,12 @@ public class CustomScannerActivity extends MainActivity implements DecoratedBarc
 
     @Override
     public void onTorchOn() {
-        switchFlashlightButton.setText(R.string.turn_off_flashlight);
+        //switchFlashlightButton.setText(R.string.turn_off_flashlight);
     }
 
     @Override
     public void onTorchOff() {
-        switchFlashlightButton.setText(R.string.turn_on_flashlight);
+        //switchFlashlightButton.setText(R.string.turn_on_flashlight);
     }
 
     @Override
