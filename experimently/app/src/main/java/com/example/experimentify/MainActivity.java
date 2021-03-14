@@ -1,6 +1,7 @@
 package com.example.experimentify;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private ExperimentListAdapter experimentAdapter;
     private ListView exListView;
     private FloatingActionButton showAddExpUiButton;
+    private FloatingActionButton qrScanner;
     private ArrayList<Experiment> experimentList;
     final String TAG = MainActivity.class.getName();
     FirebaseFirestore db;
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
         exListView = findViewById(R.id.exListView);
         showAddExpUiButton = findViewById(R.id.showAddExpUiButton);
+        qrScanner = findViewById(R.id.qrScanner);
 
         //ExperimentListAdapter experimentAdapter = new ExperimentListAdapter(this, )
         experimentController = new ExperimentController(this);
@@ -81,6 +84,14 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
         showAddExpUiButton.setOnClickListener((v) -> {
             showAddExpUi();
+        });
+
+        qrScanner.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent( MainActivity.this, qrScanActivity.class);
+                startActivity(intent);
+
+            }
         });
 
         exListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
