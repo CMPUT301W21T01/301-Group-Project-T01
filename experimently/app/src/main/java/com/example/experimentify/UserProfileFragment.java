@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import static android.content.ContentValues.TAG;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link UserProfileFragment#newInstance} factory method to
@@ -28,6 +36,8 @@ public class UserProfileFragment extends DialogFragment {
     private EditText userEmail;
     private EditText userName;
     private User user;
+
+    private FirebaseFirestore db;
 
     private OnFragmentInteractionListener listener;
 
@@ -112,9 +122,38 @@ public class UserProfileFragment extends DialogFragment {
                         user.setEmail(userEmail.getText().toString());
 
                         //Update firebase name and email
+                        db = FirebaseFirestore.getInstance();
+                        DocumentReference userReference = db.collection("Users").document(user.getUid());
 
-                        //alertDialog.show();
-                        //TODO Edit city
+                        //Update name
+                        userReference.update("name", userName.getText().toString())
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully updated!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error updating document", e);
+                            }
+                        });
+
+                        //Update email
+                        userReference.update("email", userEmail.getText().toString())
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error updating document", e);
+                                    }
+                                });
                     }
                 }).create();
     }
