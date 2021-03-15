@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,11 +24,11 @@ import androidx.fragment.app.Fragment;
  */
 public class UserProfileFragment extends DialogFragment {
     private Bundle bundle;
-    private CheckBox subscribeBox;
-    private CheckBox endExpBox;
-    private CheckBox unpublishBox;
-    private Button delExpButton;
-    private Experiment experiment;
+    private TextView userID;
+    private EditText userEmail;
+    private EditText userName;
+    private Button okayButton;
+    private User user;
 
     private OnFragmentInteractionListener listener;
 
@@ -81,17 +83,17 @@ public class UserProfileFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_user_profile, null);
-        subscribeBox = view.findViewById(R.id.subscribeCheckBox);
-        endExpBox = view.findViewById(R.id.endExpCheckBox);
-        unpublishBox = view.findViewById(R.id.unpublishExpCheckBox);
-        delExpButton = view.findViewById(R.id.okayButton);
+        okayButton = view.findViewById(R.id.okayButton);
+        userID = view.findViewById(R.id.userID);
+        userName = view.findViewById(R.id.userName);
+        userEmail = view.findViewById(R.id.userEmail);
         bundle = getArguments();
 
 
 
 
         if (bundle != null) {
-            experiment = (Experiment) bundle.getSerializable("experiment");
+            user = (User) bundle.getSerializable("user");
 
 
             subscribeBox.setChecked(false); //TODO check if experiment is in user's subscribed list
@@ -99,7 +101,7 @@ public class UserProfileFragment extends DialogFragment {
             unpublishBox.setChecked(!experiment.isViewable());
         }
 
-        delExpButton.setOnClickListener(new View.OnClickListener() {
+        okayButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ///
             }
