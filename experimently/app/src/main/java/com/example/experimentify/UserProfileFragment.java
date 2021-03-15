@@ -39,11 +39,11 @@ public class UserProfileFragment extends DialogFragment {
     }
 
 
-    public static ExpOptionsFragment newInstance(Experiment experiment) {
+    public static UserProfileFragment newInstance(User user) {
         Bundle args = new Bundle();
-        args.putSerializable("experiment", experiment);
+        args.putSerializable("user", user);
 
-        ExpOptionsFragment fragment = new ExpOptionsFragment();
+        UserProfileFragment fragment = new UserProfileFragment();
         fragment.setArguments(args);
         return fragment;
     }
