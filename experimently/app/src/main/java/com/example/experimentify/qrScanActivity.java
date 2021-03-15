@@ -36,7 +36,7 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
         barcodeScannerView = findViewById(R.id.zxing_barcode_scanner);
         barcodeScannerView.setTorchListener(this);
 
-        //switchFlashlightButton = findViewById(R.id.switch_flashlight);
+        switchFlashlightButton = findViewById(R.id.switch_flashlight);
 
         viewfinderView = findViewById(R.id.zxing_viewfinder_view);
 
