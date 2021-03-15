@@ -35,7 +35,7 @@ import java.util.Map;
  * This activity is a UI in which the user can see a list of published experiments
  * and add new experiments to the list.
  */
-public class MainActivity extends AppCompatActivity implements AddExpFragment.OnFragmentInteractionListener, ExpOptionsFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements AddExpFragment.OnFragmentInteractionListener, ExpOptionsFragment.OnFragmentInteractionListener, UserProfileFragment.OnFragmentInteractionListener {
     private ExperimentController experimentController;
     private ExperimentListAdapter experimentAdapter;
     private ListView exListView;

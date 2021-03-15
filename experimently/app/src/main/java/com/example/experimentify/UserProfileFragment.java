@@ -27,7 +27,6 @@ public class UserProfileFragment extends DialogFragment {
     private TextView userID;
     private EditText userEmail;
     private EditText userName;
-    private Button okayButton;
     private User user;
 
     private OnFragmentInteractionListener listener;
@@ -83,7 +82,6 @@ public class UserProfileFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_user_profile, null);
-        okayButton = view.findViewById(R.id.okayButton);
         userID = view.findViewById(R.id.userID);
         userName = view.findViewById(R.id.userName);
         userEmail = view.findViewById(R.id.userEmail);
@@ -100,12 +98,6 @@ public class UserProfileFragment extends DialogFragment {
             userName.setText(user.getName());
             userEmail.setText(user.getEmail());
         }
-
-        okayButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                ///
-            }
-        });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
