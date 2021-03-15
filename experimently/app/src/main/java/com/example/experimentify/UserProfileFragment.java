@@ -47,6 +47,49 @@ public class UserProfileFragment extends DialogFragment {
         //no methods currently necessary here but keeping it just in case this changes in future
     }
 
+    /**
+     * Handles construction of 
+     * @param userID
+     * @param username
+     * @param email
+     */
+    public void updateFirebaseUser(String userID, String username, String email)
+    {
+        //Update firebase name and email
+        db = FirebaseFirestore.getInstance();
+        DocumentReference userReference = db.collection("Users").document(userID);
+
+        //Update name
+        userReference.update("name", username)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                    }
+                });
+
+        //Update email
+        userReference.update("email", email)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                    }
+                });
+    }
+
 
     public static UserProfileFragment newInstance(User user) {
         Bundle args = new Bundle();
@@ -55,23 +98,6 @@ public class UserProfileFragment extends DialogFragment {
         UserProfileFragment fragment = new UserProfileFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    private void handleDelete() {
-        //TODO warning message for deleting experiment
-        //https://stackoverflow.com/a/26097588
-                        /*
-                        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-                        alertDialog.setTitle("Alert");
-                        alertDialog.setMessage("Alert message to be shown");
-                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-
-                         */
     }
 
     @Override
@@ -95,9 +121,6 @@ public class UserProfileFragment extends DialogFragment {
         userEmail = view.findViewById(R.id.userEmail);
         bundle = getArguments();
 
-
-
-
         if (bundle != null) {
             user = (User) bundle.getSerializable("user");
 
@@ -119,39 +142,8 @@ public class UserProfileFragment extends DialogFragment {
                         user.setName(userName.getText().toString());
                         user.setEmail(userEmail.getText().toString());
 
-                        //Update firebase name and email
-                        db = FirebaseFirestore.getInstance();
-                        DocumentReference userReference = db.collection("Users").document(user.getUid());
+                        updateFirebaseUser(user.getUid(), userName.getText().toString(), userEmail.getText().toString());
 
-                        //Update name
-                        userReference.update("name", userName.getText().toString())
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d(TAG, "DocumentSnapshot successfully updated!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error updating document", e);
-                            }
-                        });
-
-                        //Update email
-                        userReference.update("email", userEmail.getText().toString())
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.d(TAG, "DocumentSnapshot successfully updated!");
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.w(TAG, "Error updating document", e);
-                                    }
-                                });
                     }
                 }).create();
     }
