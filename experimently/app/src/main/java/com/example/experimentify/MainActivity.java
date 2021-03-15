@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private ListView exListView;
     private FloatingActionButton showAddExpUiButton;
     private FloatingActionButton userProfileButton;
+    private EditText searchBar;
+    private ImageButton searchButton;
     private ArrayList<Experiment> experimentList;
     final String TAG = MainActivity.class.getName();
     public static final String PREFS_NAME = "PrefsFile";
@@ -90,10 +94,13 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         User user = initializeUser(db);
 
 
-
+        //get ui resources
         exListView = findViewById(R.id.exListView);
         showAddExpUiButton = findViewById(R.id.showAddExpUiButton);
         userProfileButton = findViewById(R.id.userProfileButton);
+
+        searchBar = findViewById(R.id.searchBar);
+        searchButton = findViewById(R.id.searchButton);
 
         //ExperimentListAdapter experimentAdapter = new ExperimentListAdapter(this, )
         experimentController = new ExperimentController(this);

@@ -11,10 +11,11 @@
         android:id="@+id/searchBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:ems="10"
+        android:hint="Type a keyword to search for"
         android:inputType="textPersonName"
-        android:text="Search Bar"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,4 +58,13 @@
         app:layout_constraintTop_toBottomOf="@+id/searchBar">
 
     </ListView>
+
+    <ImageButton
+        android:id="@+id/searchButton"
+        android:layout_width="49dp"
+        android:layout_height="46dp"
+        app:layout_constraintStart_toEndOf="@+id/searchBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_search" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
