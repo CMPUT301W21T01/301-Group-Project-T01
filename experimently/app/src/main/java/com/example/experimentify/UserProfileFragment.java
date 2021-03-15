@@ -48,10 +48,10 @@ public class UserProfileFragment extends DialogFragment {
     }
 
     /**
-     * Handles construction of 
-     * @param userID
-     * @param username
-     * @param email
+     * Handles sending updated user profile data to Firebase after changes made in fragment
+     * @param userID userID to apply changes to
+     * @param username new username
+     * @param email new email
      */
     public void updateFirebaseUser(String userID, String username, String email)
     {
