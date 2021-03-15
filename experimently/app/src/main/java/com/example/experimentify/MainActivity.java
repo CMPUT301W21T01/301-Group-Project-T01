@@ -62,8 +62,9 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     }
 
-    private void showInfoUi() {
-        new UserProfileFragment().show(getSupportFragmentManager(), "SHOW_PROFILE");
+    private void showInfoUi(User user) {
+        UserProfileFragment fragment = UserProfileFragment.newInstance(user);
+        fragment.show(getSupportFragmentManager(), "SHOW_PROFILE");
     }
 
     /**
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         exListView.setAdapter(experimentController.getAdapter());
 
         userProfileButton.setOnClickListener((v) -> {
-            showInfoUi();
+            showInfoUi(user);
         });
 
         showAddExpUiButton.setOnClickListener((v) -> {
