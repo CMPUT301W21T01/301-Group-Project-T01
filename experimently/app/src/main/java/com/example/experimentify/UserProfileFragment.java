@@ -80,11 +80,11 @@ public class UserProfileFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_exp_options, null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_user_profile, null);
         subscribeBox = view.findViewById(R.id.subscribeCheckBox);
         endExpBox = view.findViewById(R.id.endExpCheckBox);
         unpublishBox = view.findViewById(R.id.unpublishExpCheckBox);
-        delExpButton = view.findViewById(R.id.delExpButton);
+        delExpButton = view.findViewById(R.id.okayButton);
         bundle = getArguments();
 
 
