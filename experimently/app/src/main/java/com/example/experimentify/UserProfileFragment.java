@@ -110,7 +110,8 @@ public class UserProfileFragment extends DialogFragment {
                         /*boolean subscribed = subscribeBox.isChecked();
                         boolean ended = endExpBox.isChecked();
                         boolean unpublished = unpublishBox.isChecked();*/
-
+                        user.setName(userName.getText().toString());
+                        user.setEmail(userEmail.getText().toString());
 
                         //alertDialog.show();
                         //TODO Edit city
