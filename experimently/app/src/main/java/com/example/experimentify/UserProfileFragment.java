@@ -102,16 +102,16 @@ public class UserProfileFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
                 .setView(view)
-                .setTitle("Experiment Options")
+                .setTitle("User Profile")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        /*boolean subscribed = subscribeBox.isChecked();
-                        boolean ended = endExpBox.isChecked();
-                        boolean unpublished = unpublishBox.isChecked();*/
+                        //Update local name and email
                         user.setName(userName.getText().toString());
                         user.setEmail(userEmail.getText().toString());
+
+                        //Update firebase name and email
 
                         //alertDialog.show();
                         //TODO Edit city
