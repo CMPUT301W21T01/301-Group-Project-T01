@@ -44,9 +44,7 @@ public class UserProfileFragment extends DialogFragment {
 
 
     public interface OnFragmentInteractionListener {
-        void onOkPressed(Experiment newExp, Boolean delete);
-        void onDeletePressed(Experiment current);
-        void editItem(Experiment ogItem, Experiment editedItem );
+        //no methods currently necessary here but keeping it just in case this changes in future
     }
 
 

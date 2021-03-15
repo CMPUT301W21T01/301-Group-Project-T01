@@ -10,8 +10,4 @@ import java.util.ArrayList;
 public class Trial {
     private int userId;
     //private Location trialLocation
-
-
-
-
 }
