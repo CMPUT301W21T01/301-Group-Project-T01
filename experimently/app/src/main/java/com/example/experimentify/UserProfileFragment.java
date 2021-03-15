@@ -96,9 +96,9 @@ public class UserProfileFragment extends DialogFragment {
             user = (User) bundle.getSerializable("user");
 
 
-            subscribeBox.setChecked(false); //TODO check if experiment is in user's subscribed list
-            endExpBox.setChecked(experiment.isEnded());
-            unpublishBox.setChecked(!experiment.isViewable());
+            userID.setText(user.getUid());
+            userName.setText(user.getName());
+            userEmail.setText(user.getEmail());
         }
 
         okayButton.setOnClickListener(new View.OnClickListener() {
@@ -115,9 +115,9 @@ public class UserProfileFragment extends DialogFragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        boolean subscribed = subscribeBox.isChecked();
+                        /*boolean subscribed = subscribeBox.isChecked();
                         boolean ended = endExpBox.isChecked();
-                        boolean unpublished = unpublishBox.isChecked();
+                        boolean unpublished = unpublishBox.isChecked();*/
 
 
                         //alertDialog.show();
