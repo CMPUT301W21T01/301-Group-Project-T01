@@ -17,7 +17,6 @@ import java.util.ArrayList;
   Date published: Feb. 2, 2021
   License: Public domain
   Link: https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
-
   Code for this class is based on examples from lab 3.
   */
 /**

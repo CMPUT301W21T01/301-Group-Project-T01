@@ -1,6 +1,7 @@
 package com.example.experimentify;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -101,8 +102,13 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
         searchBar = findViewById(R.id.searchBar);
         searchButton = findViewById(R.id.searchButton);
+        // search button on click listener, pass query with intent
+        searchButton.setOnClickListener((v) -> {
+            if(searchBar.getText().toString().trim().length() > 0) { // search if the edit text is not empty
+                openSearchResults(searchBar.getText().toString());
+            }
+        });
 
-        //ExperimentListAdapter experimentAdapter = new ExperimentListAdapter(this, )
         experimentController = new ExperimentController(this);
         experimentList = experimentController.getExperiments();
         exListView.setAdapter(experimentController.getAdapter());
@@ -163,6 +169,16 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     public void onOkPressed(Experiment newExp, Boolean edit) {
 
     }
+    /**
+     * open the SearchResults activity, which will query the database and show relevant experiments to the keyword the user input
+     */
+    public void openSearchResults(String keyword){
+        Intent intent = new Intent(this, SearchResults.class);
+        intent.putExtra("keyword", keyword);
+        startActivity(intent);
+    }
+
+
     /**
      * initialize a new user to the firestore, we do not force them to provide info like name, email, username, e.t.c until later, we are just make a document with a unique ID that can identify that specific user
      * @param db is the firestore db

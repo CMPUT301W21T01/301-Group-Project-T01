@@ -18,12 +18,13 @@ import java.util.Map;
 
 
 /**
+ * **CURRENTLY DEPRECATED- PLEASE DON'T USE OR TOUCH**
+ *
  * a search manager that accepts the entered keyword as a string, does some cleaning, queries the database and returns the experiments fitting the search result inside a list
  *
  * input: string keyword
- * return: list containing experiments that the query returned by search (case insensitive search)
- */
-
+ * return: list containing experiments that the query returned by search (case insensitive search) (by the getData() method
+ *
 public class SearchKeyword {   // UML at https://raw.githubusercontent.com/CMPUT301W21T01/301-Group-Project-T01/main/doc/CMPUT%20301%20Project%20UML.png
     // has no "search" class or method.. will probably discuss how to change uml later
     private ArrayList<Experiment> experiments;       // our "experiments" are documents in the firebase...
@@ -32,23 +33,22 @@ public class SearchKeyword {   // UML at https://raw.githubusercontent.com/CMPUT
 
     //private DatabaseReference db;
 
-    private FirebaseFirestore db;
+    //private ArrayList<String> experimentId;
 
-    private ArrayList<String> experimentId;
 
 
     // database = FirebaseDatabase.getInstance().getReference();
 
-    private HashMap<String, Map> unique_holder;
+    private HashMap<String, HashMap> unique_holder;
 
-    public SearchKeyword(String keyword) {
+    public SearchKeyword(String keyword, FirebaseFirestore db) {
 
         cleanedKeyword = keyword.trim().toLowerCase(); // we should allow user to search case insensitive
 
         db = FirebaseFirestore.getInstance();
 
         final CollectionReference collectionReference = db.collection("Experiments");
-
+        Log.d("keyword is ", cleanedKeyword);
 
         //Query query = collectionReference.whereEqualTo("name", cleanedKeyword);
         //Query query1 = collectionReference.whereEqualTo("description", cleanedKeyword);
@@ -56,10 +56,10 @@ public class SearchKeyword {   // UML at https://raw.githubusercontent.com/CMPUT
         //https://firebase.google.com/docs/firestore/query-data/queries#execute_a_query
 
         // init map to hold data and we can decide what to do with it later
-        unique_holder = new HashMap<String, Map>();  // {EID: map containing experiment contents}
+        experiments = new ArrayList<Experiment>();
 
         collectionReference
-                .whereArrayContainsAny("searchable", Arrays.asList(cleanedKeyword))   //query line, can be combined and turned into complex queries (this one queries for name)
+                .whereArrayContainsAny("searchable", Arrays.asList(cleanedKeyword))//query line, can be combined and turned into complex queries (this one queries for name)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {    // when you finish getting the data from the firebase
                     @Override
@@ -72,14 +72,18 @@ public class SearchKeyword {   // UML at https://raw.githubusercontent.com/CMPUT
                                 Log.d("Test holder", document.getId() + " => " + document.getData());                // this for each document from our query result where we can filter and extract results
                                 // the idea is here we use document snapshot methods such as get(String field) or getData()(returns fields of doc as a map) and we can
                                 // filter, then grab and use all the data we could need from the firebase ()
-                                experimentId.add(document.getId()); // every document from first query results will be unique
-                                unique_holder.put(document.getId().toString(), (Map) document.getData()); //cast to map
+                                // experimentId.add(document.getId());
 
-
-                                // in this case, we can deal with "duplicate" instances (because we have seperate queries for both name and description)
-                                // the implementation of dealing with dupes can be changed later, what is shown is a basic one that works
-                                // where we grab the documentID and add it to a list that we can keep track of
-
+                                // every document from first query results will be unique
+                                Log.d("test", String.valueOf(document.getData().get("EID")));
+                                String description  = (String)  document.getData().get("description");
+                                String region       = (String)  document.getData().get("region");
+                                Long minTrials      = (Long)    document.getData().get("minTrials");
+                                String date         = (String)  document.getData().get("date");
+                                boolean locationReq = (boolean) document.getData().get("locationRequired");
+                                Experiment temp_experiment = new Experiment(description, region, minTrials, date, locationReq);
+                                temp_experiment.setUID(String.valueOf(document.getData().get("EID")));
+                                experiments.add(temp_experiment);
                             }
                         } else {
                             Log.d("Test holder", "Error getting documents: ", task.getException());
@@ -87,11 +91,10 @@ public class SearchKeyword {   // UML at https://raw.githubusercontent.com/CMPUT
                     }
                 });
     }
-    public HashMap getData(){
-        return unique_holder;
+    public ArrayList<Experiment> getExperiments(){
+        Log.d("experiments1 is ", experiments.toString());
+        return experiments;
     }
-
-/**
  * the following second query is deprecated (changed structure of firestore, only need one query currently)
  collectionReference
  .whereArrayContainsAny("description", Arrays.asList(cleanedKeyword))      //this one queries for description
@@ -122,8 +125,6 @@ Log.d("Test holder", "Error getting documents: ", task.getException());
 }
 }
 });
+                    }
  */
 
-
-
-}
