@@ -72,7 +72,7 @@
             android:layout_width="199dp"
             android:layout_height="wrap_content"
             android:text="Pass"
-            android:translationX="0" />
+            android:translationX="0px" />
 
         <Button
             android:id="@+id/fail"
