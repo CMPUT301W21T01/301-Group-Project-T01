@@ -61,7 +61,7 @@ public class ExperimentController{
      * @param newExp
      * @param db
      */
-    public void addExperimentToDB(Experiment newExp, FirebaseFirestore db){
+    public void addExperimentToDB(Experiment newExp, FirebaseFirestore db, String ownerID){
         Map<String, Object> enterData = new HashMap<>();
 
         List<String> searchable = new ArrayList<String>();
@@ -74,7 +74,7 @@ public class ExperimentController{
         enterData.put("description", newExp.getDescription());
         enterData.put("isEnded", newExp.isEnded());
         enterData.put("minTrials", newExp.getMinTrials());
-        enterData.put("ownerID", 0);
+        enterData.put("ownerID", ownerID);
         enterData.put("region", newExp.getRegion());
         enterData.put("editable", true);
         enterData.put("searchable", searchable);

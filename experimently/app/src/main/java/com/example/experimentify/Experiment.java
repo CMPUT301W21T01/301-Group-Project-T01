@@ -90,6 +90,10 @@ public class Experiment implements Serializable {
         return editable;
     }
 
+    public void setOwnerID(String ownerID) {
+        this.ownerID = ownerID;
+    }
+
     public String getExpType(){return expType;}
 
     public void setEditable(boolean editable) {
