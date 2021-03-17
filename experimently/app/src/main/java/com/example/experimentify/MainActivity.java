@@ -3,6 +3,7 @@ package com.example.experimentify;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private FloatingActionButton userProfileButton;
     private EditText searchBar;
     private ImageButton searchButton;
+    private FloatingActionButton qrScanner;
     private ArrayList<Experiment> experimentList;
     final String TAG = MainActivity.class.getName();
     public static final String PREFS_NAME = "PrefsFile";
@@ -99,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         exListView = findViewById(R.id.exListView);
         showAddExpUiButton = findViewById(R.id.showAddExpUiButton);
         userProfileButton = findViewById(R.id.userProfileButton);
+        qrScanner = findViewById(R.id.qrScanner);
 
         searchBar = findViewById(R.id.searchBar);
         searchButton = findViewById(R.id.searchButton);
@@ -119,6 +122,14 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
         showAddExpUiButton.setOnClickListener((v) -> {
             showAddExpUi();
+        });
+
+        qrScanner.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent( MainActivity.this, qrScanActivity.class);
+                startActivity(intent);
+
+            }
         });
 
         exListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
