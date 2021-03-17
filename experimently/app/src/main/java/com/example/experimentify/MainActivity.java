@@ -83,23 +83,12 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     }
 
     /**
-     * This method brings the user to the trial screen for the experiment they clicked on.
-     * @param exp experiment to be viewed
-     */
-    private void showExperiment(Experiment exp) {
-        Intent intent = new Intent(MainActivity.this, ExperimentActivity.class);
-        intent.putExtra("clickedExp", exp);
-        startActivity(intent);
-    }
-
-    //TODO move to experiment controller
-    /**
-     * This method returns an experiment based on its position in the ListView.
+     * This method brings the user to the experiment screen for the experiment they clicked on.
      * @param pos position of experiment in ListView
-     * @return experiment that was clicked on
      */
-    private Experiment getClickedExperiment(int pos) {
-        return (Experiment)exListView.getItemAtPosition(pos);
+    private void handleExpClick(int pos) {
+        Experiment clickedExperiment = experimentController.getClickedExperiment(pos);
+        experimentController.viewExperiment(MainActivity.this, clickedExperiment);
     }
 
     private void delExperiment() {
@@ -162,8 +151,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
         exListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int pos, long id) {
-                Experiment clickedExperiment = getClickedExperiment(pos);
-                showExperiment(clickedExperiment);
+                handleExpClick(pos);
             }
         });
 

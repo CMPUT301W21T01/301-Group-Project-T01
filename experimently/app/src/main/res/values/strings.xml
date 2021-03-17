@@ -18,4 +18,8 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="turn_on_flashlight">Turn On Flashlight</string>
+    <string name="description_header">"Description: "</string>
+    <string name="date_header">"Date: "</string>
+    <string name="region_header">"Region: "</string>
+    <string name="exp_type_header">"Experiment type: "</string>
 </resources>

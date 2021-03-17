@@ -42,18 +42,17 @@ public class Experiment implements Parcelable {
     }
 
     protected Experiment(Parcel in) {
-        viewable = in.readByte() != 0;
-        ownerID = in.readString();
-        experimentId = in.readString();
+        /*Make sure these variable are assigned in the same order as the normal constructor
+          or else the attributes will be set to null for god knows what reason.
+          */
         description = in.readString();
         date = in.readString();
+        region = in.readString();
         minTrials = in.readLong();
         locationRequired = in.readByte() != 0;
-        region = in.readString();
-        ended = in.readByte() != 0;
-        uid = in.readString();
         editable = in.readByte() != 0;
-        expType = in.readString();
+        ended = in.readByte() != 0;
+        viewable = in.readByte() != 0;
     }
 
     public static final Creator<Experiment> CREATOR = new Creator<Experiment>() {
@@ -114,6 +113,10 @@ public class Experiment implements Parcelable {
         return uid;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void setUID(String id) {
         this.uid = id;
     }
@@ -141,7 +144,11 @@ public class Experiment implements Parcelable {
         dest.writeString(region);
         dest.writeLong(minTrials);
         dest.writeBoolean(locationRequired);
+        dest.writeBoolean(editable);
+        dest.writeBoolean(ended);
+        dest.writeBoolean(viewable);
     }
+
 
     //TODO Ask about the variables below
     //private Location region //Region? - from requirements

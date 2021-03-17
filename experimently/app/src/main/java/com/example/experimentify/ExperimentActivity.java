@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,14 +39,15 @@ public class ExperimentActivity extends AppCompatActivity {
     private  CardView measure;
     private EditText measureInput;
 
+
     /**
      * This method sets text in the UI.
      */
     private void initUi() {
-        description.setText(exp.getDescription());
-        date.setText(exp.getDate());
-        expType.setText(exp.getExperimentId());
-        location.setText(exp.getRegion());
+        description.setText(this.getResources().getString(R.string.description_header) + exp.getDescription());
+        date.setText(this.getResources().getString(R.string.date_header) + exp.getDate());
+        expType.setText(this.getResources().getString(R.string.exp_type_header) + exp.getExperimentId());
+        location.setText(this.getResources().getString(R.string.region_header) + exp.getRegion());
 
     }
 

@@ -2,6 +2,7 @@ package com.example.experimentify;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
@@ -39,17 +40,6 @@ public class ExperimentController{
 
     public int getSize() {
         return experiments.size();
-    }
-
-    //Removes an experiment
-    //TODO implement database delete
-    public void deleteExperiment(int pos) {
-       //pass
-    }
-
-    //TODO set up intent to switch to experiment activity
-    public void viewExperiment(Activity activity, int pos) {
-        //pass
     }
 
     public ArrayList<Experiment> getExperiments() {
@@ -153,5 +143,25 @@ public class ExperimentController{
     public void setExperiments(ArrayList<Experiment>set_experiments){
         experiments = set_experiments;
     }
+
+    /**
+     * This method brings the user to the trial screen for the experiment they clicked on.
+     * @param exp experiment to be viewed
+     */
+    public void viewExperiment(Activity activity, Experiment exp) {
+        Intent intent = new Intent(activity, ExperimentActivity.class);
+        intent.putExtra("clickedExp", exp);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * This method returns an experiment based on its position in the ListView.
+     * @param pos position of experiment in ListView
+     * @return experiment that was clicked on
+     */
+    public Experiment getClickedExperiment(int pos) {
+        return experiments.get(pos);
+    }
 }
+
 
