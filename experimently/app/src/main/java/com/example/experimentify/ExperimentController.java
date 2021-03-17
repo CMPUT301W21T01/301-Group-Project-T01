@@ -13,6 +13,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -144,7 +145,7 @@ public class ExperimentController{
         enterData.put("date", newExp.getDate());
         enterData.put("uid", newExp.getUID());  // an edited experiment should still have the SAME uid
 
-        newRef.set(enterData);
+        newRef.set(enterData, SetOptions.merge());
     }
     /**
      * sets the experiments variable
