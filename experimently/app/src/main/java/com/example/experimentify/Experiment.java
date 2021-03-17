@@ -23,7 +23,7 @@ public class Experiment implements Serializable {
     private boolean ended;
     private String uid;
     private boolean editable;
-
+    private String expType;
 
     public Experiment(String description, String region, long minTrials, String date, boolean locationRequired) {
         this.description = description;
@@ -51,6 +51,8 @@ public class Experiment implements Serializable {
     public long getMinTrials() {
         return minTrials;
     }
+
+    public String getExperimentId(){return experimentId;}
 
     public String getOwnerID() {
         return ownerID;
@@ -87,6 +89,8 @@ public class Experiment implements Serializable {
     public boolean isEditable() {
         return editable;
     }
+
+    public String getExpType(){return expType;}
 
     public void setEditable(boolean editable) {
         this.editable = editable;

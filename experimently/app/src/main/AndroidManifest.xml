@@ -11,6 +11,10 @@
         android:theme="@style/Theme.Experimentify">
         <activity android:name=".qrScanActivity"></activity>
         <activity
+            android:name=".ExperimentActivity"
+            android:label="@string/title_activity_experiment"
+            android:theme="@style/Theme.Experimentify.NoActionBar"></activity>
+        <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.Experimentify.NoActionBar">
