@@ -136,7 +136,6 @@ public class ExperimentController{
         enterData.put("description", newExp.getDescription());
         enterData.put("isEnded", newExp.isEnded());
         enterData.put("minTrials", newExp.getMinTrials());
-        enterData.put("ownerID", 0);
         enterData.put("region", newExp.getRegion());
         enterData.put("editable", newExp.isEditable());
         enterData.put("searchable", searchable);
