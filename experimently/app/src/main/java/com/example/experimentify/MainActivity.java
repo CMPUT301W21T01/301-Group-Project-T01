@@ -76,10 +76,30 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     /**
      * This method adds an experiment to the database.
-     * @param experiment
+     * @param experiment experiment to be added
      */
     private void addExperiment(Experiment experiment) {
         experimentController.addExperimentToDB(experiment, db);
+    }
+
+    /**
+     * This method brings the user to the trial screen for the experiment they clicked on.
+     * @param exp experiment to be viewed
+     */
+    private void showExperiment(Experiment exp) {
+        Intent intent = new Intent(MainActivity.this, ExperimentActivity.class);
+        intent.putExtra("clickedExp", exp);
+        startActivity(intent);
+    }
+
+    //TODO move to experiment controller
+    /**
+     * This method returns an experiment based on its position in the ListView.
+     * @param pos position of experiment in ListView
+     * @return experiment that was clicked on
+     */
+    private Experiment getClickedExperiment(int pos) {
+        return (Experiment)exListView.getItemAtPosition(pos);
     }
 
     private void delExperiment() {
@@ -137,6 +157,13 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                 Experiment experiment = experimentController.getAdapter().getItem(pos);
                 showExpOptionsUI(experiment);
                 return true;
+            }
+        });
+
+        exListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int pos, long id) {
+                Experiment clickedExperiment = getClickedExperiment(pos);
+                showExperiment(clickedExperiment);
             }
         });
 
@@ -294,25 +321,4 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         return user;
     }
 
-    /*
-    exListView.setOnLongClickListener(new AdapterView.OnItemLongClickListener() {
-        @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            final int pos = position;
-
-            new AlertDialog.Builder(MainActivity.this)
-                    .setIcon(android.R.drawable.ic_delete)
-                    .setMessage("Do you want to delete this item?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            experimentController.deleteExperiment(pos);
-                        }
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
-            return true;
-        }
-
-     */
 }

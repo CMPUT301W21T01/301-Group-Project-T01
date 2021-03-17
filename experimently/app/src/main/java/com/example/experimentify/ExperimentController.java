@@ -58,8 +58,8 @@ public class ExperimentController{
 
     /**
      * This method adds an experiment to the database.
-     * @param newExp
-     * @param db
+     * @param newExp experiment to bed added
+     * @param db the database the experiment will be saved to
      */
     public void addExperimentToDB(Experiment newExp, FirebaseFirestore db){
         Map<String, Object> enterData = new HashMap<>();
@@ -95,8 +95,8 @@ public class ExperimentController{
     }
     /**
      * This method deletes an experiment from the database.
-     * @param newExp
-     * @param db
+     * @param newExp experiment to be deleted
+     * @param db database the experiment will be deleted from
      */
     public void deleteExperimentToDB(Experiment newExp, FirebaseFirestore db){
 

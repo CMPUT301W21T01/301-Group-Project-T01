@@ -1,5 +1,6 @@
 package com.example.experimentify;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -37,6 +38,17 @@ public class ExperimentActivity extends AppCompatActivity {
     private  CardView measure;
     private EditText measureInput;
 
+    /**
+     * This method sets text in the UI.
+     */
+    private void initUi() {
+        description.setText(exp.getDescription());
+        date.setText(exp.getDate());
+        expType.setText(exp.getExperimentId());
+        location.setText(exp.getRegion());
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,61 +69,63 @@ public class ExperimentActivity extends AppCompatActivity {
         measure = findViewById(R.id.measurement);
         measureInput = findViewById(R.id.meaasurementInput);
 
-        description.setText(exp.getDescription());
-        date.setText(exp.getDate());
-        expType.setText(exp.getExperimentId());
-        location.setText(exp.getRegion());
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("clickedExp")) {
+            exp = intent.getParcelableExtra("clickedExp");
+            initUi();
 
 
-        statsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            statsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            chatButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+
+            if (exp.getExpType() == "count") {
+                count.setVisibility(View.VISIBLE);
+                countButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+            }
+
+            if (exp.getExpType() == "binomial") {
+                binomial.setVisibility(View.VISIBLE);
+                passButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+                failButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+            }
+
+            if (exp.getExpType() == "integer") {
+                integer.setVisibility(View.VISIBLE);
 
             }
-        });
 
-        chatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            if (exp.getExpType() == "measurement") {
+                measure.setVisibility(View.VISIBLE);
 
             }
-        });
-
-
-        if (exp.getExpType()=="count"){
-            count.setVisibility(View.VISIBLE);
-            countButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-        }
-
-        if(exp.getExpType()=="binomial"){
-            binomial.setVisibility(View.VISIBLE);
-            passButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-            failButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-        }
-
-        if(exp.getExpType()=="integer"){
-            integer.setVisibility(View.VISIBLE);
-
-        }
-
-        if (exp.getExpType()=="measurement"){
-            measure.setVisibility(View.VISIBLE);
-
         }
 
     }
