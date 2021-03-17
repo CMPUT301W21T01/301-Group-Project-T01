@@ -2,6 +2,7 @@ package com.example.experimentify;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
@@ -42,25 +43,14 @@ public class ExperimentController{
         return experiments.size();
     }
 
-    //Removes an experiment
-    //TODO implement database delete
-    public void deleteExperiment(int pos) {
-       //pass
-    }
-
-    //TODO set up intent to switch to experiment activity
-    public void viewExperiment(Activity activity, int pos) {
-        //pass
-    }
-
     public ArrayList<Experiment> getExperiments() {
         return experiments;
     }
 
     /**
      * This method adds an experiment to the database.
-     * @param newExp
-     * @param db
+     * @param newExp experiment to bed added
+     * @param db the database the experiment will be saved to
      */
     public void addExperimentToDB(Experiment newExp, FirebaseFirestore db, String ownerID){
         Map<String, Object> enterData = new HashMap<>();
@@ -96,8 +86,8 @@ public class ExperimentController{
     }
     /**
      * This method deletes an experiment from the database.
-     * @param newExp
-     * @param db
+     * @param newExp experiment to be deleted
+     * @param db database the experiment will be deleted from
      */
     public void deleteExperimentToDB(Experiment newExp, FirebaseFirestore db){
 
@@ -153,5 +143,25 @@ public class ExperimentController{
     public void setExperiments(ArrayList<Experiment>set_experiments){
         experiments = set_experiments;
     }
+
+    /**
+     * This method brings the user to the trial screen for the experiment they clicked on.
+     * @param exp experiment to be viewed
+     */
+    public void viewExperiment(Activity activity, Experiment exp) {
+        Intent intent = new Intent(activity, ExperimentActivity.class);
+        intent.putExtra("clickedExp", exp);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * This method returns an experiment based on its position in the ListView.
+     * @param pos position of experiment in ListView
+     * @return experiment that was clicked on
+     */
+    public Experiment getClickedExperiment(int pos) {
+        return experiments.get(pos);
+    }
 }
+
 

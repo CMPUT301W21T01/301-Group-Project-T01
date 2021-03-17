@@ -41,7 +41,8 @@ public class ExpOptionsFragment extends DialogFragment {
 
     public static ExpOptionsFragment newInstance(Experiment experiment) {
         Bundle args = new Bundle();
-        args.putSerializable("experiment", experiment);
+        //Todo chnage to parcelable
+        args.putParcelable("experiment", experiment);
 
         ExpOptionsFragment fragment = new ExpOptionsFragment();
         fragment.setArguments(args);
@@ -91,7 +92,7 @@ public class ExpOptionsFragment extends DialogFragment {
 
 
         if (bundle != null) {
-            experiment = (Experiment) bundle.getSerializable("experiment");
+            experiment = (Experiment) bundle.getParcelable("experiment");
 
 
             subscribeBox.setChecked(false); //TODO check if experiment is in user's subscribed list

@@ -1,5 +1,6 @@
 package com.example.experimentify;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +39,18 @@ public class ExperimentActivity extends AppCompatActivity {
     private  CardView measure;
     private EditText measureInput;
 
+
+    /**
+     * This method sets text in the UI.
+     */
+    private void initUi() {
+        description.setText(this.getResources().getString(R.string.description_header) + exp.getDescription());
+        date.setText(this.getResources().getString(R.string.date_header) + exp.getDate());
+        expType.setText(this.getResources().getString(R.string.exp_type_header) + exp.getExperimentId());
+        location.setText(this.getResources().getString(R.string.region_header) + exp.getRegion());
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,61 +71,63 @@ public class ExperimentActivity extends AppCompatActivity {
         measure = findViewById(R.id.measurement);
         measureInput = findViewById(R.id.meaasurementInput);
 
-        description.setText(exp.getDescription());
-        date.setText(exp.getDate());
-        expType.setText(exp.getExperimentId());
-        location.setText(exp.getRegion());
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("clickedExp")) {
+            exp = intent.getParcelableExtra("clickedExp");
+            initUi();
 
 
-        statsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            statsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            chatButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+
+            if (exp.getExpType() == "count") {
+                count.setVisibility(View.VISIBLE);
+                countButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+            }
+
+            if (exp.getExpType() == "binomial") {
+                binomial.setVisibility(View.VISIBLE);
+                passButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+                failButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+            }
+
+            if (exp.getExpType() == "integer") {
+                integer.setVisibility(View.VISIBLE);
 
             }
-        });
 
-        chatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            if (exp.getExpType() == "measurement") {
+                measure.setVisibility(View.VISIBLE);
 
             }
-        });
-
-
-        if (exp.getExpType()=="count"){
-            count.setVisibility(View.VISIBLE);
-            countButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-        }
-
-        if(exp.getExpType()=="binomial"){
-            binomial.setVisibility(View.VISIBLE);
-            passButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-            failButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-        }
-
-        if(exp.getExpType()=="integer"){
-            integer.setVisibility(View.VISIBLE);
-
-        }
-
-        if (exp.getExpType()=="measurement"){
-            measure.setVisibility(View.VISIBLE);
-
         }
 
     }
