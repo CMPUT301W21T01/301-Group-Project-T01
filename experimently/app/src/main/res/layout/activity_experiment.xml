@@ -13,7 +13,8 @@
         android:text="Generate QR Code"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="541dp" />
+        tools:layout_editor_absoluteY="541dp"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/stats"
@@ -72,7 +73,7 @@
             android:layout_width="199dp"
             android:layout_height="wrap_content"
             android:text="Pass"
-            android:translationX="0" />
+            android:translationX="0px" />
 
         <Button
             android:id="@+id/fail"
@@ -111,7 +112,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="608dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -122,9 +123,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:gravity="center_horizontal"
             android:inputType="numberDecimal"
-            android:text="Enter a positive integer"
-            android:textAlignment="center" />
+            android:text="Enter a positive integer" />
     </androidx.cardview.widget.CardView>
 
 
