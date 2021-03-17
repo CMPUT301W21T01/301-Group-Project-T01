@@ -88,6 +88,10 @@ public class Experiment implements Serializable {
         return editable;
     }
 
+    public void setOwnerID(String ownerID) {
+        this.ownerID = ownerID;
+    }
+
     public void setEditable(boolean editable) {
         this.editable = editable;
     }
