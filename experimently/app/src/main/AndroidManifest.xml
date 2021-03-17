@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Experimentify">
+        <activity android:name=".qrScanActivity"></activity>
         <activity
             android:name=".ExperimentActivity"
             android:label="@string/title_activity_experiment"
@@ -23,6 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SearchResults"
+            android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>

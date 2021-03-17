@@ -147,5 +147,11 @@ public class ExperimentController{
 
         newRef.set(enterData);
     }
+    /**
+     * sets the experiments variable
+     */
+    public void setExperiments(ArrayList<Experiment>set_experiments){
+        experiments = set_experiments;
+    }
 }
 
