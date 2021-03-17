@@ -14,6 +14,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,7 +52,7 @@ public class ExperimentController{
      * @param newExp experiment to bed added
      * @param db the database the experiment will be saved to
      */
-    public void addExperimentToDB(Experiment newExp, FirebaseFirestore db){
+    public void addExperimentToDB(Experiment newExp, FirebaseFirestore db, String ownerID){
         Map<String, Object> enterData = new HashMap<>();
 
         List<String> searchable = new ArrayList<String>();
@@ -64,7 +65,7 @@ public class ExperimentController{
         enterData.put("description", newExp.getDescription());
         enterData.put("isEnded", newExp.isEnded());
         enterData.put("minTrials", newExp.getMinTrials());
-        enterData.put("ownerID", 0);
+        enterData.put("ownerID", ownerID);
         enterData.put("region", newExp.getRegion());
         enterData.put("editable", true);
         enterData.put("searchable", searchable);
@@ -126,7 +127,6 @@ public class ExperimentController{
         enterData.put("description", newExp.getDescription());
         enterData.put("isEnded", newExp.isEnded());
         enterData.put("minTrials", newExp.getMinTrials());
-        enterData.put("ownerID", 0);
         enterData.put("region", newExp.getRegion());
         enterData.put("editable", newExp.isEditable());
         enterData.put("searchable", searchable);
@@ -135,7 +135,7 @@ public class ExperimentController{
         enterData.put("date", newExp.getDate());
         enterData.put("uid", newExp.getUID());  // an edited experiment should still have the SAME uid
 
-        newRef.set(enterData);
+        newRef.set(enterData, SetOptions.merge());
     }
     /**
      * sets the experiments variable

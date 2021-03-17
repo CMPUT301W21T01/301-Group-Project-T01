@@ -3,7 +3,6 @@ package com.example.experimentify;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,8 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
@@ -79,7 +76,9 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
      * @param experiment experiment to be added
      */
     private void addExperiment(Experiment experiment) {
-        experimentController.addExperimentToDB(experiment, db);
+        SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
+        String localUID = settings.getString("uid", "0");
+        experimentController.addExperimentToDB(experiment, db, localUID);
     }
 
     /**
@@ -166,7 +165,11 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                     Long minTrials      = (Long)    doc.getData().get("minTrials");
                     String date         = (String)  doc.getData().get("date");
                     boolean locationReq = (boolean) doc.getData().get("locationRequired");
-                    experimentList.add(new Experiment(description, region, minTrials, date, locationReq));
+                    String ownerID      = (String)  doc.getData().get("ownerID");
+
+                    Experiment newExperiment = new Experiment(description, region, minTrials, date, locationReq);
+                    newExperiment.setOwnerID(ownerID);
+                    experimentList.add(newExperiment);
                 }
                 experimentController.getAdapter().notifyDataSetChanged();
             }
