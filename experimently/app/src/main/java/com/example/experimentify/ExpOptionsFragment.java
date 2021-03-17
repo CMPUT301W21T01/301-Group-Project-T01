@@ -84,7 +84,7 @@ public class ExpOptionsFragment extends DialogFragment {
         subscribeBox = view.findViewById(R.id.subscribeCheckBox);
         endExpBox = view.findViewById(R.id.endExpCheckBox);
         unpublishBox = view.findViewById(R.id.unpublishExpCheckBox);
-        delExpButton = view.findViewById(R.id.delExpButton);
+        delExpButton = view.findViewById(R.id.okayButton);
         bundle = getArguments();
 
 

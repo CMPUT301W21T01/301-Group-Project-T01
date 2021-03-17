@@ -1,12 +1,15 @@
 package com.example.experimentify;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -36,12 +39,14 @@ import java.util.Map;
  * This activity is a UI in which the user can see a list of published experiments
  * and add new experiments to the list.
  */
-public class MainActivity extends AppCompatActivity implements AddExpFragment.OnFragmentInteractionListener, ExpOptionsFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements AddExpFragment.OnFragmentInteractionListener, ExpOptionsFragment.OnFragmentInteractionListener, UserProfileFragment.OnFragmentInteractionListener {
     private ExperimentController experimentController;
     private ExperimentListAdapter experimentAdapter;
     private ListView exListView;
     private FloatingActionButton showAddExpUiButton;
     private FloatingActionButton userProfileButton;
+    private EditText searchBar;
+    private ImageButton searchButton;
     private FloatingActionButton qrScanner;
     private ArrayList<Experiment> experimentList;
     final String TAG = MainActivity.class.getName();
@@ -64,8 +69,9 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     }
 
-    private void showInfoUi() {
-        new UserProfileFragment().show(getSupportFragmentManager(), "SHOW_PROFILE");
+    private void showInfoUi(User user) {
+        UserProfileFragment fragment = UserProfileFragment.newInstance(user);
+        fragment.show(getSupportFragmentManager(), "SHOW_PROFILE");
     }
 
     /**
@@ -91,19 +97,27 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         User user = initializeUser(db);
 
 
-
+        //get ui resources
         exListView = findViewById(R.id.exListView);
         showAddExpUiButton = findViewById(R.id.showAddExpUiButton);
         userProfileButton = findViewById(R.id.userProfileButton);
         qrScanner = findViewById(R.id.qrScanner);
 
-        //ExperimentListAdapter experimentAdapter = new ExperimentListAdapter(this, )
+        searchBar = findViewById(R.id.searchBar);
+        searchButton = findViewById(R.id.searchButton);
+        // search button on click listener, pass query with intent
+        searchButton.setOnClickListener((v) -> {
+            if(searchBar.getText().toString().trim().length() > 0) { // search if the edit text is not empty
+                openSearchResults(searchBar.getText().toString());
+            }
+        });
+
         experimentController = new ExperimentController(this);
         experimentList = experimentController.getExperiments();
         exListView.setAdapter(experimentController.getAdapter());
 
         userProfileButton.setOnClickListener((v) -> {
-            showInfoUi();
+            showInfoUi(user);
         });
 
         showAddExpUiButton.setOnClickListener((v) -> {
@@ -166,6 +180,16 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     public void onOkPressed(Experiment newExp, Boolean edit) {
 
     }
+    /**
+     * open the SearchResults activity, which will query the database and show relevant experiments to the keyword the user input
+     */
+    public void openSearchResults(String keyword){
+        Intent intent = new Intent(this, SearchResults.class);
+        intent.putExtra("keyword", keyword);
+        startActivity(intent);
+    }
+
+
     /**
      * initialize a new user to the firestore, we do not force them to provide info like name, email, username, e.t.c until later, we are just make a document with a unique ID that can identify that specific user
      * @param db is the firestore db

@@ -5,64 +5,99 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import static android.content.ContentValues.TAG;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ExpOptionsFragment#newInstance} factory method to
+ * Use the {@link UserProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class UserProfileFragment extends DialogFragment {
     private Bundle bundle;
-    private CheckBox subscribeBox;
-    private CheckBox endExpBox;
-    private CheckBox unpublishBox;
-    private Button delExpButton;
-    private Experiment experiment;
+    private TextView userID;
+    private EditText userEmail;
+    private EditText userName;
+    private User user;
+
+    private FirebaseFirestore db;
 
     private OnFragmentInteractionListener listener;
 
 
 
     public interface OnFragmentInteractionListener {
-        void onOkPressed(Experiment newExp, Boolean delete);
-        void onDeletePressed(Experiment current);
-        void editItem(Experiment ogItem, Experiment editedItem );
+        //no methods currently necessary here but keeping it just in case this changes in future
+    }
+
+    /**
+     * Handles sending updated user profile data to Firebase after changes made in fragment
+     * @param userID userID to apply changes to
+     * @param username new username
+     * @param email new email
+     */
+    public void updateFirebaseUser(String userID, String username, String email)
+    {
+        //Update firebase name and email
+        db = FirebaseFirestore.getInstance();
+        DocumentReference userReference = db.collection("Users").document(userID);
+
+        //Update name
+        userReference.update("name", username)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                    }
+                });
+
+        //Update email
+        userReference.update("email", email)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                    }
+                });
     }
 
 
-    public static ExpOptionsFragment newInstance(Experiment experiment) {
+    public static UserProfileFragment newInstance(User user) {
         Bundle args = new Bundle();
-        args.putSerializable("experiment", experiment);
+        args.putSerializable("user", user);
 
-        ExpOptionsFragment fragment = new ExpOptionsFragment();
+        UserProfileFragment fragment = new UserProfileFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    private void handleDelete() {
-        //TODO warning message for deleting experiment
-        //https://stackoverflow.com/a/26097588
-                        /*
-                        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-                        alertDialog.setTitle("Alert");
-                        alertDialog.setMessage("Alert message to be shown");
-                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-
-                         */
     }
 
     @Override
@@ -80,46 +115,35 @@ public class UserProfileFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_exp_options, null);
-        subscribeBox = view.findViewById(R.id.subscribeCheckBox);
-        endExpBox = view.findViewById(R.id.endExpCheckBox);
-        unpublishBox = view.findViewById(R.id.unpublishExpCheckBox);
-        delExpButton = view.findViewById(R.id.delExpButton);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_user_profile, null);
+        userID = view.findViewById(R.id.userID);
+        userName = view.findViewById(R.id.userName);
+        userEmail = view.findViewById(R.id.userEmail);
         bundle = getArguments();
 
-
-
-
         if (bundle != null) {
-            experiment = (Experiment) bundle.getSerializable("experiment");
+            user = (User) bundle.getSerializable("user");
 
 
-            subscribeBox.setChecked(false); //TODO check if experiment is in user's subscribed list
-            endExpBox.setChecked(experiment.isEnded());
-            unpublishBox.setChecked(!experiment.isViewable());
+            userID.setText(user.getUid());
+            userName.setText(user.getName());
+            userEmail.setText(user.getEmail());
         }
-
-        delExpButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                ///
-            }
-        });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
                 .setView(view)
-                .setTitle("Experiment Options")
+                .setTitle("User Profile")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        boolean subscribed = subscribeBox.isChecked();
-                        boolean ended = endExpBox.isChecked();
-                        boolean unpublished = unpublishBox.isChecked();
+                        //Update local name and email
+                        user.setName(userName.getText().toString());
+                        user.setEmail(userEmail.getText().toString());
 
+                        updateFirebaseUser(user.getUid(), userName.getText().toString(), userEmail.getText().toString());
 
-                        //alertDialog.show();
-                        //TODO Edit city
                     }
                 }).create();
     }
