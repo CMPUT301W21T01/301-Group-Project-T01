@@ -27,13 +27,8 @@ public class qrCodeGen extends AppCompatActivity {
 
         // Function to create the QR code
         public void createQR(String data, String path, String charset, Map hashMap, int height, int width) throws WriterException, IOException {
-
             BitMatrix matrix = new MultiFormatWriter().encode(new String(data.getBytes(charset), charset), BarcodeFormat.QR_CODE, width, height);
-
-            MatrixToImageWriter.writeToFile(
-                    matrix,
-                    path.substring(path.lastIndexOf('.') + 1),
-                    new File(path));
+            MatrixToImageWriter.writeToFile(matrix, path.substring(path.lastIndexOf('.') + 1), new File(path));
         }
 
         // Driver code
