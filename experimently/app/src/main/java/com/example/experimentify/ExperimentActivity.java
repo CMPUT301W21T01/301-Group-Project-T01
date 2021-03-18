@@ -69,6 +69,8 @@ public class ExperimentActivity extends AppCompatActivity {
     }
 
 
+    private Trial trial;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,12 +93,21 @@ public class ExperimentActivity extends AppCompatActivity {
         endedMessageBox = findViewById(R.id.trialEndedMessage);
         submitButton = findViewById(R.id.submitTrials);
 
+        
+        statsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
 
 
         Intent intent = getIntent();
         if (intent.hasExtra("clickedExp")) {
             exp = intent.getParcelableExtra("clickedExp");
             initUi();
+
 
             statsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
