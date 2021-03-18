@@ -56,7 +56,7 @@ public class MainActivityTest {
         addExpButton = rule.getActivity().findViewById(R.id.showAddExpUiButton);
 
         solo.clickOnView(addExpButton);
-        addExpFragment = solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.addExpFragment);
+        addExpFragment = solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.addExpCL);
         assertTrue(addExpFragment.isVisible());
 
     }
@@ -73,7 +73,6 @@ public class MainActivityTest {
 
 
         //Fills fields
-        solo.enterText((EditText) solo.getView(R.id.expName), name);
         solo.enterText((EditText) solo.getView(R.id.expDescription), description);
         solo.enterText((EditText) solo.getView(R.id.date), date);
         solo.enterText((EditText) solo.getView(R.id.region), region);
