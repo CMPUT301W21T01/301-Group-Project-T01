@@ -43,7 +43,7 @@ public class Experiment implements Parcelable {
 
     protected Experiment(Parcel in) {
         /*Make sure these variable are assigned in the same order as the normal constructor
-          or else the attributes will be set to null for god knows what reason.
+        and writeToParcel() or else the attributes will be set to null for god knows what reason.
           */
         description = in.readString();
         date = in.readString();
@@ -53,6 +53,7 @@ public class Experiment implements Parcelable {
         editable = in.readByte() != 0;
         ended = in.readByte() != 0;
         viewable = in.readByte() != 0;
+        uid = in.readString();
     }
 
     public static final Creator<Experiment> CREATOR = new Creator<Experiment>() {
@@ -151,6 +152,7 @@ public class Experiment implements Parcelable {
         dest.writeBoolean(editable);
         dest.writeBoolean(ended);
         dest.writeBoolean(viewable);
+        dest.writeString(uid);
     }
 
 

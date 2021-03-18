@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private void showExpOptionsUI(Experiment experiment) {
         ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment);
         fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
-
     }
 
     private void showInfoUi(User user) {
@@ -90,8 +89,12 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         experimentController.viewExperiment(MainActivity.this, clickedExperiment);
     }
 
-    private void delExperiment() {
-        //pass
+    /**
+     * This method deletes an experiment from the database
+     * @param expToDel experiment to delete
+     */
+    private void delExperiment(Experiment expToDel) {
+        experimentController.deleteExperimentFromDB(expToDel, db);
     }
 
     @Override
@@ -166,9 +169,11 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                     String date         = (String)  doc.getData().get("date");
                     boolean locationReq = (boolean) doc.getData().get("locationRequired");
                     String ownerID      = (String)  doc.getData().get("ownerID");
+                    String uId          = (String)  doc.getData().get("uid");
 
                     Experiment newExperiment = new Experiment(description, region, minTrials, date, locationReq);
                     newExperiment.setOwnerID(ownerID);
+                    newExperiment.setUID(uId);
                     experimentList.add(newExperiment);
                 }
                 experimentController.getAdapter().notifyDataSetChanged();
@@ -184,8 +189,8 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     }
 
     @Override
-    public void onDeletePressed(Experiment current) {
-
+    public void onDeletePressed(Experiment exp) {
+        delExperiment(exp);
     }
 
     @Override

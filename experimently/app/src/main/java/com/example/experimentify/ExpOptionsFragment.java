@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -31,13 +32,11 @@ public class ExpOptionsFragment extends DialogFragment {
     private OnFragmentInteractionListener listener;
 
 
-
     public interface OnFragmentInteractionListener {
         void onOkPressed(Experiment newExp, Boolean delete);
-        void onDeletePressed(Experiment current);
         void editItem(Experiment ogItem, Experiment editedItem );
+        void onDeletePressed(Experiment current);
     }
-
 
     public static ExpOptionsFragment newInstance(Experiment experiment) {
         Bundle args = new Bundle();
@@ -49,21 +48,40 @@ public class ExpOptionsFragment extends DialogFragment {
         return fragment;
     }
 
-    private void handleDelete() {
-        //TODO warning message for deleting experiment
-        //https://stackoverflow.com/a/26097588
-                        /*
-                        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-                        alertDialog.setTitle("Alert");
-                        alertDialog.setMessage("Alert message to be shown");
-                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
+    /**
+     * This method shows a confirmation method for deleting and experiment and
+     * proceeds with deleting the experiment if the user clicks "YES".
+     * @param exp experiment to delete
+     */
+    private void handleDelete(Experiment exp) {
 
-                         */
+        //https://stackoverflow.com/a/26097588
+        /*
+            Author: MysticMagicϡ
+            Date published: Sep 29 '14 at 10:20
+            License: Attribution-ShareAlike 3.0 Unported
+            Link: https://stackoverflow.com/a/26097588
+
+            I used this post to help with creating a confirmation pop-up
+        */
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+        alertDialog.setTitle("Delete Experiment?");
+        alertDialog.setMessage("Are you sure you want to delete this experiment?");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                        listener.onDeletePressed(exp);
+                        dismiss(); //Closes fragment
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 
     @Override
@@ -89,8 +107,6 @@ public class ExpOptionsFragment extends DialogFragment {
         bundle = getArguments();
 
 
-
-
         if (bundle != null) {
             experiment = (Experiment) bundle.getParcelable("experiment");
 
@@ -102,7 +118,7 @@ public class ExpOptionsFragment extends DialogFragment {
 
         delExpButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                ///
+                handleDelete(experiment);
             }
         });
 
