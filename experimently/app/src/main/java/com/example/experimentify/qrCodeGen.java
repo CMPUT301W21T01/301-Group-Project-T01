@@ -1,5 +1,8 @@
 package com.example.experimentify;
 
+import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Bitmap;
 
 import com.google.zxing.BarcodeFormat;
@@ -7,11 +10,11 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
-public class qrCodeGen {
 
+public class qrCodeGen extends AppCompatActivity {
     public Bitmap builtBitmap;
     public String encodedID;
-    public int functionality; //n0 = open, 1 = add, 2 = customize
+    public int functionality; //n0 = open, 1 = add, 2 = customize or edit
 
     public qrCodeGen(Bitmap builtBitmap, String encodedID, int functionality) {
         this.builtBitmap = builtBitmap;
@@ -47,6 +50,4 @@ public class qrCodeGen {
         bitmap.setPixels(pixels, 0, width, 0, 0, bitMatrixWidth, bitMatrixHeight);
         return bitmap;
     }
-
-
 }
