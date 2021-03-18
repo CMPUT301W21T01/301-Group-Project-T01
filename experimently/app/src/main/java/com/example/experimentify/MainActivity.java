@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private ImageButton searchButton;
     private FloatingActionButton qrScanner;
     private ArrayList<Experiment> experimentList;
+    private User currentUser;
     final String TAG = MainActivity.class.getName();
     public static final String PREFS_NAME = "PrefsFile";
     FirebaseFirestore db;
@@ -62,12 +63,16 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
      * @param experiment experiment whose options will be edited
      */
     private void showExpOptionsUI(Experiment experiment) {
-        ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment);
+        String localUID = getLocalUID();
+        ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment, localUID);
         fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
     }
 
-    private void showInfoUi(User user) {
-        UserProfileFragment fragment = UserProfileFragment.newInstance(user);
+    /**
+     * This method shows the ui for user settings.
+     */
+    private void showInfoUi() {
+        UserProfileFragment fragment = UserProfileFragment.newInstance(currentUser);
         fragment.show(getSupportFragmentManager(), "SHOW_PROFILE");
     }
 
@@ -76,8 +81,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
      * @param experiment experiment to be added
      */
     private void addExperiment(Experiment experiment) {
-        SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
-        String localUID = settings.getString("uid", "0");
+        String localUID = getLocalUID();
         experimentController.addExperimentToDB(experiment, db, localUID);
     }
 
@@ -106,13 +110,24 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         experimentController.editExperimentToDB(expToEdit, db);
     }
 
+    /**
+     * This method gets the user id saved locally on the user's device.
+     * @return Returns string of locally stored user id.
+     */
+    private String getLocalUID() {
+        //TODO maybe change to passing in a SharedPreference so that method could be used in more places
+        SharedPreferences sp = currentUser.getSettings(getApplicationContext());
+        return sp.getString("uid", "0");
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         db = FirebaseFirestore.getInstance();
-        User user = initializeUser(db);
+        currentUser = initializeUser(db);
 
         final CollectionReference collectionReference = db.collection("Experiments");
 
@@ -138,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         exListView.setAdapter(experimentController.getAdapter());
 
         userProfileButton.setOnClickListener((v) -> {
-            showInfoUi(user);
+            showInfoUi();
         });
 
         showAddExpUiButton.setOnClickListener((v) -> {
@@ -184,8 +199,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                     boolean editable    = (boolean) doc.getData().get("editable");
 
 
-                    SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
-                    String localUID = settings.getString("uid", "0");
+                    String localUID = getLocalUID();
 
                     // Experiments are only displayed in ListView if they are viewable or current user is the owner.
                     if (viewable || ownerID.equals(localUID)) {
@@ -240,7 +254,9 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
         User user = new User();
         if(settings.contains("uid")){
+
             String localUID = settings.getString("uid", "0");
+
 
             DocumentReference docRef = db.collection("Users").document(localUID);
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

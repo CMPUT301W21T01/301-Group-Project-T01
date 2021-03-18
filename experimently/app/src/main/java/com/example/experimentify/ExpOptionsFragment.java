@@ -28,6 +28,7 @@ public class ExpOptionsFragment extends DialogFragment {
     private CheckBox unpublishBox;
     private Button delExpButton;
     private Experiment experiment;
+    private String localUID;
 
     private OnFragmentInteractionListener listener;
 
@@ -37,9 +38,10 @@ public class ExpOptionsFragment extends DialogFragment {
         void onDeletePressed(Experiment current);
     }
 
-    public static ExpOptionsFragment newInstance(Experiment experiment) {
+    public static ExpOptionsFragment newInstance(Experiment experiment, String localUID) {
         Bundle args = new Bundle();
         args.putParcelable("experiment", experiment);
+        args.putString("localUID", localUID);
 
         ExpOptionsFragment fragment = new ExpOptionsFragment();
         fragment.setArguments(args);
@@ -89,6 +91,18 @@ public class ExpOptionsFragment extends DialogFragment {
         subscribeBox.setChecked(false); //TODO check if experiment is in user's subscribed list
         endExpBox.setChecked(!experiment.isEditable());
         unpublishBox.setChecked(!experiment.isViewable());
+
+        //If user is the owner of the experiment show extra options
+        if (localUID.equals(experiment.getOwnerID())){
+            endExpBox.setVisibility(View.VISIBLE);
+            unpublishBox.setVisibility(View.VISIBLE);
+            delExpButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            endExpBox.setVisibility(View.GONE);
+            unpublishBox.setVisibility(View.GONE);
+            delExpButton.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -133,6 +147,7 @@ public class ExpOptionsFragment extends DialogFragment {
 
         if (bundle != null) {
             experiment = (Experiment) bundle.getParcelable("experiment");
+            localUID = bundle.getString("localUID");
             setUi();
         }
 

@@ -1,5 +1,8 @@
 package com.example.experimentify;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,6 +14,9 @@ public class User implements Serializable {
     private ArrayList<String> participatingExperiments;
     private String uid;
     private String username;
+    private SharedPreferences settings;
+    public static final String PREFS_NAME = "PrefsFile";
+
 
     public User() {
         this.uid = "";
@@ -80,5 +86,14 @@ public class User implements Serializable {
 
     public void generateUserId() {
         //pass
+    }
+
+    /**
+     * This method gives actvites acsess to user settings.
+     * @param context application context
+     * @return Returns SharedPreferences object
+     */
+    public SharedPreferences getSettings(Context context) {
+        return context.getSharedPreferences(PREFS_NAME, 0);
     }
 }
