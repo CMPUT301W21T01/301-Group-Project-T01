@@ -1,19 +1,53 @@
 package com.example.experimentify;
 
+import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.graphics.Bitmap;
+
 import com.google.zxing.BarcodeFormat;
-
-public class qrCodeGen {
-
-    public String uId;
-    private static final int WHITE = 0xFFFFFFFF;
-    private static final int BLACK = 0xFF000000;
-    public int qrSize = Integer.MIN_VALUE;
-    private String contents = null;
-    private String displayContents = null;
-    private String title = null;
-    private BarcodeFormat format = null;
-    private boolean encoded = false;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
 
 
+public class qrCodeGen extends AppCompatActivity {
+    public Bitmap builtBitmap;
+    public String encodedID;
+    public int functionality; //n0 = open, 1 = add, 2 = customize or edit
 
+    public qrCodeGen(Bitmap builtBitmap, String encodedID, int functionality) {
+        this.builtBitmap = builtBitmap;
+        this.encodedID = encodedID;
+        this.functionality = functionality;
+    }
+
+
+    private Bitmap textToImage(String text, int width, int height) throws WriterException, NullPointerException {
+        BitMatrix bitMatrix;
+        try {
+            bitMatrix = new MultiFormatWriter().encode(text, BarcodeFormat.DATA_MATRIX.QR_CODE,
+                    width, height, null);
+        } catch (IllegalArgumentException Illegalargumentexception) {
+            return null;
+        }
+
+        int bitMatrixWidth = bitMatrix.getWidth();
+        int bitMatrixHeight = bitMatrix.getHeight();
+        int[] pixels = new int[bitMatrixWidth * bitMatrixHeight];
+
+        int colorWhite = 0xFFFFFFFF;
+        int colorBlack = 0xFF000000;
+
+        for (int y = 0; y < bitMatrixHeight; y++) {
+            int offset = y * bitMatrixWidth;
+            for (int x = 0; x < bitMatrixWidth; x++) {
+                pixels[offset + x] = bitMatrix.get(x, y) ? colorBlack : colorWhite;
+            }
+        }
+        Bitmap bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444);
+
+        bitmap.setPixels(pixels, 0, width, 0, 0, bitMatrixWidth, bitMatrixHeight);
+        return bitmap;
+    }
 }
