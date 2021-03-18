@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     /**
      * This method shows the fragment that gives users options for the experiment they long clicked on.
+     * @param experiment experiment whose options will be edited
      */
     private void showExpOptionsUI(Experiment experiment) {
         ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment);
@@ -97,15 +98,24 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         experimentController.deleteExperimentFromDB(expToDel, db);
     }
 
+    /**
+     * This method edits existing experiments in the database
+     * @param expToEdit experiment to edit
+     */
+    private void editExperiment(Experiment expToEdit) {
+        experimentController.editExperimentToDB(expToEdit, db);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         db = FirebaseFirestore.getInstance();
+        User user = initializeUser(db);
+
         final CollectionReference collectionReference = db.collection("Experiments");
 
-        User user = initializeUser(db);
 
 
         //get ui resources
@@ -170,16 +180,26 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                     boolean locationReq = (boolean) doc.getData().get("locationRequired");
                     String ownerID      = (String)  doc.getData().get("ownerID");
                     String uId          = (String)  doc.getData().get("uid");
+                    boolean viewable    = (boolean) doc.getData().get("viewable");
+                    boolean editable       = (boolean) doc.getData().get("editable");
 
-                    Experiment newExperiment = new Experiment(description, region, minTrials, date, locationReq);
-                    newExperiment.setOwnerID(ownerID);
-                    newExperiment.setUID(uId);
-                    experimentList.add(newExperiment);
+                    // Experiments are only displayed in ListView if they are viewable or current user is the owner.
+                    Log.d("testUID", user.getUid());
+                    //Currently userId is not working
+                    if (viewable || ownerID.equals(user.getUid())) {
+                        Experiment newExperiment = new Experiment(description, region, minTrials, date, locationReq);
+
+                        //TODO remove the setters and use constructor
+                        newExperiment.setOwnerID(ownerID);
+                        newExperiment.setUID(uId);
+                        newExperiment.setEditable(editable);
+
+                        experimentList.add(newExperiment);
+                    }
                 }
                 experimentController.getAdapter().notifyDataSetChanged();
             }
         });
-
     }
 
     //AddExpFragment
@@ -193,16 +213,12 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         delExperiment(exp);
     }
 
-    @Override
-    public void editItem(Experiment ogItem, Experiment editedItem) {
-
-    }
-
     //ExpOptionsFragment
     @Override
-    public void onOkPressed(Experiment newExp, Boolean edit) {
-
+    public void onConfirmEdits(Experiment exp) {
+        editExperiment(exp);
     }
+
     /**
      * open the SearchResults activity, which will query the database and show relevant experiments to the keyword the user input
      */

@@ -33,14 +33,12 @@ public class ExpOptionsFragment extends DialogFragment {
 
 
     public interface OnFragmentInteractionListener {
-        void onOkPressed(Experiment newExp, Boolean delete);
-        void editItem(Experiment ogItem, Experiment editedItem );
+        void onConfirmEdits(Experiment exp);
         void onDeletePressed(Experiment current);
     }
 
     public static ExpOptionsFragment newInstance(Experiment experiment) {
         Bundle args = new Bundle();
-        //Todo chnage to parcelable
         args.putParcelable("experiment", experiment);
 
         ExpOptionsFragment fragment = new ExpOptionsFragment();
@@ -84,6 +82,32 @@ public class ExpOptionsFragment extends DialogFragment {
         alertDialog.show();
     }
 
+    /**
+     * This method sets the state of the checkboxes
+     */
+    private void setUi() {
+        subscribeBox.setChecked(false); //TODO check if experiment is in user's subscribed list
+        endExpBox.setChecked(!experiment.isEditable());
+        unpublishBox.setChecked(!experiment.isViewable());
+    }
+
+    /**
+     * This method handles the case of a user submitting their changes.
+     * The edited experiment is passed to MainActivity where it is
+     * uploaded to the database.
+     */
+    private void editExpHandler() {
+        boolean subscribed = subscribeBox.isChecked();
+        boolean editable = !endExpBox.isChecked();
+        boolean viewable = !unpublishBox.isChecked();
+
+        experiment.setViewable(viewable);
+        experiment.setEditable(editable);
+        //TODO add subscribe functionality
+
+        listener.onConfirmEdits(experiment);
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -109,11 +133,7 @@ public class ExpOptionsFragment extends DialogFragment {
 
         if (bundle != null) {
             experiment = (Experiment) bundle.getParcelable("experiment");
-
-
-            subscribeBox.setChecked(false); //TODO check if experiment is in user's subscribed list
-            endExpBox.setChecked(experiment.isEnded());
-            unpublishBox.setChecked(!experiment.isViewable());
+            setUi();
         }
 
         delExpButton.setOnClickListener(new View.OnClickListener() {
@@ -130,13 +150,8 @@ public class ExpOptionsFragment extends DialogFragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        boolean subscribed = subscribeBox.isChecked();
-                        boolean ended = endExpBox.isChecked();
-                        boolean unpublished = unpublishBox.isChecked();
+                        editExpHandler();
 
-
-                        //alertDialog.show();
-                        //TODO Edit city
                     }
                 }).create();
     }
