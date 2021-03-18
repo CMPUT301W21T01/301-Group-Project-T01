@@ -1,3 +1,15 @@
+/* THIS CODE WAS ORIGINALLY FROM JOURNEYAPPS / ZXING-ANDROID-EMBEBBED PROJECT GITHUB CODE EXAMPLES
+ * WE IMPLEMENTED THEIR SCANNER ACTIVITY WHICH WAS PROVIDED IN THE EXMAPLE CODE OF THE DOCUMENTATION
+ * THE MAJORITY OF THE CODE WAS CHNAGED TO SUIT OUT NEEDS HOWEVER WE ARE CREDITING THEM FOR THE STRUCTURE
+ * AND THE OVERALL USE OF THE ZXING LIBRARY. THIS FILE PAIRS WITH OUT ACTIVITY QR SCAN WHICH WE USED TO SCAN
+ * USER QR CODES.
+ * SOURCE:https://github.com/journeyapps/zxing-android-embedded/tree/master/sample/src/main/java/example/zxing
+ * AUTHORS: https://github.com/journeyapps/zxing-android-embedded/commits?author=rkistner ET AL.
+ *
+ */
+
+
+
 package com.example.experimentify;
 
 import android.app.Activity;
@@ -50,7 +62,6 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
         capture.initializeFromIntent(getIntent(), savedInstanceState);
         capture.setShowMissingCameraPermissionDialog(false);
         capture.decode();
-
         changeMaskColor(null);
         changeLaserVisibility(true);
     }
@@ -94,11 +105,11 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
     }
 
     public void switchFlashlight(View view) {
-        /*if (getString(R.string.turn_on_flashlight).equals(switchFlashlightButton.getText())) {
+        if (getString(R.string.turn_on_flashlight).equals(switchFlashlightButton.getText())) {
             barcodeScannerView.setTorchOn();
         } else {
             barcodeScannerView.setTorchOff();
-        }*/
+        }
     }
 
     public void changeMaskColor(View view) {
@@ -118,7 +129,7 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
 
     @Override
     public void onTorchOff() {
-        //switchFlashlightButton.setText(R.string.turn_on_flashlight);
+        switchFlashlightButton.setText(R.string.turn_on_flashlight);
     }
 
     @Override

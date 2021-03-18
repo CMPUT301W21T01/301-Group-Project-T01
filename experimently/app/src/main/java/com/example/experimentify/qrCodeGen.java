@@ -11,19 +11,10 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 
-public class qrCodeGen extends AppCompatActivity {
-    public Bitmap builtBitmap;
-    public String encodedID;
-    public int functionality; //n0 = open, 1 = add, 2 = customize or edit
-
-    public qrCodeGen(Bitmap builtBitmap, String encodedID, int functionality) {
-        this.builtBitmap = builtBitmap;
-        this.encodedID = encodedID;
-        this.functionality = functionality;
-    }
+public class qrCodeGen extends ExperimentActivity {
 
 
-    private Bitmap textToImage(String text, int width, int height) throws WriterException, NullPointerException {
+    public static Bitmap textToImage(String text, int width, int height) throws WriterException, NullPointerException {
         BitMatrix bitMatrix;
         try {
             bitMatrix = new MultiFormatWriter().encode(text, BarcodeFormat.DATA_MATRIX.QR_CODE,
@@ -48,6 +39,7 @@ public class qrCodeGen extends AppCompatActivity {
         Bitmap bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444);
 
         bitmap.setPixels(pixels, 0, width, 0, 0, bitMatrixWidth, bitMatrixHeight);
+
         return bitmap;
     }
 }

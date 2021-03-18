@@ -1,11 +1,17 @@
 package com.example.experimentify;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -14,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ExperimentActivity extends AppCompatActivity {
@@ -36,10 +43,13 @@ public class ExperimentActivity extends AppCompatActivity {
     private CardView integer;
     private EditText intInput;
 
-    private  CardView measure;
+    private CardView measure;
     private EditText measureInput;
     private TextView endedMessageBox;
     private Button submitButton;
+
+    private Button qrCodeGene;
+    private ImageView qrCodeShow;
 
 
     /**
@@ -69,6 +79,7 @@ public class ExperimentActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +101,8 @@ public class ExperimentActivity extends AppCompatActivity {
         measureInput = findViewById(R.id.meaasurementInput);
         endedMessageBox = findViewById(R.id.trialEndedMessage);
         submitButton = findViewById(R.id.submitTrials);
-
+        qrCodeGene = findViewById(R.id.qrCode);
+        qrCodeShow = findViewById(R.id.qrCodeView);
 
 
         Intent intent = getIntent();
@@ -109,6 +121,22 @@ public class ExperimentActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
+                }
+            });
+
+            qrCodeGene.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bitmap temp = null;
+                    String tempID = (exp.getUID().toString());
+                    try {
+                        temp = qrCodeGen.textToImage(tempID,500,500);
+                    } catch (WriterException e) {
+                        e.printStackTrace();
+                    }
+                    qrCodeShow.setImageBitmap(temp);
+                    System.out.println("testtest"+temp);
+                    qrCodeShow.setVisibility(View.VISIBLE);
                 }
             });
 
