@@ -48,8 +48,6 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
 
     public interface OnFragmentInteractionListener {
         void onOkPressed(Experiment newExp);
-        void onDeletePressed(Experiment current);
-        void editItem(Experiment ogItem, Experiment editedItem );
     }
 
     @Override

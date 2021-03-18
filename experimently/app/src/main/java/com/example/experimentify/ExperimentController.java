@@ -2,6 +2,7 @@ package com.example.experimentify;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
@@ -13,6 +14,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,27 +43,16 @@ public class ExperimentController{
         return experiments.size();
     }
 
-    //Removes an experiment
-    //TODO implement database delete
-    public void deleteExperiment(int pos) {
-       //pass
-    }
-
-    //TODO set up intent to switch to experiment activity
-    public void viewExperiment(Activity activity, int pos) {
-        //pass
-    }
-
     public ArrayList<Experiment> getExperiments() {
         return experiments;
     }
 
     /**
      * This method adds an experiment to the database.
-     * @param newExp
-     * @param db
+     * @param newExp experiment to bed added
+     * @param db the database the experiment will be saved to
      */
-    public void addExperimentToDB(Experiment newExp, FirebaseFirestore db){
+    public void addExperimentToDB(Experiment newExp, FirebaseFirestore db, String ownerID){
         Map<String, Object> enterData = new HashMap<>();
 
         List<String> searchable = new ArrayList<String>();
@@ -74,7 +65,7 @@ public class ExperimentController{
         enterData.put("description", newExp.getDescription());
         enterData.put("isEnded", newExp.isEnded());
         enterData.put("minTrials", newExp.getMinTrials());
-        enterData.put("ownerID", 0);
+        enterData.put("ownerID", ownerID);
         enterData.put("region", newExp.getRegion());
         enterData.put("editable", true);
         enterData.put("searchable", searchable);
@@ -95,12 +86,12 @@ public class ExperimentController{
     }
     /**
      * This method deletes an experiment from the database.
-     * @param newExp
-     * @param db
+     * @param exp experiment to be deleted
+     * @param db database the experiment will be deleted from
      */
-    public void deleteExperimentToDB(Experiment newExp, FirebaseFirestore db){
+    public void deleteExperimentFromDB(Experiment exp, FirebaseFirestore db){
 
-        String uid = newExp.getUID();
+        String uid = exp.getUID();
 
         db.collection("Experiments").document(uid)
                 .delete()
@@ -136,7 +127,6 @@ public class ExperimentController{
         enterData.put("description", newExp.getDescription());
         enterData.put("isEnded", newExp.isEnded());
         enterData.put("minTrials", newExp.getMinTrials());
-        enterData.put("ownerID", 0);
         enterData.put("region", newExp.getRegion());
         enterData.put("editable", newExp.isEditable());
         enterData.put("searchable", searchable);
@@ -145,7 +135,33 @@ public class ExperimentController{
         enterData.put("date", newExp.getDate());
         enterData.put("uid", newExp.getUID());  // an edited experiment should still have the SAME uid
 
-        newRef.set(enterData);
+        newRef.set(enterData, SetOptions.merge());
+    }
+    /**
+     * sets the experiments variable
+     */
+    public void setExperiments(ArrayList<Experiment>set_experiments){
+        experiments = set_experiments;
+    }
+
+    /**
+     * This method brings the user to the trial screen for the experiment they clicked on.
+     * @param exp experiment to be viewed
+     */
+    public void viewExperiment(Activity activity, Experiment exp) {
+        Intent intent = new Intent(activity, ExperimentActivity.class);
+        intent.putExtra("clickedExp", exp);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * This method returns an experiment based on its position in the ListView.
+     * @param pos position of experiment in ListView
+     * @return experiment that was clicked on
+     */
+    public Experiment getClickedExperiment(int pos) {
+        return experiments.get(pos);
     }
 }
+
 

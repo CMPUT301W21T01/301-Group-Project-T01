@@ -2,6 +2,11 @@ package com.example.experimentify;
 
 
 import android.media.Image;
+import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.RequiresApi;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,7 +14,7 @@ import java.util.ArrayList;
 /**
  * This is a class that models an experiment in which trials can be conducted on.
  */
-public class Experiment implements Serializable {
+public class Experiment implements Parcelable {
     private boolean viewable;
     private String ownerID;
     private Image graph;
@@ -35,6 +40,33 @@ public class Experiment implements Serializable {
         ended = false;
         viewable = true;
     }
+
+    protected Experiment(Parcel in) {
+        /*Make sure these variable are assigned in the same order as the normal constructor
+        and writeToParcel() or else the attributes will be set to null for god knows what reason.
+          */
+        description = in.readString();
+        date = in.readString();
+        region = in.readString();
+        minTrials = in.readLong();
+        locationRequired = in.readByte() != 0;
+        editable = in.readByte() != 0;
+        ended = in.readByte() != 0;
+        viewable = in.readByte() != 0;
+        uid = in.readString();
+    }
+
+    public static final Creator<Experiment> CREATOR = new Creator<Experiment>() {
+        @Override
+        public Experiment createFromParcel(Parcel in) {
+            return new Experiment(in);
+        }
+
+        @Override
+        public Experiment[] newArray(int size) {
+            return new Experiment[size];
+        }
+    };
 
     public String getDate() {
         return date;
@@ -82,6 +114,10 @@ public class Experiment implements Serializable {
         return uid;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void setUID(String id) {
         this.uid = id;
     }
@@ -90,11 +126,35 @@ public class Experiment implements Serializable {
         return editable;
     }
 
+    public void setOwnerID(String ownerID) {
+        this.ownerID = ownerID;
+    }
+
     public String getExpType(){return expType;}
 
     public void setEditable(boolean editable) {
         this.editable = editable;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(description);
+        dest.writeString(date);
+        dest.writeString(region);
+        dest.writeLong(minTrials);
+        dest.writeBoolean(locationRequired);
+        dest.writeBoolean(editable);
+        dest.writeBoolean(ended);
+        dest.writeBoolean(viewable);
+        dest.writeString(uid);
+    }
+
 
     //TODO Ask about the variables below
     //private Location region //Region? - from requirements

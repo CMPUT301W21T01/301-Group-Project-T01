@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="597751ae-6149-4df9-a291-c8feed12e3c6" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/experimently/app/src/main/java/com/example/experimentify/ExperimentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/experimently/app/src/main/java/com/example/experimentify/ExperimentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experimently/app/src/main/java/com/example/experimentify/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/experimently/app/src/main/java/com/example/experimentify/MainActivity.java" afterDir="false" />
-    </list>
+    <list default="true" id="597751ae-6149-4df9-a291-c8feed12e3c6" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,9 +34,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1615360604584">
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1615606429388">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1615360604584" />
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1615606429388" />
   </component>
 </project>

@@ -17,7 +17,6 @@ import java.util.ArrayList;
   Date published: Feb. 2, 2021
   License: Public domain
   Link: https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
-
   Code for this class is based on examples from lab 3.
   */
 /**
@@ -38,6 +37,16 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
         this.context = context;
     }
 
+    /**
+     * This method sets the TextViews of the experiment adapter.
+     * @param exp Experiment whose data is displayed by the experiment adapter
+     */
+    public void setUi(Experiment exp) {
+        descBox.setText(context.getResources().getString(R.string.description_header) + exp.getDescription());
+        regionBox.setText(context.getResources().getString(R.string.region_header) + exp.getRegion());
+        dateBox.setText(context.getResources().getString(R.string.date_header) + exp.getDate());
+    }
+
     //TODO add javadocs comment
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
@@ -53,9 +62,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
         regionBox = view.findViewById(R.id.generalExLocation);
         dateBox = view.findViewById(R.id.generalExDate);
 
-        descBox.setText(experiment.getDescription());
-        regionBox.setText(experiment.getRegion());
-        dateBox.setText(experiment.getDate());
+        setUi(experiment);
 
         return view;
     }
