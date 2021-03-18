@@ -86,6 +86,7 @@ public class MainActivityTest {
         assertTrue(solo.searchText(date));
         assertTrue(solo.searchText(name));
 
+        //ehhhh
 
     }
 
