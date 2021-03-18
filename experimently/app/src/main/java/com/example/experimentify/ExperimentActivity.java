@@ -37,6 +37,8 @@ public class ExperimentActivity extends AppCompatActivity {
     private  CardView measure;
     private EditText measureInput;
 
+    private Trial trial;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,10 +61,9 @@ public class ExperimentActivity extends AppCompatActivity {
 
         description.setText(exp.getDescription());
         date.setText(exp.getDate());
-        expType.setText(exp.getExperimentId());
+        expType.setText(exp.getExpType());
         location.setText(exp.getRegion());
-
-
+        
         statsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

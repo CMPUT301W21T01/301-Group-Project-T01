@@ -9,44 +9,97 @@ import android.widget.EditText;
 import java.util.ArrayList;
 
 public class Trial {
-    private int userId;
-    private Location trialLocation;
-    private int count;
-    private int fail;
-    private int pass;
-    private int integerCount;
-    private int measurement;
+    private String userId;
+    private String trialLocation;
+    private String trialId;
 
-    public void createCountTrial(){
-        count += 1;
+
+    public Trial(String userId, String trialLocation, String trialId){
+        this.userId = userId;
+        this.trialLocation = trialLocation;
+        this.trialId = trialId;
     }
 
-    public void incrementBinomialFail(){
-        fail += 1;
+    public  class CountTrial {
+        private Trial trial;
+        private int totalCount;
+        private int trialCount = 1;
+        public CountTrial(Trial trial, int trialCount){
+            this.trial = trial;
+            this.trialCount = trialCount;
+        }
+
+        public void incrementCount(){
+            totalCount += 1;
+
+        }
+        /*
+        public void decrementCount(){
+            count -=1;
+        }
+        */
+        public int getTotalCount(){
+            return totalCount;
+        }
+
     }
 
-    public void incrementBinomialPass(){
-        pass += 1;
+    public class BinomialTrial{
+        private Trial trial;
+        private int fail;
+        private int pass;
+        public BinomialTrial(Trial trial, int pass, int fail){
+            this.trial = trial;
+            this.pass = pass;
+            this.fail = fail;
+        }
+
+        public void incrementBinomialFail(){
+            fail += 1;
+        }
+
+        public void incrementBinomialPass(){
+            pass += 1;
+        }
+
+        public int getBinomialTrials(){
+            int total = pass + fail;
+            return total;
+        }
     }
 
-    public int getBinomialTrials(){
-        int total = pass + fail;
-        return total;
+
+    public class IntegerTrial{
+        private int integerCount;
+        private int intEntered;
+        private Trial trial;
+        public IntegerTrial(Trial trial, int intEntered){
+            this.trial = trial;
+            this.intEntered = intEntered;
+
+        }
+        public void createIntegerCount(){
+            integerCount +=1;
+        }
+        public int getIntEntered(){
+            return intEntered;
+        }
+
     }
 
-    public void createIntegerCount(){
-        integerCount +=1;
-    }
+    public class MeasurementTrial{
+        private int measurementCount;
+        private Trial trial;
+        private float measurementEntered;
+        public MeasurementTrial(Trial trial, float measurementEntered){
+            this.trial=trial;
+            this.measurementEntered = measurementEntered;
+        }
+        public void createMeasurementTrial(){
+            measurementCount += 1;
+        }
 
-    /*
-    public int returnIntegerCount(Experiment exp){
-
-
-    }
-    */
-
-    public void createMeasurementTrial(Experiment exp){
-        measurement += 1;
+        public float getMeasurementEntered(){return measurementEntered;}
     }
 
 
