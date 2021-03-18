@@ -181,17 +181,20 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                     String ownerID      = (String)  doc.getData().get("ownerID");
                     String uId          = (String)  doc.getData().get("uid");
                     boolean viewable    = (boolean) doc.getData().get("viewable");
-                    boolean editable       = (boolean) doc.getData().get("editable");
+                    boolean editable    = (boolean) doc.getData().get("editable");
+
+
+                    SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
+                    String localUID = settings.getString("uid", "0");
 
                     // Experiments are only displayed in ListView if they are viewable or current user is the owner.
-                    Log.d("testUID", user.getUid());
-                    //Currently userId is not working
-                    if (viewable || ownerID.equals(user.getUid())) {
+                    if (viewable || ownerID.equals(localUID)) {
                         Experiment newExperiment = new Experiment(description, region, minTrials, date, locationReq);
 
                         //TODO remove the setters and use constructor
                         newExperiment.setOwnerID(ownerID);
                         newExperiment.setUID(uId);
+                        newExperiment.setViewable(viewable);
                         newExperiment.setEditable(editable);
 
                         experimentList.add(newExperiment);
