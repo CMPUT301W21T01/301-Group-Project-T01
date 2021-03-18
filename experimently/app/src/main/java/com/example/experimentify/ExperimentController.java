@@ -86,12 +86,12 @@ public class ExperimentController{
     }
     /**
      * This method deletes an experiment from the database.
-     * @param newExp experiment to be deleted
+     * @param exp experiment to be deleted
      * @param db database the experiment will be deleted from
      */
-    public void deleteExperimentToDB(Experiment newExp, FirebaseFirestore db){
+    public void deleteExperimentFromDB(Experiment exp, FirebaseFirestore db){
 
-        String uid = newExp.getUID();
+        String uid = exp.getUID();
 
         db.collection("Experiments").document(uid)
                 .delete()

@@ -38,6 +38,8 @@ public class ExperimentActivity extends AppCompatActivity {
 
     private  CardView measure;
     private EditText measureInput;
+    private TextView endedMessageBox;
+    private Button submitButton;
 
 
     /**
@@ -48,8 +50,24 @@ public class ExperimentActivity extends AppCompatActivity {
         date.setText(this.getResources().getString(R.string.date_header) + exp.getDate());
         expType.setText(this.getResources().getString(R.string.exp_type_header) + exp.getExperimentId());
         location.setText(this.getResources().getString(R.string.region_header) + exp.getRegion());
-
     }
+
+    /**
+     * This method displays a message when an experiment has ended.
+     */
+    private void showExpEndedMessage() {
+        endedMessageBox.setVisibility(View.VISIBLE);
+        submitButton.setVisibility(View.GONE);
+    }
+
+    /**
+     * This method displays a button for submitting trials when the experiment is ongoing.
+     */
+    private void showSubmitButton() {
+        endedMessageBox.setVisibility(View.GONE);
+        submitButton.setVisibility(View.VISIBLE);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +88,15 @@ public class ExperimentActivity extends AppCompatActivity {
         intInput = findViewById(R.id.integerInput);
         measure = findViewById(R.id.measurement);
         measureInput = findViewById(R.id.meaasurementInput);
+        endedMessageBox = findViewById(R.id.trialEndedMessage);
+        submitButton = findViewById(R.id.submitTrials);
+
 
 
         Intent intent = getIntent();
         if (intent.hasExtra("clickedExp")) {
             exp = intent.getParcelableExtra("clickedExp");
             initUi();
-
 
             statsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -92,43 +112,49 @@ public class ExperimentActivity extends AppCompatActivity {
                 }
             });
 
+            // If editable then display ui for conducting trials, else show message
+            if (exp.isEditable()) {
+                if (exp.getExpType() == "count") {
+                    count.setVisibility(View.VISIBLE);
+                    countButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-            if (exp.getExpType() == "count") {
-                count.setVisibility(View.VISIBLE);
-                countButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                        }
+                    });
+                }
 
-                    }
-                });
+                if (exp.getExpType() == "binomial") {
+                    binomial.setVisibility(View.VISIBLE);
+                    passButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+                    failButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+                }
+
+                if (exp.getExpType() == "integer") {
+                    integer.setVisibility(View.VISIBLE);
+
+                }
+
+                if (exp.getExpType() == "measurement") {
+                    measure.setVisibility(View.VISIBLE);
+
+                }
+
+                showSubmitButton();
             }
-
-            if (exp.getExpType() == "binomial") {
-                binomial.setVisibility(View.VISIBLE);
-                passButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
-                failButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
-            }
-
-            if (exp.getExpType() == "integer") {
-                integer.setVisibility(View.VISIBLE);
-
-            }
-
-            if (exp.getExpType() == "measurement") {
-                measure.setVisibility(View.VISIBLE);
-
+            else {
+                showExpEndedMessage();
             }
         }
-
     }
 }

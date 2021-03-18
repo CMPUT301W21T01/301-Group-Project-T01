@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private ImageButton searchButton;
     private FloatingActionButton qrScanner;
     private ArrayList<Experiment> experimentList;
+    private User currentUser;
     final String TAG = MainActivity.class.getName();
     public static final String PREFS_NAME = "PrefsFile";
     FirebaseFirestore db;
@@ -59,15 +60,19 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     /**
      * This method shows the fragment that gives users options for the experiment they long clicked on.
+     * @param experiment experiment whose options will be edited
      */
     private void showExpOptionsUI(Experiment experiment) {
-        ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment);
+        String localUID = getLocalUID();
+        ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment, localUID);
         fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
-
     }
 
-    private void showInfoUi(User user) {
-        UserProfileFragment fragment = UserProfileFragment.newInstance(user);
+    /**
+     * This method shows the ui for user settings.
+     */
+    private void showInfoUi() {
+        UserProfileFragment fragment = UserProfileFragment.newInstance(currentUser);
         fragment.show(getSupportFragmentManager(), "SHOW_PROFILE");
     }
 
@@ -76,8 +81,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
      * @param experiment experiment to be added
      */
     private void addExperiment(Experiment experiment) {
-        SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
-        String localUID = settings.getString("uid", "0");
+        String localUID = getLocalUID();
         experimentController.addExperimentToDB(experiment, db, localUID);
     }
 
@@ -90,9 +94,32 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         experimentController.viewExperiment(MainActivity.this, clickedExperiment);
     }
 
-    private void delExperiment() {
-        //pass
+    /**
+     * This method deletes an experiment from the database
+     * @param expToDel experiment to delete
+     */
+    private void delExperiment(Experiment expToDel) {
+        experimentController.deleteExperimentFromDB(expToDel, db);
     }
+
+    /**
+     * This method edits existing experiments in the database
+     * @param expToEdit experiment to edit
+     */
+    private void editExperiment(Experiment expToEdit) {
+        experimentController.editExperimentToDB(expToEdit, db);
+    }
+
+    /**
+     * This method gets the user id saved locally on the user's device.
+     * @return Returns string of locally stored user id.
+     */
+    private String getLocalUID() {
+        //TODO maybe change to passing in a SharedPreference so that method could be used in more places
+        SharedPreferences sp = currentUser.getSettings(getApplicationContext());
+        return sp.getString("uid", "0");
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,9 +127,10 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         setContentView(R.layout.activity_main);
 
         db = FirebaseFirestore.getInstance();
+        currentUser = initializeUser(db);
+
         final CollectionReference collectionReference = db.collection("Experiments");
 
-        User user = initializeUser(db);
 
 
         //get ui resources
@@ -125,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         exListView.setAdapter(experimentController.getAdapter());
 
         userProfileButton.setOnClickListener((v) -> {
-            showInfoUi(user);
+            showInfoUi();
         });
 
         showAddExpUiButton.setOnClickListener((v) -> {
@@ -166,15 +194,29 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                     String date         = (String)  doc.getData().get("date");
                     boolean locationReq = (boolean) doc.getData().get("locationRequired");
                     String ownerID      = (String)  doc.getData().get("ownerID");
+                    String uId          = (String)  doc.getData().get("uid");
+                    boolean viewable    = (boolean) doc.getData().get("viewable");
+                    boolean editable    = (boolean) doc.getData().get("editable");
 
-                    Experiment newExperiment = new Experiment(description, region, minTrials, date, locationReq);
-                    newExperiment.setOwnerID(ownerID);
-                    experimentList.add(newExperiment);
+
+                    String localUID = getLocalUID();
+
+                    // Experiments are only displayed in ListView if they are viewable or current user is the owner.
+                    if (viewable || ownerID.equals(localUID)) {
+                        Experiment newExperiment = new Experiment(description, region, minTrials, date, locationReq);
+
+                        //TODO remove the setters and use constructor
+                        newExperiment.setOwnerID(ownerID);
+                        newExperiment.setUID(uId);
+                        newExperiment.setViewable(viewable);
+                        newExperiment.setEditable(editable);
+
+                        experimentList.add(newExperiment);
+                    }
                 }
                 experimentController.getAdapter().notifyDataSetChanged();
             }
         });
-
     }
 
     //AddExpFragment
@@ -184,20 +226,16 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     }
 
     @Override
-    public void onDeletePressed(Experiment current) {
-
-    }
-
-    @Override
-    public void editItem(Experiment ogItem, Experiment editedItem) {
-
+    public void onDeletePressed(Experiment exp) {
+        delExperiment(exp);
     }
 
     //ExpOptionsFragment
     @Override
-    public void onOkPressed(Experiment newExp, Boolean edit) {
-
+    public void onConfirmEdits(Experiment exp) {
+        editExperiment(exp);
     }
+
     /**
      * open the SearchResults activity, which will query the database and show relevant experiments to the keyword the user input
      */
@@ -216,7 +254,9 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
         User user = new User();
         if(settings.contains("uid")){
+
             String localUID = settings.getString("uid", "0");
+
 
             DocumentReference docRef = db.collection("Users").document(localUID);
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
