@@ -135,7 +135,7 @@ public class ExperimentActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     qrCodeShow.setImageBitmap(temp);
-                    System.out.println("testtest"+temp);
+                    //System.out.println("testtest"+temp);
                     qrCodeShow.setVisibility(View.VISIBLE);
                 }
             });

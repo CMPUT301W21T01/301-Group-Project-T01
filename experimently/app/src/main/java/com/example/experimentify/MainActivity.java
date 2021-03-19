@@ -1,6 +1,7 @@
 package com.example.experimentify;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -168,12 +169,13 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
         qrScanner.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-               // Intent intent = new Intent( MainActivity.this, qrScanActivity.class);
-                startActivityForResult(new Intent(getApplicationContext(), qrScanActivity.class),1);
+                handleScanClick();
+                // Intent intent = new Intent( MainActivity.this, qrScanActivity.class);
+                //startActivityForResult(new Intent(getApplicationContext(), qrScanActivity.class),1);
                 //Intent intent = new Intent( MainActivity.this, qrScanActivity.class);
                 //startActivity(intent);
-
             }
+
         });
 
         exListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -229,20 +231,16 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent){
-        String contents = null;
-        super.onActivityResult(requestCode, resultCode, intent);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-
-                // Handle successful scan
-            } else if (resultCode == RESULT_CANCELED) {
-                // Handle cancel
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if(result != null){
+            if(result.getContents() != null){
+                Intent openExp = new Intent();
+                String temp = result.getContents();
+                openExp.putExtra("UID",temp);
             }
         }
-        //IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        System.out.println("test1"+requestCode);
-        System.out.println("test2"+resultCode);
-        System.out.println("test3"+intent);
+        super.onActivityResult(requestCode, resultCode, intent);
+
 
     }
 

@@ -25,6 +25,7 @@ import androidx.annotation.NonNull;
 
 import com.example.experimentify.MainActivity;
 import com.example.experimentify.R;
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.ViewfinderView;
@@ -42,6 +43,7 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
     private DecoratedBarcodeView barcodeScannerView;
     private Button switchFlashlightButton;
     private ViewfinderView viewfinderView;
+    private IntentIntegrator qrScan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
         capture.decode();
         changeMaskColor(null);
         changeLaserVisibility(true);
+
     }
 
     @Override
