@@ -15,6 +15,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -155,8 +156,10 @@ public class ExperimentController{
     }
 
     public void getQrScan(Activity activity) {
-        Intent intent = new Intent(activity, qrScanActivity.class);
-        activity.startActivityForResult(intent,1);
+        //Intent intent = new Intent(activity, qrScanActivity.class);
+        //activity.startActivityForResult(intent,1);
+        IntentIntegrator integrator = new IntentIntegrator(activity);
+        integrator.initiateScan();
     }
 
     /**
