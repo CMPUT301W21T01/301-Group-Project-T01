@@ -208,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                     Long minTrials      = (Long)    doc.getData().get("minTrials");
                     String date         = (String)  doc.getData().get("date");
                     boolean locationReq = (boolean) doc.getData().get("locationRequired");
+                    String expType      = (String) doc.getData().get("experimentType");
                     String ownerID      = (String)  doc.getData().get("ownerID");
                     String uId          = (String)  doc.getData().get("uid");
                     boolean viewable    = (boolean) doc.getData().get("viewable");
@@ -218,14 +219,14 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
                     // Experiments are only displayed in ListView if they are viewable or current user is the owner.
                     if (viewable || ownerID.equals(localUID)) {
-                        Experiment newExperiment = new Experiment(description, region, minTrials, date, locationReq);
+                        Experiment newExperiment = new Experiment(description, region, minTrials, date, locationReq, expType);
 
                         //TODO remove the setters and use constructor
                         newExperiment.setOwnerID(ownerID);
                         newExperiment.setUID(uId);
                         newExperiment.setViewable(viewable);
                         newExperiment.setEditable(editable);
-
+                        newExperiment.setExpType(expType);
                         experimentList.add(newExperiment);
                     }
                 }

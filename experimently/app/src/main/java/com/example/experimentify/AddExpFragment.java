@@ -69,6 +69,7 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
         String region1 = region.getText().toString();
         String desc = descriptionBox.getText().toString();
         String minTrialsStr = minTrialsBox.getText().toString();
+        String expTypeInput = (String) expType.getPrompt();
         boolean locationRequired = locationRequiredBox.isChecked();
         int minTrials;
 
@@ -87,7 +88,7 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
         else {
             minTrials = 0;
         }
-        listener.onOkPressed(new Experiment(desc, region1, minTrials, date1, locationRequired));
+        listener.onOkPressed(new Experiment(desc, region1, minTrials, date1, locationRequired, expTypeInput));
     }
 
     /**
