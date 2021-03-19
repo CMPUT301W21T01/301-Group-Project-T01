@@ -48,7 +48,7 @@ public class ExperimentActivity extends AppCompatActivity {
     private void initUi() {
         description.setText(this.getResources().getString(R.string.description_header) + exp.getDescription());
         date.setText(this.getResources().getString(R.string.date_header) + exp.getDate());
-        expType.setText(this.getResources().getString(R.string.exp_type_header) + exp.getExperimentId());
+        expType.setText(this.getResources().getString(R.string.exp_type_header) + exp.getExpType());
         location.setText(this.getResources().getString(R.string.region_header) + exp.getRegion());
     }
 
@@ -76,7 +76,7 @@ public class ExperimentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_experiment);
         description = findViewById(R.id.activ_descrip);
-        date = findViewById(R.id.actiiv_date);
+        date = findViewById(R.id.activ_date);
         expType = findViewById(R.id.activ_expType);
         location = findViewById(R.id.activ_location);
         statsButton = findViewById(R.id.stats);

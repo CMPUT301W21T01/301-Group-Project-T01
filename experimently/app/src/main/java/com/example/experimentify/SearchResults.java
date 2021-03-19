@@ -81,8 +81,9 @@ public class SearchResults extends AppCompatActivity {
                                 String region       = (String)  document.getData().get("region");
                                 Long minTrials      = (Long)    document.getData().get("minTrials");
                                 String date         = (String)  document.getData().get("date");
+                                String expType      = (String) document.getData().get("experimentType");
                                 boolean locationReq = (boolean) document.getData().get("locationRequired");
-                                Experiment temp_experiment = new Experiment(description, region, minTrials, date, locationReq);
+                                Experiment temp_experiment = new Experiment(description, region, minTrials, date, locationReq, expType);
                                 temp_experiment.setUID(String.valueOf(document.getData().get("EID")));
                                 experimentList.add(temp_experiment);
                             }

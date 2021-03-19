@@ -30,12 +30,13 @@ public class Experiment implements Parcelable {
     private boolean editable;
     private String expType;
 
-    public Experiment(String description, String region, long minTrials, String date, boolean locationRequired) {
+    public Experiment(String description, String region, long minTrials, String date, boolean locationRequired, String expType) {
         this.description = description;
         this.date = date;
         this.region = region;
         this.minTrials = minTrials;
         this.locationRequired = locationRequired;
+        this.expType = expType;
         editable = true;
         ended = false;
         viewable = true;
@@ -132,9 +133,14 @@ public class Experiment implements Parcelable {
 
     public String getExpType(){return expType;}
 
+    public void setExpType(String expType) {
+        this.expType = expType;
+    }
+
     public void setEditable(boolean editable) {
         this.editable = editable;
     }
+
 
     @Override
     public int describeContents() {
@@ -153,6 +159,7 @@ public class Experiment implements Parcelable {
         dest.writeBoolean(ended);
         dest.writeBoolean(viewable);
         dest.writeString(uid);
+
     }
 
 
