@@ -28,7 +28,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 
 // AppCompatActivity
-public class ExperimentActivity extends FragmentActivity {
+public class ExperimentActivity extends AppCompatActivity {
 
     private TextView description;
     private TextView date;
@@ -91,6 +91,7 @@ public class ExperimentActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_experiment);
+
         description = findViewById(R.id.activ_descrip);
         date = findViewById(R.id.activ_date);
         expType = findViewById(R.id.activ_expType);
