@@ -20,7 +20,7 @@ public class Trial {
         this.trialId = trialId;
     }
 
-    public  class CountTrial {
+    public class CountTrial {
         private Trial trial;
         private int totalCount;
         private int trialCount = 1;
@@ -65,6 +65,14 @@ public class Trial {
         public int getBinomialTrials(){
             int total = pass + fail;
             return total;
+        }
+
+        public int getBinomialPasses(){
+            return pass;
+        }
+
+        public int getBinomialFails(){
+            return fail;
         }
     }
 
