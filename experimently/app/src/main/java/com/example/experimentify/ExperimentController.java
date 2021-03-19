@@ -155,10 +155,13 @@ public class ExperimentController{
         activity.startActivity(intent);
     }
 
+    /**
+     * This method initiates the QR scanning by using the Zxing library and then uses our scanning interface layout
+     */
     public void getQrScan(Activity activity) {
-        //Intent intent = new Intent(activity, qrScanActivity.class);
-        //activity.startActivityForResult(intent,1);
         IntentIntegrator integrator = new IntentIntegrator(activity);
+        integrator.setOrientationLocked(false);
+        integrator.setCaptureActivity(qrScanActivity.class);
         integrator.initiateScan();
     }
 

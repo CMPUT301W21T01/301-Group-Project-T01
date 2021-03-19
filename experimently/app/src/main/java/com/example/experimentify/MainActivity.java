@@ -97,6 +97,10 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         experimentController.viewExperiment(MainActivity.this, clickedExperiment);
     }
 
+    /**
+     * This method brings the user from the home screen to the opening scanner then to the next screen
+     *  its a successful scan to the experiment activity
+     */
     private void handleScanClick() {
         experimentController.getQrScan(MainActivity.this);
     }
@@ -231,20 +235,15 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent){
-        System.out.println("*************** Why is this method not called??");
-
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if(result != null){
             if(result.getContents() != null){
-                Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
                 String temp = result.getContents();
                 for (Experiment experiment: experimentList){
                     if (experiment.getUID() != null && experiment.getUID().contains(temp)){
                         experimentController.viewExperiment(this, experiment);
                     }
                 }
-            }else{
-                Toast.makeText(this, "Result is: ", Toast.LENGTH_LONG).show();
             }
         } else{
             super.onActivityResult(requestCode, resultCode, intent);
