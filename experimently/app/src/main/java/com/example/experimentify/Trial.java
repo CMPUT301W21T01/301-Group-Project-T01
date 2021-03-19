@@ -84,10 +84,11 @@ public class Trial {
         public IntegerTrial(Trial trial, int intEntered){
             this.trial = trial;
             this.intEntered = intEntered;
+            this.integerCount = 0;
 
         }
-        public void createIntegerCount(){
-            integerCount +=1;
+        public int getIntegerCount(){
+            return integerCount;
         }
         public int getIntEntered(){
             return intEntered;

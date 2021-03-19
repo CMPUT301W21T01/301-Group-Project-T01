@@ -41,7 +41,16 @@ public class TrialTests {
         binomialTrial.incrementBinomialPass();
         assertEquals(binomialTrial.getBinomialTrials(), 2);
         assertEquals(binomialTrial.getBinomialPasses(), 1);
+    }
 
-
+    /**
+     * tests IntegerTrial
+     */
+    @Test
+    public void testInteger(){
+        // make mock variables
+        Trial trial = new Trial("userID", "Edmonton", "ID");
+        Trial.IntegerTrial integerTrial = trial.new IntegerTrial(trial, 7);
+        assertEquals(integerTrial.getIntEntered(), 7);
     }
 }
