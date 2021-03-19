@@ -20,7 +20,7 @@ public class Trial {
         this.trialId = trialId;
     }
 
-    public  class CountTrial {
+    public class CountTrial {
         private Trial trial;
         private int totalCount;
         private int trialCount = 1;
@@ -66,6 +66,14 @@ public class Trial {
             int total = pass + fail;
             return total;
         }
+
+        public int getBinomialPasses(){
+            return pass;
+        }
+
+        public int getBinomialFails(){
+            return fail;
+        }
     }
 
 
@@ -76,10 +84,11 @@ public class Trial {
         public IntegerTrial(Trial trial, int intEntered){
             this.trial = trial;
             this.intEntered = intEntered;
+            this.integerCount = 0;
 
         }
-        public void createIntegerCount(){
-            integerCount +=1;
+        public int getIntegerCount(){
+            return integerCount;
         }
         public int getIntEntered(){
             return intEntered;
@@ -94,6 +103,7 @@ public class Trial {
         public MeasurementTrial(Trial trial, float measurementEntered){
             this.trial=trial;
             this.measurementEntered = measurementEntered;
+            this.measurementCount = 0;
         }
         public void createMeasurementTrial(){
             measurementCount += 1;

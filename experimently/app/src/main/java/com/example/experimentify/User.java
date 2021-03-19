@@ -89,7 +89,7 @@ public class User implements Serializable {
     }
 
     /**
-     * This method gives actvites acsess to user settings.
+     * This method gives activities access to user settings.
      * @param context application context
      * @return Returns SharedPreferences object
      */

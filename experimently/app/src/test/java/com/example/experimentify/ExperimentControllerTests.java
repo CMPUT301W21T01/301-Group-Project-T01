@@ -24,7 +24,7 @@ public class ExperimentControllerTests {
     public void testAddExperimentToDB(){
         // make mock variables
         ownerID = "XkKjbNsZwLCwBe2zHmx2";
-        mockExp = new Experiment("unitTest for adding to db","edmonton",123,"march 2nd", true);
+        //mockExp = new Experiment("unitTest for adding to db","edmonton",123,"march 2nd", true);
         db = FirebaseFirestore.getInstance();
 
 
