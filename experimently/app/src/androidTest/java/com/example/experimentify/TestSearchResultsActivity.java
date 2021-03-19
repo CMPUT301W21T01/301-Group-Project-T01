@@ -1,5 +1,6 @@
 package com.example.experimentify;
 import android.app.Activity;
+import android.content.Intent;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -25,6 +26,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class TestSearchResultsActivity {
     private Solo solo;
+    private Intent intent;
 
     @Rule
     public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class,true,true);
