@@ -235,10 +235,10 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent){
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if(result != null){
-            if(result.getContents() != null){
-                String temp = result.getContents();
+        IntentResult experimentValue = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if(experimentValue != null){
+            if(experimentValue.getContents() != null){
+                String temp = experimentValue.getContents();
                 for (Experiment experiment: experimentList){
                     if (experiment.getUID() != null && experiment.getUID().contains(temp)){
                         experimentController.viewExperiment(this, experiment);
