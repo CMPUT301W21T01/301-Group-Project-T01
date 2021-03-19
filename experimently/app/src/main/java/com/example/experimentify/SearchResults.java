@@ -22,7 +22,8 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /**
- * the best practice that ensures the program will continue execution immediately after getting data from the query is to pass the list
+ * SearchResults Activity that displays the results of searching a specific keyword of matching experiments
+ * that will display a listview of Experiments that match with the search (searchable field in db)
  */
 public class SearchResults extends AppCompatActivity {
 
@@ -73,7 +74,7 @@ public class SearchResults extends AppCompatActivity {
                 expController.viewExperiment(SearchResults.this,experimentList.get(position));
             }
         });
-
+        // the search results should be a one time thing and do not auto update
         collectionReference
                 .whereArrayContainsAny("searchable", Arrays.asList(cleanedKeyword))//query line, can be combined and turned into complex queries (this one queries for name)
                 .get()
