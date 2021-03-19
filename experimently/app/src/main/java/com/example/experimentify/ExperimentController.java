@@ -15,6 +15,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,7 +84,27 @@ public class ExperimentController{
         addID.update("uid", experimentID);
         addID.update("searchable", FieldValue.arrayUnion(experimentID));
 
+
+        // user must also reference this newly added experiment
+        addOwnedExperimentToUser(experimentID, db, ownerID);
+
+
+
     }
+
+    /**
+     *  // add owned experiment to user document field "ownedExperiments"
+     * @param ExperimentID  experiment ID to be added to ownedExperiments
+     * @param db     firestore db
+     * @param ownerID  document of the user that now owns this experiment
+     */
+    public void addOwnedExperimentToUser(String ExperimentID, FirebaseFirestore db, String ownerID)
+    {
+        DocumentReference newRef = db.collection("Users").document(ownerID);
+        newRef.update("ownedExperiments", FieldValue.arrayUnion(ExperimentID));
+    }
+
+
     /**
      * This method deletes an experiment from the database.
      * @param exp experiment to be deleted
@@ -138,7 +159,7 @@ public class ExperimentController{
         newRef.set(enterData, SetOptions.merge());
     }
     /**
-     * sets the experiments variable
+     * sets the experiments variablee
      */
     public void setExperiments(ArrayList<Experiment>set_experiments){
         experiments = set_experiments;
@@ -152,6 +173,16 @@ public class ExperimentController{
         Intent intent = new Intent(activity, ExperimentActivity.class);
         intent.putExtra("clickedExp", exp);
         activity.startActivity(intent);
+    }
+
+    /**
+     * This method initiates the QR scanning by using the Zxing library and then uses our scanning interface layout
+     */
+    public void getQrScan(Activity activity) {
+        IntentIntegrator integrator = new IntentIntegrator(activity);
+        integrator.setOrientationLocked(false);
+        integrator.setCaptureActivity(qrScanActivity.class);
+        integrator.initiateScan();
     }
 
     /**

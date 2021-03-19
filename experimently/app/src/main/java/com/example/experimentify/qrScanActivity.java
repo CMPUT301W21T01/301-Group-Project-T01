@@ -1,6 +1,19 @@
+/* THIS CODE WAS ORIGINALLY FROM JOURNEYAPPS / ZXING-ANDROID-EMBEBBED PROJECT GITHUB CODE EXAMPLES
+ * WE IMPLEMENTED THEIR SCANNER ACTIVITY WHICH WAS PROVIDED IN THE EXMAPLE CODE OF THE DOCUMENTATION
+ * THE MAJORITY OF THE CODE WAS CHNAGED TO SUIT OUT NEEDS HOWEVER WE ARE CREDITING THEM FOR THE STRUCTURE
+ * AND THE OVERALL USE OF THE ZXING LIBRARY. THIS FILE PAIRS WITH OUT ACTIVITY QR SCAN WHICH WE USED TO SCAN
+ * USER QR CODES.
+ * SOURCE:https://github.com/journeyapps/zxing-android-embedded/tree/master/sample/src/main/java/example/zxing
+ * AUTHORS: https://github.com/journeyapps/zxing-android-embedded/commits?author=rkistner ET AL.
+ *
+ */
+
+
+
 package com.example.experimentify;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,11 +25,14 @@ import androidx.annotation.NonNull;
 
 import com.example.experimentify.MainActivity;
 import com.example.experimentify.R;
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.ViewfinderView;
 
 import java.util.Random;
+
+import javax.xml.transform.Result;
 
 /**
  * Custom Scannner Activity extending from Activity to display a custom layout form scanner view.
@@ -27,6 +43,7 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
     private DecoratedBarcodeView barcodeScannerView;
     private Button switchFlashlightButton;
     private ViewfinderView viewfinderView;
+    private IntentIntegrator qrScan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +67,9 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
         capture.initializeFromIntent(getIntent(), savedInstanceState);
         capture.setShowMissingCameraPermissionDialog(false);
         capture.decode();
-
         changeMaskColor(null);
         changeLaserVisibility(true);
+
     }
 
     @Override
@@ -72,6 +89,7 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
         super.onDestroy();
         capture.onDestroy();
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -94,11 +112,11 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
     }
 
     public void switchFlashlight(View view) {
-        /*if (getString(R.string.turn_on_flashlight).equals(switchFlashlightButton.getText())) {
+        if (getString(R.string.turn_on_flashlight).equals(switchFlashlightButton.getText())) {
             barcodeScannerView.setTorchOn();
         } else {
             barcodeScannerView.setTorchOff();
-        }*/
+        }
     }
 
     public void changeMaskColor(View view) {
@@ -118,11 +136,13 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
 
     @Override
     public void onTorchOff() {
-        //switchFlashlightButton.setText(R.string.turn_on_flashlight);
+        switchFlashlightButton.setText(R.string.turn_on_flashlight);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         capture.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+
 }

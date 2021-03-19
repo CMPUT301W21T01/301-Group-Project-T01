@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     /**
      * This method adds an experiment to the database.
+     * It also adds the experiment to the user's list of owned experiments in the DB
      * @param experiment experiment to be added
      */
     private void addExperiment(Experiment experiment) {
@@ -92,6 +96,14 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private void handleExpClick(int pos) {
         Experiment clickedExperiment = experimentController.getClickedExperiment(pos);
         experimentController.viewExperiment(MainActivity.this, clickedExperiment);
+    }
+
+    /**
+     * This method brings the user from the home screen to the opening scanner then to the next screen
+     *  its a successful scan to the experiment activity
+     */
+    private void handleScanClick() {
+        experimentController.getQrScan(MainActivity.this);
     }
 
     /**
@@ -162,10 +174,13 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
         qrScanner.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent( MainActivity.this, qrScanActivity.class);
-                startActivity(intent);
-
+                handleScanClick();
+                // Intent intent = new Intent( MainActivity.this, qrScanActivity.class);
+                //startActivityForResult(new Intent(getApplicationContext(), qrScanActivity.class),1);
+                //Intent intent = new Intent( MainActivity.this, qrScanActivity.class);
+                //startActivity(intent);
             }
+
         });
 
         exListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -218,6 +233,23 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                 experimentController.getAdapter().notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent){
+        IntentResult experimentValue = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if(experimentValue != null){
+            if(experimentValue.getContents() != null){
+                String temp = experimentValue.getContents();
+                for (Experiment experiment: experimentList){
+                    if (experiment.getUID() != null && experiment.getUID().contains(temp)){
+                        experimentController.viewExperiment(this, experiment);
+                    }
+                }
+            }
+        } else{
+            super.onActivityResult(requestCode, resultCode, intent);
+        }
     }
 
     //AddExpFragment
@@ -346,8 +378,6 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
             // Get from the SharedPreferences
             String localUID = settings.getString("uid", "0");
-
-
 
         }
         return user;
