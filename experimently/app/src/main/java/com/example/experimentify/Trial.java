@@ -103,6 +103,7 @@ public class Trial {
         public MeasurementTrial(Trial trial, float measurementEntered){
             this.trial=trial;
             this.measurementEntered = measurementEntered;
+            this.measurementCount = 0;
         }
         public void createMeasurementTrial(){
             measurementCount += 1;

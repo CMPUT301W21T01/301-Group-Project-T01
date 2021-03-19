@@ -53,4 +53,17 @@ public class TrialTests {
         Trial.IntegerTrial integerTrial = trial.new IntegerTrial(trial, 7);
         assertEquals(integerTrial.getIntEntered(), 7);
     }
+
+    /**
+     * tests MeasurementTrial
+     */
+    @Test
+    public void testMeasurement(){
+        // make mock variables
+        Trial trial = new Trial("userID", "Edmonton", "ID");
+        Trial.MeasurementTrial measurementTrial = trial.new MeasurementTrial(trial, 7);
+        assertEquals(measurementTrial.getMeasurementEntered(), 7, 0.0);
+        measurementTrial = trial.new MeasurementTrial(trial, 7.1f);
+        assertEquals(measurementTrial.getMeasurementEntered(), 7.1f, 0.0);
+    }
 }
