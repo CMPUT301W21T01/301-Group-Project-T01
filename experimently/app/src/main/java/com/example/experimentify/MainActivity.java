@@ -1,7 +1,6 @@
 package com.example.experimentify;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -231,15 +230,19 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent){
+        super.onActivityResult(requestCode, resultCode, intent);
+
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if(result != null){
             if(result.getContents() != null){
-                Intent openExp = new Intent();
                 String temp = result.getContents();
-                openExp.putExtra("UID",temp);
+                for (Experiment experiment: experimentList){
+                    if (experiment.getUID() != null && experiment.getUID().contains(temp)){
+                        experimentController.viewExperiment(this, experiment);
+                    }
+                }
             }
         }
-        super.onActivityResult(requestCode, resultCode, intent);
 
 
     }
