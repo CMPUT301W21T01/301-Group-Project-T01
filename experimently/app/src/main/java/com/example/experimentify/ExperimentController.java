@@ -84,7 +84,27 @@ public class ExperimentController{
         addID.update("uid", experimentID);
         addID.update("searchable", FieldValue.arrayUnion(experimentID));
 
+
+        // user must also reference this newly added experiment
+        addOwnedExperimentToUser(experimentID, db, ownerID);
+
+
+
     }
+
+    /**
+     *  // add owned experiment to user document field "ownedExperiments"
+     * @param ExperimentID  experiment ID to be added to ownedExperiments
+     * @param db     firestore db
+     * @param ownerID  document of the user that now owns this experiment
+     */
+    public void addOwnedExperimentToUser(String ExperimentID, FirebaseFirestore db, String ownerID)
+    {
+        DocumentReference newRef = db.collection("Users").document(ownerID);
+        newRef.update("ownedExperiments", FieldValue.arrayUnion(ExperimentID));
+    }
+
+
     /**
      * This method deletes an experiment from the database.
      * @param exp experiment to be deleted

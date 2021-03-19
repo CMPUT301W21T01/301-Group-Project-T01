@@ -17,13 +17,18 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ExperimentActivity extends AppCompatActivity {
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentActivity;
+
+// AppCompatActivity
+public class ExperimentActivity extends FragmentActivity {
 
     private TextView description;
     private TextView date;
@@ -79,6 +84,8 @@ public class ExperimentActivity extends AppCompatActivity {
     }
 
 
+    private Trial trial;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,14 +108,27 @@ public class ExperimentActivity extends AppCompatActivity {
         measureInput = findViewById(R.id.meaasurementInput);
         endedMessageBox = findViewById(R.id.trialEndedMessage);
         submitButton = findViewById(R.id.submitTrials);
+
         qrCodeGene = findViewById(R.id.qrCode);
         qrCodeShow = findViewById(R.id.qrCodeView);
+
+
+        
+        statsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
 
 
         Intent intent = getIntent();
         if (intent.hasExtra("clickedExp")) {
             exp = intent.getParcelableExtra("clickedExp");
             initUi();
+
 
             statsButton.setOnClickListener(new View.OnClickListener() {
                 @Override

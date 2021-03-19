@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,6 +26,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class SearchResults extends AppCompatActivity {
 
+    private ExperimentController expController;
     private ExperimentListAdapter experimentAdapter;
     private ListView exListView;
     private ArrayList<Experiment> experimentList;
@@ -43,6 +46,8 @@ public class SearchResults extends AppCompatActivity {
         //find listview ui element
         exListView = findViewById(R.id.exListView);
 
+
+
         // get the keyword stored inside the intent
         intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -51,6 +56,7 @@ public class SearchResults extends AppCompatActivity {
         }
 
         experimentList = new ArrayList<Experiment>();
+        expController = new ExperimentController(this);
 
 
         cleanedKeyword = keyword.trim().toLowerCase(); // we should allow user to search case insensitive
@@ -58,6 +64,15 @@ public class SearchResults extends AppCompatActivity {
         //set up adapter
         experimentAdapter = new ExperimentListAdapter(this, experimentList);
         exListView.setAdapter(experimentAdapter);
+
+        // onclick listener that lets the user view the experiment when clicked
+        exListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                expController.viewExperiment(SearchResults.this,experimentList.get(position));
+            }
+        });
 
         collectionReference
                 .whereArrayContainsAny("searchable", Arrays.asList(cleanedKeyword))//query line, can be combined and turned into complex queries (this one queries for name)
@@ -97,7 +112,11 @@ public class SearchResults extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // back button to main activity
 
 
+
+
     }
+
+
 
 
 }
