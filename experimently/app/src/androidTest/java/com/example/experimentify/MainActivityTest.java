@@ -75,7 +75,6 @@ public class MainActivityTest {
 
 //        addExpFragment = solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.addExpCL);
 
-
     }
 
 
