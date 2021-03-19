@@ -126,6 +126,10 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
         expType.setOnItemSelectedListener(this);
 
         //creating a date picker dialog using DatePickerDialog class
+        //CITATION for date picker dialog:
+        //CodingWithMitch, "Android Beginner Tutorial #25 - DatePicker Dialog [Choosing a Date from a Dialog Pop-Up]",
+        //2017-04-06, Public Domain, https://www.youtube.com/watch?v=hwe1abDO2Ag&ab_channel=CodingWithMitch
+
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
