@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     /**
      * This method adds an experiment to the database.
+     * It also adds the experiment to the user's list of owned experiments in the DB
      * @param experiment experiment to be added
      */
     private void addExperiment(Experiment experiment) {
