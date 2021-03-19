@@ -46,7 +46,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation platform('com.google.firebase:firebase-bom:26.6.0')
     implementation 'com.google.firebase:firebase-analytics'
-    implementation platform('io.grpc:grpc-bom:1.30.1') //Comment out this line if you are having issues with qr activity
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'com.jayway.android.robotium:robotium-solo:5.3.1'
+//    implementation platform('io.grpc:grpc-bom:1.30.1') //Comment out this line if you are having issues with qr activity
     implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
     implementation 'androidx.appcompat:appcompat:1.0.2'
 
