@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent){
-        System.out.println("*************** Why is this method not called?");
+        System.out.println("*************** Why is this method not called??");
 
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if(result != null){
