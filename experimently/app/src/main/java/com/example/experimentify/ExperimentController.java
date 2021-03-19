@@ -138,7 +138,7 @@ public class ExperimentController{
         newRef.set(enterData, SetOptions.merge());
     }
     /**
-     * sets the experiments variable
+     * sets the experiments variablee
      */
     public void setExperiments(ArrayList<Experiment>set_experiments){
         experiments = set_experiments;
