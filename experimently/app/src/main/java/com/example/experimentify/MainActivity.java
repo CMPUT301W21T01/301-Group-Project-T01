@@ -26,6 +26,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,6 +94,10 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private void handleExpClick(int pos) {
         Experiment clickedExperiment = experimentController.getClickedExperiment(pos);
         experimentController.viewExperiment(MainActivity.this, clickedExperiment);
+    }
+
+    private void handleScanClick() {
+        experimentController.getQrScan(MainActivity.this);
     }
 
     /**
@@ -162,8 +168,10 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
         qrScanner.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent( MainActivity.this, qrScanActivity.class);
-                startActivity(intent);
+               // Intent intent = new Intent( MainActivity.this, qrScanActivity.class);
+                startActivityForResult(new Intent(getApplicationContext(), qrScanActivity.class),1);
+                //Intent intent = new Intent( MainActivity.this, qrScanActivity.class);
+                //startActivity(intent);
 
             }
         });
@@ -217,6 +225,25 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                 experimentController.getAdapter().notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent){
+        String contents = null;
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+
+                // Handle successful scan
+            } else if (resultCode == RESULT_CANCELED) {
+                // Handle cancel
+            }
+        }
+        //IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        System.out.println("test1"+requestCode);
+        System.out.println("test2"+resultCode);
+        System.out.println("test3"+intent);
+
     }
 
     //AddExpFragment
@@ -345,8 +372,6 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
             // Get from the SharedPreferences
             String localUID = settings.getString("uid", "0");
-
-
 
         }
         return user;

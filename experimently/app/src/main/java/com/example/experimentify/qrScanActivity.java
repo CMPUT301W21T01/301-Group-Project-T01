@@ -13,6 +13,7 @@
 package com.example.experimentify;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -29,6 +30,8 @@ import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.ViewfinderView;
 
 import java.util.Random;
+
+import javax.xml.transform.Result;
 
 /**
  * Custom Scannner Activity extending from Activity to display a custom layout form scanner view.
@@ -84,6 +87,7 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
         capture.onDestroy();
     }
 
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -136,4 +140,6 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         capture.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+
 }

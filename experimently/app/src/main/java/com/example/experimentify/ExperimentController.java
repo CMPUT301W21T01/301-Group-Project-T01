@@ -154,6 +154,11 @@ public class ExperimentController{
         activity.startActivity(intent);
     }
 
+    public void getQrScan(Activity activity) {
+        Intent intent = new Intent(activity, qrScanActivity.class);
+        activity.startActivityForResult(intent,1);
+    }
+
     /**
      * This method returns an experiment based on its position in the ListView.
      * @param pos position of experiment in ListView
