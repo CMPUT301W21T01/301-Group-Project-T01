@@ -15,6 +15,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -158,7 +159,7 @@ public class ExperimentController{
         newRef.set(enterData, SetOptions.merge());
     }
     /**
-     * sets the experiments variable
+     * sets the experiments variablee
      */
     public void setExperiments(ArrayList<Experiment>set_experiments){
         experiments = set_experiments;
@@ -172,6 +173,16 @@ public class ExperimentController{
         Intent intent = new Intent(activity, ExperimentActivity.class);
         intent.putExtra("clickedExp", exp);
         activity.startActivity(intent);
+    }
+
+    /**
+     * This method initiates the QR scanning by using the Zxing library and then uses our scanning interface layout
+     */
+    public void getQrScan(Activity activity) {
+        IntentIntegrator integrator = new IntentIntegrator(activity);
+        integrator.setOrientationLocked(false);
+        integrator.setCaptureActivity(qrScanActivity.class);
+        integrator.initiateScan();
     }
 
     /**
