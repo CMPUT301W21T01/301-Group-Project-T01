@@ -2,10 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.experimentify">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -14,17 +13,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Experimentify">
+        <activity android:name=".SubscribedActivity"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCn-EUE2xAXK0d3ovPQCfvPW1hWR-Y485s"/>
+            android:value="AIzaSyCn-EUE2xAXK0d3ovPQCfvPW1hWR-Y485s" />
 
-        <activity android:name=".qrScanActivity"
-            android:parentActivityName=".MainActivity">
-        </activity>
-        <activity android:name=".ExperimentActivity"
-            android:label="@string/title_activity_experiment"
+        <activity
+            android:name=".qrScanActivity"
             android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".ExperimentActivity"
+            android:label="@string/title_activity_experiment"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -35,8 +36,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchResults"
-            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".SearchResults"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

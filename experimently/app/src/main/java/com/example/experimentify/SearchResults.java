@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,9 +33,11 @@ public class SearchResults extends AppCompatActivity {
     private ListView exListView;
     private ArrayList<Experiment> experimentList;
     FirebaseFirestore db;
+    public static final String PREFS_NAME = "PrefsFile";
     private Intent intent;
     private String keyword;
     private String cleanedKeyword;
+    private SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,8 @@ public class SearchResults extends AppCompatActivity {
         final CollectionReference collectionReference = db.collection("Experiments");
         //find listview ui element
         exListView = findViewById(R.id.exListView);
+
+        settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
 
 
 
@@ -83,25 +88,38 @@ public class SearchResults extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {     // querysnapshot contains 0..* document snapshots
                         if (task.isSuccessful()) {
 
+                            String localUID = settings.getString("uid","0");
                             // https://firebase.google.com/docs/reference/android/com/google/firebase/firestore/QueryDocumentSnapshot
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {                      // iterate over query results of the document
-                                Log.d("Test holder", document.getId() + " => " + document.getData());                // this for each document from our query result where we can filter and extract results
+                            for (QueryDocumentSnapshot doc : task.getResult()) {                      // iterate over query results of the document
+                                Log.d("Test holder", doc.getId() + " => " + doc.getData());                // this for each document from our query result where we can filter and extract results
                                 // the idea is here we use document snapshot methods such as get(String field) or getData()(returns fields of doc as a map) and we can
                                 // filter, then grab and use all the data we could need from the firebase ()
                                 // experimentId.add(document.getId());
 
                                 // every document from first query results will be unique
-                                Log.d("test", String.valueOf(document.getData().get("EID")));
-                                String description  = (String)  document.getData().get("description");
-                                String region       = (String)  document.getData().get("region");
-                                Long minTrials      = (Long)    document.getData().get("minTrials");
-                                String date         = (String)  document.getData().get("date");
-                                String expType      = (String) document.getData().get("experimentType");
-                                boolean locationReq = (boolean) document.getData().get("locationRequired");
-                                Experiment temp_experiment = new Experiment(description, region, minTrials, date, locationReq, expType);
-                                temp_experiment.setUID(String.valueOf(document.getData().get("EID")));
-                                experimentList.add(temp_experiment);
+                                String description  = (String)  doc.getData().get("description");
+                                String region       = (String)  doc.getData().get("region");
+                                Long minTrials      = (Long)    doc.getData().get("minTrials");
+                                String date         = (String)  doc.getData().get("date");
+                                boolean locationReq = (boolean) doc.getData().get("locationRequired");
+                                String expType      = (String)  doc.getData().get("experimentType");
+                                String ownerID      = (String)  doc.getData().get("ownerID");
+                                String uId          = (String)  doc.getData().get("uid");
+                                boolean viewable    = (boolean) doc.getData().get("viewable");
+                                boolean editable    = (boolean) doc.getData().get("editable");
+
+                                // Experiments are only displayed in ListView if they are viewable or current user is the owner.
+                                if (viewable || ownerID.equals(localUID)) {
+                                    Experiment newExperiment = new Experiment(description, region, minTrials, date, locationReq, expType);
+
+                                    //TODO remove the setters and use constructor
+                                    newExperiment.setOwnerID(ownerID);
+                                    newExperiment.setUID(uId);
+                                    newExperiment.setViewable(viewable);
+                                    newExperiment.setEditable(editable);
+                                    newExperiment.setExpType(expType);
+                                    experimentList.add(newExperiment);
+                                }
                             }
                         } else {
                             Log.d("Test holder", "Error getting documents: ", task.getException());
