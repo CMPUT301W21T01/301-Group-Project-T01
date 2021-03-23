@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private ListView exListView;
     private FloatingActionButton showAddExpUiButton;
     private FloatingActionButton userProfileButton;
+    private Button subButton;
     private EditText searchBar;
     private ImageButton searchButton;
     private FloatingActionButton qrScanner;
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
      */
     private void showExpOptionsUI(Experiment experiment) {
         String localUID = getLocalUID();
-        ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment, localUID);
+        ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment, localUID, currentUser);
         fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
     }
 
@@ -132,6 +134,15 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         return sp.getString("uid", "0");
     }
 
+    /**
+     * This method brings the user to an activity that shows a list of experiments they are
+     * subscribed  to.
+     */
+    private void viewSubscribedExpList() {
+        Intent intent = new Intent(this, SubscribedActivity.class);
+        startActivity(intent);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         showAddExpUiButton = findViewById(R.id.showAddExpUiButton);
         userProfileButton = findViewById(R.id.userProfileButton);
         qrScanner = findViewById(R.id.qrScanner);
+        subButton = findViewById(R.id.subButton);
 
         searchBar = findViewById(R.id.searchBar);
         searchButton = findViewById(R.id.searchButton);
@@ -194,6 +206,12 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         exListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int pos, long id) {
                 handleExpClick(pos);
+            }
+        });
+
+        subButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                viewSubscribedExpList();
             }
         });
 

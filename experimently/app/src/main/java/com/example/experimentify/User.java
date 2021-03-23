@@ -3,6 +3,10 @@ package com.example.experimentify;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -96,4 +100,17 @@ public class User implements Serializable {
     public SharedPreferences getSettings(Context context) {
         return context.getSharedPreferences(PREFS_NAME, 0);
     }
+
+    public void addSub(String userID, String expID, FirebaseFirestore db) {
+        DocumentReference ref = db.collection("Users").document(userID);
+        String[] expList = {expID};
+        ref.update("participatingExperiments", FieldValue.arrayUnion(expList));
+    }
+
+    public void deleteSub(String userID, String expID, FirebaseFirestore db) {
+        DocumentReference ref = db.collection("Users").document(userID);
+        ref.update("participatingExperiments", FieldValue.arrayRemove(expID));
+    }
+
+
 }

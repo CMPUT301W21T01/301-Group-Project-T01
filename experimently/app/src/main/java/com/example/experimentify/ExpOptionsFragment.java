@@ -16,12 +16,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ExpOptionsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ExpOptionsFragment extends DialogFragment {
+public class ExpOptionsFragment extends DialogFragment implements Experiment.IsSubbedCallback {
     private Bundle bundle;
     private CheckBox subscribeBox;
     private CheckBox endExpBox;
@@ -29,8 +31,16 @@ public class ExpOptionsFragment extends DialogFragment {
     private Button delExpButton;
     private Experiment experiment;
     private String localUID;
+    private boolean subscribed;
+    private User user;
+    private FirebaseFirestore db;
 
     private OnFragmentInteractionListener listener;
+
+    @Override
+    public void onBool(boolean containsExp) {
+        subscribed = containsExp;
+    }
 
 
     public interface OnFragmentInteractionListener {
@@ -38,10 +48,11 @@ public class ExpOptionsFragment extends DialogFragment {
         void onDeletePressed(Experiment current);
     }
 
-    public static ExpOptionsFragment newInstance(Experiment experiment, String localUID) {
+    public static ExpOptionsFragment newInstance(Experiment experiment, String localUID, User user) {
         Bundle args = new Bundle();
         args.putParcelable("experiment", experiment);
         args.putString("localUID", localUID);
+        args.putSerializable("user", user);
 
         ExpOptionsFragment fragment = new ExpOptionsFragment();
         fragment.setArguments(args);
@@ -88,7 +99,10 @@ public class ExpOptionsFragment extends DialogFragment {
      * This method sets the state of the checkboxes
      */
     private void setUi() {
-        subscribeBox.setChecked(false); //TODO check if experiment is in user's subscribed list
+        //https://www.geeksforgeeks.org/callback-using-interfaces-java/ tutorial
+        experiment.userIsSubscribed(localUID, this);
+        Log.d("check1", ""+subscribed);
+        subscribeBox.setChecked(subscribed); //TODO check if experiment is in user's subscribed list
         endExpBox.setChecked(!experiment.isEditable());
         unpublishBox.setChecked(!experiment.isViewable());
 
@@ -111,15 +125,26 @@ public class ExpOptionsFragment extends DialogFragment {
      * uploaded to the database.
      */
     private void editExpHandler() {
-        boolean subscribed = subscribeBox.isChecked();
         boolean editable = !endExpBox.isChecked();
         boolean viewable = !unpublishBox.isChecked();
+        boolean isSubbed = subscribeBox.isChecked();
 
         experiment.setViewable(viewable);
         experiment.setEditable(editable);
+        handleSubs(isSubbed);
         //TODO add subscribe functionality
 
+
         listener.onConfirmEdits(experiment);
+    }
+
+    private void handleSubs(boolean isSubbed) {
+        if (isSubbed) {
+            user.addSub(localUID, experiment.getUID(), db);
+        }
+        else {
+            user.deleteSub(localUID, experiment.getUID(), db);
+        }
     }
 
     @Override
@@ -143,11 +168,13 @@ public class ExpOptionsFragment extends DialogFragment {
         unpublishBox = view.findViewById(R.id.unpublishExpCheckBox);
         delExpButton = view.findViewById(R.id.okayButton);
         bundle = getArguments();
+        db = FirebaseFirestore.getInstance();
 
 
         if (bundle != null) {
             experiment = (Experiment) bundle.getParcelable("experiment");
             localUID = bundle.getString("localUID");
+            user = (User) bundle.getSerializable("user");
             setUi();
         }
 

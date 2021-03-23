@@ -5,8 +5,20 @@ import android.media.Image;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,6 +41,9 @@ public class Experiment implements Parcelable {
     private String uid;
     private boolean editable;
     private String expType;
+    final String TAG = Experiment.class.getName();
+
+
 
     public Experiment(String description, String region, long minTrials, String date, boolean locationRequired, String expType) {
         this.description = description;
@@ -139,6 +154,43 @@ public class Experiment implements Parcelable {
 
     public void setEditable(boolean editable) {
         this.editable = editable;
+    }
+
+    interface IsSubbedCallback {
+       void onBool(boolean containsExp);
+    }
+
+    public void userIsSubscribed(String userID, IsSubbedCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //https://stackoverflow.com/a/52421135
+        //https://firebase.google.com/docs/firestore/query-data/queries#execute_a_query
+        //https://firebase.google.com/docs/firestore/query-data/queries#array_membership
+        //Returns every user doc where array contains uid (experiment id)
+        db.collection("Users")
+                .whereArrayContains("participatingExperiments", uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("qqq","yurrr");
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                if(document.getData().get("uid").equals(userID)) {
+                                    Log.d("qqq","yurrr2");
+                                    callback.onBool(true);
+                                }
+                                else {
+                                    //TODO this is never reached, fix
+                                    Log.d("qqq","yurrr3");
+                                    callback.onBool(false);
+                                }
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
 
