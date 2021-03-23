@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -69,7 +70,9 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
         String region1 = region.getText().toString();
         String desc = descriptionBox.getText().toString();
         String minTrialsStr = minTrialsBox.getText().toString();
-        String expTypeInput = (String) expType.getPrompt();
+//        String expTypeInput = (String) expType.getPrompt();
+        String expTypeInput = expType.getSelectedItem().toString();
+        Log.d("AddExpFragment", "createExperiment - expTypeInput: " + expTypeInput);
         boolean locationRequired = locationRequiredBox.isChecked();
         int minTrials;
 

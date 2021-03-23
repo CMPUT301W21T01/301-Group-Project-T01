@@ -3,21 +3,7 @@ package com.example.experimentify;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-
 import android.util.Log;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
+
+import com.google.zxing.WriterException;
 
 // AppCompatActivity
 public class ExperimentActivity extends FragmentActivity {
@@ -60,11 +48,12 @@ public class ExperimentActivity extends FragmentActivity {
     /**
      * This method sets text in the UI.
      */
-    private void initUi() {
-        description.setText(this.getResources().getString(R.string.description_header) + exp.getDescription());
-        date.setText(this.getResources().getString(R.string.date_header) + exp.getDate());
-        expType.setText(this.getResources().getString(R.string.exp_type_header) + exp.getExpType());
-        location.setText(this.getResources().getString(R.string.region_header) + exp.getRegion());
+    private void initUi(Experiment experiment) {
+        Log.d("ExperimentActivity", "initUi - expType: " + exp.getExpType());
+        description.setText(this.getResources().getString(R.string.description_header) + experiment.getDescription());
+        date.setText(this.getResources().getString(R.string.date_header) + experiment.getDate());
+        expType.setText(this.getResources().getString(R.string.exp_type_header) + experiment.getExpType());
+        location.setText(this.getResources().getString(R.string.region_header) + experiment.getRegion());
     }
 
     /**
@@ -126,8 +115,12 @@ public class ExperimentActivity extends FragmentActivity {
 
         Intent intent = getIntent();
         if (intent.hasExtra("clickedExp")) {
-            exp = intent.getParcelableExtra("clickedExp");
-            initUi();
+            // problem when bring experiment to this activity.
+//            exp = intent.getParcelableExtra("clickedExp");
+            Bundle data = intent.getExtras();
+            exp = data.getParcelable("clickedExp");
+            Log.d("ExperimentActivity", "onCreate - expType: " + exp.getDescription());
+            initUi(exp);
 
 
             statsButton.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +155,7 @@ public class ExperimentActivity extends FragmentActivity {
 
             // If editable then display ui for conducting trials, else show message
             if (exp.isEditable()) {
-                if (exp.getExpType() == "count") {
+                if (exp.getExpType() == "Count") {
                     count.setVisibility(View.VISIBLE);
                     countButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -172,7 +165,7 @@ public class ExperimentActivity extends FragmentActivity {
                     });
                 }
 
-                if (exp.getExpType() == "binomial") {
+                if (exp.getExpType() == "Binomial") {
                     binomial.setVisibility(View.VISIBLE);
                     passButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -188,12 +181,12 @@ public class ExperimentActivity extends FragmentActivity {
                     });
                 }
 
-                if (exp.getExpType() == "integer") {
+                if (exp.getExpType() == "Integer") {
                     integer.setVisibility(View.VISIBLE);
 
                 }
 
-                if (exp.getExpType() == "measurement") {
+                if (exp.getExpType() == "Measurement") {
                     measure.setVisibility(View.VISIBLE);
 
                 }

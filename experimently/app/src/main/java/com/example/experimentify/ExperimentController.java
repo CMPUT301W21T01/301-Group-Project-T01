@@ -73,6 +73,7 @@ public class ExperimentController{
         enterData.put("locationRequired", newExp.isLocationRequired());
         enterData.put("viewable", newExp.isViewable());
         enterData.put("date", newExp.getDate());
+        enterData.put("experimentType", newExp.getExpType());
         newRef.set(enterData);
 
         String experimentID = newRef.getId().toString();
@@ -87,9 +88,6 @@ public class ExperimentController{
 
         // user must also reference this newly added experiment
         addOwnedExperimentToUser(experimentID, db, ownerID);
-
-
-
     }
 
     /**
@@ -171,6 +169,7 @@ public class ExperimentController{
      */
     public void viewExperiment(Activity activity, Experiment exp) {
         Intent intent = new Intent(activity, ExperimentActivity.class);
+        Log.d("ExperimentController", "viewExperiment - expType: " + exp.getExpType());
         intent.putExtra("clickedExp", exp);
         activity.startActivity(intent);
     }
