@@ -8,19 +8,14 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -42,6 +37,7 @@ public class Experiment implements Parcelable {
     private boolean editable;
     private String expType;
     final String TAG = Experiment.class.getName();
+    private boolean result;
 
 
 
@@ -160,7 +156,7 @@ public class Experiment implements Parcelable {
        void onBool(boolean containsExp);
     }
 
-    public void userIsSubscribed(String userID, IsSubbedCallback callback) {
+    public boolean userIsSubscribed(String userID) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         //https://stackoverflow.com/a/52421135
         //https://firebase.google.com/docs/firestore/query-data/queries#execute_a_query
@@ -173,17 +169,21 @@ public class Experiment implements Parcelable {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            Log.d("qqq","yurrr");
+                            Log.d("qqq","start");
+                            if (task.getResult().isEmpty()) {
+                                result = false;
+                                Log.d("qqq", "else");
+                            }
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                if(document.getData().get("uid").equals(userID)) {
-                                    Log.d("qqq","yurrr2");
-                                    callback.onBool(true);
+                                if (document.getId().equals(userID)) {
+                                    result = true;
+                                    Log.d("qqq", "if: " + result);
+                                    break;
                                 }
                                 else {
-                                    //TODO this is never reached, fix
-                                    Log.d("qqq","yurrr3");
-                                    callback.onBool(false);
+                                    result = false;
+                                    Log.d("qqq", "else");
                                 }
                             }
                         } else {
@@ -191,6 +191,8 @@ public class Experiment implements Parcelable {
                         }
                     }
                 });
+        Log.d("qqq","end: "+ result);
+        return result;
     }
 
 

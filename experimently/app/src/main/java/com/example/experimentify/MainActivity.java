@@ -233,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                     boolean editable    = (boolean) doc.getData().get("editable");
 
 
+
                     String localUID = getLocalUID();
 
                     // Experiments are only displayed in ListView if they are viewable or current user is the owner.

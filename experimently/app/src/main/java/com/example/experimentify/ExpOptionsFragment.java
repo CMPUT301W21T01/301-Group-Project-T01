@@ -39,6 +39,7 @@ public class ExpOptionsFragment extends DialogFragment implements Experiment.IsS
 
     @Override
     public void onBool(boolean containsExp) {
+        Log.d("check1", "onBool");
         subscribed = containsExp;
     }
 
@@ -100,7 +101,7 @@ public class ExpOptionsFragment extends DialogFragment implements Experiment.IsS
      */
     private void setUi() {
         //https://www.geeksforgeeks.org/callback-using-interfaces-java/ tutorial
-        experiment.userIsSubscribed(localUID, this);
+        subscribed = experiment.userIsSubscribed(localUID);
         Log.d("check1", ""+subscribed);
         subscribeBox.setChecked(subscribed); //TODO check if experiment is in user's subscribed list
         endExpBox.setChecked(!experiment.isEditable());
@@ -118,6 +119,7 @@ public class ExpOptionsFragment extends DialogFragment implements Experiment.IsS
             delExpButton.setVisibility(View.GONE);
         }
     }
+
 
     /**
      * This method handles the case of a user submitting their changes.
@@ -177,6 +179,7 @@ public class ExpOptionsFragment extends DialogFragment implements Experiment.IsS
             user = (User) bundle.getSerializable("user");
             setUi();
         }
+
 
         delExpButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
