@@ -23,7 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
  * Use the {@link ExpOptionsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ExpOptionsFragment extends DialogFragment implements Experiment.IsSubbedCallback {
+public class ExpOptionsFragment extends DialogFragment {
     private Bundle bundle;
     private CheckBox subscribeBox;
     private CheckBox endExpBox;
@@ -36,12 +36,6 @@ public class ExpOptionsFragment extends DialogFragment implements Experiment.IsS
     private FirebaseFirestore db;
 
     private OnFragmentInteractionListener listener;
-
-    @Override
-    public void onBool(boolean containsExp) {
-        Log.d("check1", "onBool");
-        subscribed = containsExp;
-    }
 
 
     public interface OnFragmentInteractionListener {
@@ -100,8 +94,13 @@ public class ExpOptionsFragment extends DialogFragment implements Experiment.IsS
      * This method sets the state of the checkboxes
      */
     private void setUi() {
-        //https://www.geeksforgeeks.org/callback-using-interfaces-java/ tutorial
-        subscribed = experiment.userIsSubscribed(localUID);
+        //https://stackoverflow.com/a/46997517 <----bless this man
+        experiment.userIsSubscribed(localUID, new Experiment.GetDataListener() {
+            @Override
+            public void onSuccess(boolean result) {
+                subscribeBox.setChecked(result);
+            }
+        });
         Log.d("check1", ""+subscribed);
         subscribeBox.setChecked(subscribed); //TODO check if experiment is in user's subscribed list
         endExpBox.setChecked(!experiment.isEditable());
@@ -134,8 +133,6 @@ public class ExpOptionsFragment extends DialogFragment implements Experiment.IsS
         experiment.setViewable(viewable);
         experiment.setEditable(editable);
         handleSubs(isSubbed);
-        //TODO add subscribe functionality
-
 
         listener.onConfirmEdits(experiment);
     }

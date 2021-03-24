@@ -140,6 +140,9 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
      */
     private void viewSubscribedExpList() {
         Intent intent = new Intent(this, SubscribedActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", currentUser);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 

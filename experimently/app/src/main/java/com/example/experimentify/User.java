@@ -103,8 +103,7 @@ public class User implements Serializable {
 
     public void addSub(String userID, String expID, FirebaseFirestore db) {
         DocumentReference ref = db.collection("Users").document(userID);
-        String[] expList = {expID};
-        ref.update("participatingExperiments", FieldValue.arrayUnion(expList));
+        ref.update("participatingExperiments", FieldValue.arrayUnion(expID));
     }
 
     public void deleteSub(String userID, String expID, FirebaseFirestore db) {

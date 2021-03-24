@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -37,7 +38,6 @@ public class Experiment implements Parcelable {
     private boolean editable;
     private String expType;
     final String TAG = Experiment.class.getName();
-    private boolean result;
 
 
 
@@ -152,12 +152,14 @@ public class Experiment implements Parcelable {
         this.editable = editable;
     }
 
-    interface IsSubbedCallback {
-       void onBool(boolean containsExp);
+    interface GetDataListener {
+        void onSuccess(boolean result);
     }
 
-    public boolean userIsSubscribed(String userID) {
+
+    public void userIsSubscribed(String userID, GetDataListener callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //https://stackoverflow.com/a/46997517 <----bless this man
         //https://stackoverflow.com/a/52421135
         //https://firebase.google.com/docs/firestore/query-data/queries#execute_a_query
         //https://firebase.google.com/docs/firestore/query-data/queries#array_membership
@@ -169,21 +171,17 @@ public class Experiment implements Parcelable {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            Log.d("qqq","start");
                             if (task.getResult().isEmpty()) {
-                                result = false;
-                                Log.d("qqq", "else");
+                                callback.onSuccess(false);
                             }
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 if (document.getId().equals(userID)) {
-                                    result = true;
-                                    Log.d("qqq", "if: " + result);
-                                    break;
+                                    callback.onSuccess(true);
+                                    break; // Breaks for loop when
                                 }
                                 else {
-                                    result = false;
-                                    Log.d("qqq", "else");
+                                    callback.onSuccess(false);
                                 }
                             }
                         } else {
@@ -191,8 +189,6 @@ public class Experiment implements Parcelable {
                         }
                     }
                 });
-        Log.d("qqq","end: "+ result);
-        return result;
     }
 
 
