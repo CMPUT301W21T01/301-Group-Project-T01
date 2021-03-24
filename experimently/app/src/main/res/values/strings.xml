@@ -22,4 +22,5 @@
     <string name="date_header">"Date: "</string>
     <string name="region_header">"Region: "</string>
     <string name="exp_type_header">"Experiment type: "</string>
+    <string name="title_activity_chat">chatActivity</string>
 </resources>
