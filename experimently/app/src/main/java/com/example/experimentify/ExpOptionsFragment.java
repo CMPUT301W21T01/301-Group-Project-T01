@@ -18,11 +18,11 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
-//TODO update this javadoc
+
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link ExpOptionsFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * This class is a fragment that handles the UI responsible for subscribing to an experiment,
+ * ending an experiment, unpublsihing and experiment, and deleting an experiment.
+ * If a user does not own an experiment the only option available to them is subscription.
  */
 public class ExpOptionsFragment extends DialogFragment {
     private Bundle bundle;
@@ -32,7 +32,6 @@ public class ExpOptionsFragment extends DialogFragment {
     private Button delExpButton;
     private Experiment experiment;
     private String localUID;
-    private boolean subscribed;
     private User user;
     private FirebaseFirestore db;
 
@@ -62,7 +61,6 @@ public class ExpOptionsFragment extends DialogFragment {
      */
     private void handleDelete(Experiment exp) {
 
-        //https://stackoverflow.com/a/26097588
         /*
             Author: MysticMagicϡ
             Date published: Sep 29 '14 at 10:20
@@ -95,15 +93,13 @@ public class ExpOptionsFragment extends DialogFragment {
      * This method sets the state of the checkboxes
      */
     private void setUi() {
-        //https://stackoverflow.com/a/46997517 <----bless this man
         experiment.userIsSubscribed(localUID, new Experiment.GetDataListener() {
             @Override
             public void onSuccess(boolean result) {
                 subscribeBox.setChecked(result);
             }
         });
-        Log.d("check1", ""+subscribed);
-        subscribeBox.setChecked(subscribed);
+
         endExpBox.setChecked(!experiment.isEditable());
         unpublishBox.setChecked(!experiment.isViewable());
 
@@ -138,6 +134,10 @@ public class ExpOptionsFragment extends DialogFragment {
         listener.onConfirmEdits(experiment);
     }
 
+    /**
+     * This method adds and deletes the current user's subscriptions from the database.
+     * @param isSubbed true if subscribed box is checked, false if subscribe box is unchecked
+     */
     private void handleSubs(boolean isSubbed) {
         if (isSubbed) {
             user.addSub(localUID, experiment.getUID(), db);
@@ -172,7 +172,7 @@ public class ExpOptionsFragment extends DialogFragment {
 
 
         if (bundle != null) {
-            experiment = (Experiment) bundle.getParcelable("experiment");
+            experiment = bundle.getParcelable("experiment");
             localUID = bundle.getString("localUID");
             user = (User) bundle.getSerializable("user");
             setUi();

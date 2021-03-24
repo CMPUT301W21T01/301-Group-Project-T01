@@ -101,6 +101,7 @@ public class User implements Serializable {
         return context.getSharedPreferences(PREFS_NAME, 0);
     }
 
+    //TODO maybe move addSub and deleteSub to different class, not sure if they belong here
     /**
      * This method adds an experiment to a user's list of subscribed experiments.
      * @param userID user id saved on users device

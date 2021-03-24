@@ -38,12 +38,6 @@ public class SubscribedActivity extends AppCompatActivity implements ExpOptionsF
     FirebaseFirestore db;
     final String TAG = SubscribedActivity.class.getName();
 
-
-    //TODO javadoc
-    //TODO subcribe button in experiment activity
-    //TODO auto subcribe experiment owner to experiment
-    
-
     /**
      * This method shows the fragment that gives users options for the experiment they long clicked on.
      * @param experiment experiment whose options will be edited
@@ -81,6 +75,12 @@ public class SubscribedActivity extends AppCompatActivity implements ExpOptionsF
     }
 
 
+    /**
+     * This method updates the list view
+     * @param value QuerySnapshot returned by the addSnapshotListener that detects changes to experiments
+     *              in the database
+     * @param error FirebaseFirestoreException returned by addSnapshotListener
+     */
     private void updateList(@Nullable QuerySnapshot value,  @Nullable FirebaseFirestoreException error) {
         experimentController.getExperiments().clear();
         String localUID = settings.getString("uid","0");
@@ -112,9 +112,7 @@ public class SubscribedActivity extends AppCompatActivity implements ExpOptionsF
                 newExperiment.userIsSubscribed(localUID, new Experiment.GetDataListener() {
                     @Override
                     public void onSuccess(boolean result) {
-                        Log.d("bleh", "1");
                         if (result) {
-                            Log.d("bleh", "4");
                             experimentList.add(newExperiment);
                             experimentController.getAdapter().notifyDataSetChanged();
                         }
@@ -124,25 +122,39 @@ public class SubscribedActivity extends AppCompatActivity implements ExpOptionsF
         }
     }
 
+    /**
+     * Removes experiment from list view when the current user unsubscribes from it
+     * @param exp experiment to remove
+     * @param localUID local id of the user
+     */
+    private void removeUnsubbedExp(Experiment exp, String localUID) {
+        exp.userIsSubscribed(localUID, new Experiment.GetDataListener() {
+            @Override
+            public void onSuccess(boolean result) {
+                if (!result) {
+                    experimentList.remove(exp);
+                    experimentController.getAdapter().notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscribed);
 
         Intent intent = getIntent();
-        //intent.getBundleExtra()
+
         user = (User) intent.getSerializableExtra("user");
 
         db = FirebaseFirestore.getInstance();
         final CollectionReference expReference = db.collection("Experiments");
-        //String userID = settings.getString("uid","0");
-        //final DocumentReference userReference = db.collection("Users").document(userID);
 
         settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
 
         experimentController = new ExperimentController(this);
         experimentList = experimentController.getExperiments();
-
 
         experimentListView = findViewById(R.id.subscribedLV);
         experimentListView.setAdapter(experimentController.getAdapter());
@@ -175,15 +187,7 @@ public class SubscribedActivity extends AppCompatActivity implements ExpOptionsF
     public void onConfirmEdits(Experiment exp) {
         editExperiment(exp);
         String localUID = settings.getString("uid","0");
-        exp.userIsSubscribed(localUID, new Experiment.GetDataListener() {
-            @Override
-            public void onSuccess(boolean result) {
-                if (!result) {
-                    experimentList.remove(exp);
-                    experimentController.getAdapter().notifyDataSetChanged();
-                }
-            }
-        });
+        removeUnsubbedExp(exp, localUID);
 
     }
 

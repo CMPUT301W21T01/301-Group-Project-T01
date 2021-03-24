@@ -152,18 +152,32 @@ public class Experiment implements Parcelable {
         this.editable = editable;
     }
 
+
+    /**
+     * This interface gives access to the result of userIsSubscribed
+     */
     interface GetDataListener {
         void onSuccess(boolean result);
     }
 
 
+    /**
+     * This method checks if the current user is subscribed to the experiment it is called on
+     * @param userID The ID of the current user
+     * @param callback Interface for listener that returns the result once the database is done
+     *                 with its task.
+     */
     public void userIsSubscribed(String userID, GetDataListener callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        //https://stackoverflow.com/a/46997517 <----bless this man
-        //https://stackoverflow.com/a/52421135
-        //https://firebase.google.com/docs/firestore/query-data/queries#execute_a_query
-        //https://firebase.google.com/docs/firestore/query-data/queries#array_membership
-        //Returns every user doc where array contains uid (experiment id)
+        /*
+            Author: Joseph Varghese
+            Date published: Sep 29 '14 at 10:20
+            License: Attribution-ShareAlike 3.0 Unported
+            Link: https://stackoverflow.com/a/46997517
+
+            I used this post to help with returning a value after the database is done
+            retrieving data.
+        */
         db.collection("Users")
                 .whereArrayContains("participatingExperiments", uid)
                 .get()
@@ -172,15 +186,24 @@ public class Experiment implements Parcelable {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             if (task.getResult().isEmpty()) {
+                                /* There are no users with this experiment in their
+                                   subscription list
+                                 */
                                 callback.onSuccess(false);
                             }
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 if (document.getId().equals(userID)) {
+                                    /* The local user has the experiment in their
+                                       subscription list.
+                                     */
                                     callback.onSuccess(true);
-                                    break; // Breaks for loop when
+                                    break; // Prevents result from being changed
                                 }
                                 else {
+                                    /* The local user was not one of the users who had the
+                                       experiment in their subscription list
+                                     */
                                     callback.onSuccess(false);
                                 }
                             }
@@ -211,10 +234,5 @@ public class Experiment implements Parcelable {
         dest.writeString(uid);
 
     }
-
-
-    //TODO Ask about the variables below
-    //private Location region //Region? - from requirements
-    //private int minTrials //ex wont be shown until this amount of trials are submitted
 
 }
