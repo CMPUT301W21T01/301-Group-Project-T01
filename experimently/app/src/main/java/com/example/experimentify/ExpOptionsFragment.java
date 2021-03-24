@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+//TODO update this javadoc
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ExpOptionsFragment#newInstance} factory method to
@@ -102,7 +103,7 @@ public class ExpOptionsFragment extends DialogFragment {
             }
         });
         Log.d("check1", ""+subscribed);
-        subscribeBox.setChecked(subscribed); //TODO check if experiment is in user's subscribed list
+        subscribeBox.setChecked(subscribed);
         endExpBox.setChecked(!experiment.isEditable());
         unpublishBox.setChecked(!experiment.isViewable());
 

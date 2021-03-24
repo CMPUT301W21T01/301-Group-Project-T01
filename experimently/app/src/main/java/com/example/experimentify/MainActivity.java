@@ -282,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     @Override
     public void onOkPressed(Experiment newExp) {
         addExperiment(newExp);
+        //TODO subscribe creator of experiment, maybe in addExperiment method
     }
 
     @Override
@@ -300,7 +301,10 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
      */
     public void openSearchResults(String keyword){
         Intent intent = new Intent(this, SearchResults.class);
-        intent.putExtra("keyword", keyword);
+        Bundle bundle = new Bundle();
+        bundle.putString("keyword", keyword);
+        bundle.putSerializable("user", currentUser);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 

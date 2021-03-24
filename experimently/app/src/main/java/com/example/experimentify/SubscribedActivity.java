@@ -41,11 +41,13 @@ public class SubscribedActivity extends AppCompatActivity implements ExpOptionsF
 
     //TODO javadoc
     //TODO subcribe button in experiment activity
+    //TODO auto subcribe experiment owner to experiment
     
 
     /**
      * This method shows the fragment that gives users options for the experiment they long clicked on.
      * @param experiment experiment whose options will be edited
+     * @param currentUser user who is current running the app
      */
     private void showExpOptionsUI(Experiment experiment, User currentUser) {
         String localUID = settings.getString("uid","0");

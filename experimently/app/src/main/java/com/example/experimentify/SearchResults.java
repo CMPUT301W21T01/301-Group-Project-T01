@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * SearchResults Activity that displays the results of searching a specific keyword of matching experiments
  * that will display a listview of Experiments that match with the search (searchable field in db)
  */
-public class SearchResults extends AppCompatActivity {
+public class SearchResults extends AppCompatActivity implements ExpOptionsFragment.OnFragmentInteractionListener {
 
     private ExperimentController expController;
     private ExperimentListAdapter experimentAdapter;
@@ -38,6 +38,33 @@ public class SearchResults extends AppCompatActivity {
     private String keyword;
     private String cleanedKeyword;
     private SharedPreferences settings;
+    private User user;
+
+    /**
+     * This method shows the fragment that gives users options for the experiment they long clicked on.
+     * @param experiment experiment whose options will be edited
+     */
+    private void showExpOptionsUI(Experiment experiment, User currentUser) {
+        String localUID = settings.getString("uid","0");
+        ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment, localUID, currentUser);
+        fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
+    }
+
+    /**
+     * This method deletes an experiment from the database
+     * @param expToDel experiment to delete
+     */
+    private void delExperiment(Experiment expToDel) {
+        expController.deleteExperimentFromDB(expToDel, db);
+    }
+
+    /**
+     * This method edits existing experiments in the database
+     * @param expToEdit experiment to edit
+     */
+    private void editExperiment(Experiment expToEdit) {
+        expController.editExperimentToDB(expToEdit, db);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +86,7 @@ public class SearchResults extends AppCompatActivity {
         Bundle extras = intent.getExtras();
         if(extras != null) {
             keyword = extras.getString("keyword");
+            user = (User) extras.getSerializable("user");
         }
 
         experimentList = new ArrayList<Experiment>();
@@ -79,6 +107,15 @@ public class SearchResults extends AppCompatActivity {
                 expController.viewExperiment(SearchResults.this,experimentList.get(position));
             }
         });
+
+        exListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> parent, View v, int pos, long id) {
+                Experiment experiment = experimentList.get(pos);
+                showExpOptionsUI(experiment, user);
+                return true;
+            }
+        });
+
         // the search results should be a one time thing and do not auto update
         collectionReference
                 .whereArrayContainsAny("searchable", Arrays.asList(cleanedKeyword))//query line, can be combined and turned into complex queries (this one queries for name)
@@ -137,6 +174,15 @@ public class SearchResults extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onConfirmEdits(Experiment exp) {
+        editExperiment(exp);
+    }
 
-
+    @Override
+    public void onDeletePressed(Experiment exp) {
+        delExperiment(exp);
+        experimentList.remove(exp);
+        experimentAdapter.notifyDataSetChanged();
+    }
 }
