@@ -119,6 +119,14 @@ public class Experiment implements Parcelable {
         this.description = description;
     }
 
+    public void setRegion(String region){this.region = region; }
+
+    public void setMinTrials(long min){this.minTrials = min;}
+
+    public void setLocationRequired(boolean b){this.locationRequired = b; }
+
+    public void setDate(String date){this.date = date;}
+
     public void setUID(String id) {
         this.uid = id;
     }
