@@ -38,10 +38,10 @@ public class SubscribedActivity extends AppCompatActivity implements ExpOptionsF
     FirebaseFirestore db;
     final String TAG = SubscribedActivity.class.getName();
 
-    //TODO add listeners
+
     //TODO javadoc
     //TODO subcribe button in experiment activity
-    //TODO send user in intent, move method for adding subs to User
+    
 
     /**
      * This method shows the fragment that gives users options for the experiment they long clicked on.
@@ -68,6 +68,16 @@ public class SubscribedActivity extends AppCompatActivity implements ExpOptionsF
     private void editExperiment(Experiment expToEdit) {
         experimentController.editExperimentToDB(expToEdit, db);
     }
+
+    /**
+     * This method brings the user to the experiment screen for the experiment they clicked on.
+     * @param pos position of experiment in ListView
+     */
+    private void handleExpClick(int pos) {
+        Experiment clickedExperiment = experimentController.getClickedExperiment(pos);
+        experimentController.viewExperiment(SubscribedActivity.this, clickedExperiment);
+    }
+
 
     private void updateList(@Nullable QuerySnapshot value,  @Nullable FirebaseFirestoreException error) {
         experimentController.getExperiments().clear();
@@ -139,64 +149,10 @@ public class SubscribedActivity extends AppCompatActivity implements ExpOptionsF
         expReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                experimentController.getExperiments().clear();
-                String localUID = settings.getString("uid","0");
-                for (QueryDocumentSnapshot doc : value){
-                    Log.d(TAG, String.valueOf(doc.getData().get("EID")));
-                    String description  = (String)  doc.getData().get("description");
-                    String region       = (String)  doc.getData().get("region");
-                    Long minTrials      = (Long)    doc.getData().get("minTrials");
-                    String date         = (String)  doc.getData().get("date");
-                    boolean locationReq = (boolean) doc.getData().get("locationRequired");
-                    String expType      = (String)  doc.getData().get("experimentType");
-                    String ownerID      = (String)  doc.getData().get("ownerID");
-                    String uId          = (String)  doc.getData().get("uid");
-                    boolean viewable    = (boolean) doc.getData().get("viewable");
-                    boolean editable    = (boolean) doc.getData().get("editable");
-
-                    // Experiments are only displayed in ListView if they are viewable or current user is the owner.
-                    if (viewable || ownerID.equals(localUID)) {
-
-                        Experiment newExperiment = new Experiment(description, region, minTrials, date, locationReq, expType);
-
-                        //TODO remove the setters and use constructor
-                        newExperiment.setOwnerID(ownerID);
-                        newExperiment.setUID(uId);
-                        newExperiment.setViewable(viewable);
-                        newExperiment.setEditable(editable);
-                        newExperiment.setExpType(expType);
-
-                        newExperiment.userIsSubscribed(localUID, new Experiment.GetDataListener() {
-                            @Override
-                            public void onSuccess(boolean result) {
-                                Log.d("bleh", "1");
-                                if (result) {
-                                    Log.d("bleh", "4");
-                                    experimentList.add(newExperiment);
-                                    experimentController.getAdapter().notifyDataSetChanged();
-                                }
-                            }
-                        });
-                    }
-                }
-                //experimentController.getAdapter().notifyDataSetChanged();
-
-                //updateList(value, error);
-            }
-        });
-
-        /*
-        userReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                experimentController.getExperiments().clear();
                 updateList(value, error);
             }
-
         });
 
-
-         */
         experimentListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View v, int pos, long id) {
                 Experiment experiment = experimentController.getAdapter().getItem(pos);
@@ -205,11 +161,27 @@ public class SubscribedActivity extends AppCompatActivity implements ExpOptionsF
             }
         });
 
+        experimentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int pos, long id) {
+                handleExpClick(pos);
+            }
+        });
+
     }
 
     @Override
     public void onConfirmEdits(Experiment exp) {
         editExperiment(exp);
+        String localUID = settings.getString("uid","0");
+        exp.userIsSubscribed(localUID, new Experiment.GetDataListener() {
+            @Override
+            public void onSuccess(boolean result) {
+                if (!result) {
+                    experimentList.remove(exp);
+                    experimentController.getAdapter().notifyDataSetChanged();
+                }
+            }
+        });
 
     }
 
@@ -219,4 +191,3 @@ public class SubscribedActivity extends AppCompatActivity implements ExpOptionsF
     }
 }
 
-//test

@@ -101,11 +101,23 @@ public class User implements Serializable {
         return context.getSharedPreferences(PREFS_NAME, 0);
     }
 
+    /**
+     * This method adds an experiment to a user's list of subscribed experiments.
+     * @param userID user id saved on users device
+     * @param expID id of experiment
+     * @param db database where user's subscription list will be updated
+     */
     public void addSub(String userID, String expID, FirebaseFirestore db) {
         DocumentReference ref = db.collection("Users").document(userID);
         ref.update("participatingExperiments", FieldValue.arrayUnion(expID));
     }
 
+    /**
+     * This method deletes an experiment to a user's list of subscribed experiments.
+     * @param userID user id saved on users device
+     * @param expID id of experiment
+     * @param db database where user's subscription list will be updated
+     */
     public void deleteSub(String userID, String expID, FirebaseFirestore db) {
         DocumentReference ref = db.collection("Users").document(userID);
         ref.update("participatingExperiments", FieldValue.arrayRemove(expID));
