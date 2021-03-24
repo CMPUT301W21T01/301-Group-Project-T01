@@ -1,11 +1,15 @@
 package com.example.experimentify;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -26,6 +30,9 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 // AppCompatActivity
 public class ExperimentActivity extends AppCompatActivity {
@@ -56,6 +63,14 @@ public class ExperimentActivity extends AppCompatActivity {
     private Button qrCodeGene;
     private ImageView qrCodeShow;
 
+
+
+    public static final String PREFS_NAME = "PrefsFile";
+
+
+    private FirebaseFirestore db;
+
+    private Trial newTrial;
 
     /**
      * This method sets text in the UI.
@@ -113,8 +128,10 @@ public class ExperimentActivity extends AppCompatActivity {
         qrCodeGene = findViewById(R.id.qrCode);
         qrCodeShow = findViewById(R.id.qrCodeView);
 
+        SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
+        String localUID = settings.getString("uid", "0");
 
-        
+
         statsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,21 +177,22 @@ public class ExperimentActivity extends AppCompatActivity {
                     qrCodeShow.setVisibility(View.VISIBLE);
                 }
             });
-
             // If editable then display ui for conducting trials, else show message
             if (exp.isEditable()) {
-                if (exp.getExpType() == "count") {
+                if (exp.getExpType().equals("Count")) {
                     count.setVisibility(View.VISIBLE);
                     countButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            CountTrials countTrial = new CountTrials(exp.getOwnerID(), exp.getUID(), exp.getRegion());
 
                         }
                     });
                 }
 
-                if (exp.getExpType() == "binomial") {
+                if (exp.getExpType().equals("Binomial")) {
                     binomial.setVisibility(View.VISIBLE);
+
                     passButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -189,17 +207,18 @@ public class ExperimentActivity extends AppCompatActivity {
                     });
                 }
 
-                if (exp.getExpType() == "integer") {
+                if (exp.getExpType().equals("Integer")) {
                     integer.setVisibility(View.VISIBLE);
-
+                    showSubmitButton();
                 }
 
-                if (exp.getExpType() == "measurement") {
+                if (exp.getExpType() .equals("Measurement")) {
                     measure.setVisibility(View.VISIBLE);
+                    showSubmitButton();
 
                 }
 
-                showSubmitButton();
+
             }
             else {
                 showExpEndedMessage();

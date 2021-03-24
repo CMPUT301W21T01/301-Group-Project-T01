@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                     Long minTrials      = (Long)    doc.getData().get("minTrials");
                     String date         = (String)  doc.getData().get("date");
                     boolean locationReq = (boolean) doc.getData().get("locationRequired");
-                    String expType      = (String) doc.getData().get("experimentType");
+                    String expType      = (String) doc.getData().get("ExperimentType");
                     String ownerID      = (String)  doc.getData().get("ownerID");
                     String uId          = (String)  doc.getData().get("uid");
                     boolean viewable    = (boolean) doc.getData().get("viewable");

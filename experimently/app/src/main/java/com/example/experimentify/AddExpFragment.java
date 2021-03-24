@@ -69,7 +69,7 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
         String region1 = region.getText().toString();
         String desc = descriptionBox.getText().toString();
         String minTrialsStr = minTrialsBox.getText().toString();
-        String expTypeInput = (String) expType.getPrompt();
+        String expTypeInput =  expType.getSelectedItem().toString();
         boolean locationRequired = locationRequiredBox.isChecked();
         int minTrials;
 

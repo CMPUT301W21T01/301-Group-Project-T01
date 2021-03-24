@@ -79,6 +79,7 @@ public class ExperimentController{
         enterData.put("locationRequired", newExp.isLocationRequired());
         enterData.put("viewable", newExp.isViewable());
         enterData.put("date", newExp.getDate());
+        enterData.put("ExperimentType", newExp.getExpType());
         newRef.set(enterData);
 
         String experimentID = newRef.getId().toString();

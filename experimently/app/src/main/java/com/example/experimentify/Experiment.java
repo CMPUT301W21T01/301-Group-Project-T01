@@ -51,6 +51,7 @@ public class Experiment implements Parcelable {
         region = in.readString();
         minTrials = in.readLong();
         locationRequired = in.readByte() != 0;
+        expType = in.readString();
         editable = in.readByte() != 0;
         ended = in.readByte() != 0;
         viewable = in.readByte() != 0;
@@ -155,6 +156,7 @@ public class Experiment implements Parcelable {
         dest.writeString(region);
         dest.writeLong(minTrials);
         dest.writeBoolean(locationRequired);
+        dest.writeString(expType);
         dest.writeBoolean(editable);
         dest.writeBoolean(ended);
         dest.writeBoolean(viewable);
