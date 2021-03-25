@@ -3,6 +3,10 @@ package com.example.experimentify;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -96,4 +100,29 @@ public class User implements Serializable {
     public SharedPreferences getSettings(Context context) {
         return context.getSharedPreferences(PREFS_NAME, 0);
     }
+
+    //TODO maybe move addSub and deleteSub to different class, not sure if they belong here
+    /**
+     * This method adds an experiment to a user's list of subscribed experiments.
+     * @param userID user id saved on users device
+     * @param expID id of experiment
+     * @param db database where user's subscription list will be updated
+     */
+    public void addSub(String userID, String expID, FirebaseFirestore db) {
+        DocumentReference ref = db.collection("Users").document(userID);
+        ref.update("participatingExperiments", FieldValue.arrayUnion(expID));
+    }
+
+    /**
+     * This method deletes an experiment to a user's list of subscribed experiments.
+     * @param userID user id saved on users device
+     * @param expID id of experiment
+     * @param db database where user's subscription list will be updated
+     */
+    public void deleteSub(String userID, String expID, FirebaseFirestore db) {
+        DocumentReference ref = db.collection("Users").document(userID);
+        ref.update("participatingExperiments", FieldValue.arrayRemove(expID));
+    }
+
+
 }

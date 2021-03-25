@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private ListView exListView;
     private FloatingActionButton showAddExpUiButton;
     private FloatingActionButton userProfileButton;
+    private Button subButton;
     private EditText searchBar;
     private ImageButton searchButton;
     private FloatingActionButton qrScanner;
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
      */
     private void showExpOptionsUI(Experiment experiment) {
         String localUID = getLocalUID();
-        ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment, localUID);
+        ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment, localUID, currentUser);
         fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
     }
 
@@ -80,13 +82,14 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     }
 
     /**
-     * This method adds an experiment to the database.
+     * This method adds an experiment to the database and automatically subscribed the creator.
      * It also adds the experiment to the user's list of owned experiments in the DB
      * @param experiment experiment to be added
      */
     private void addExperiment(Experiment experiment) {
         String localUID = getLocalUID();
         experimentController.addExperimentToDB(experiment, db, localUID);
+        currentUser.addSub(localUID, experiment.getUID(), db);
     }
 
     /**
@@ -132,6 +135,18 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         return sp.getString("uid", "0");
     }
 
+    /**
+     * This method brings the user to an activity that shows a list of experiments they are
+     * subscribed  to.
+     */
+    private void viewSubscribedExpList() {
+        Intent intent = new Intent(this, SubscribedActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", currentUser);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         showAddExpUiButton = findViewById(R.id.showAddExpUiButton);
         userProfileButton = findViewById(R.id.userProfileButton);
         qrScanner = findViewById(R.id.qrScanner);
+        subButton = findViewById(R.id.subButton);
 
         searchBar = findViewById(R.id.searchBar);
         searchButton = findViewById(R.id.searchButton);
@@ -197,6 +213,12 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
             }
         });
 
+        subButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                viewSubscribedExpList();
+            }
+        });
+
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -213,6 +235,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                     String uId          = (String)  doc.getData().get("uid");
                     boolean viewable    = (boolean) doc.getData().get("viewable");
                     boolean editable    = (boolean) doc.getData().get("editable");
+
 
 
                     String localUID = getLocalUID();
@@ -260,6 +283,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     @Override
     public void onOkPressed(Experiment newExp) {
         addExperiment(newExp);
+        //TODO subscribe creator of experiment, maybe in addExperiment method
     }
 
     @Override
@@ -278,7 +302,10 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
      */
     public void openSearchResults(String keyword){
         Intent intent = new Intent(this, SearchResults.class);
-        intent.putExtra("keyword", keyword);
+        Bundle bundle = new Bundle();
+        bundle.putString("keyword", keyword);
+        bundle.putSerializable("user", currentUser);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 

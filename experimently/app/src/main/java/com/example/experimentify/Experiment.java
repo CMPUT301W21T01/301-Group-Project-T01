@@ -5,10 +5,18 @@ import android.media.Image;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import android.widget.CheckBox;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import java.io.Serializable;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 
 /**
@@ -29,6 +37,9 @@ public class Experiment implements Parcelable {
     private String uid;
     private boolean editable;
     private String expType;
+    final String TAG = Experiment.class.getName();
+
+
 
     public Experiment(String description, String region, long minTrials, String date, boolean locationRequired, String expType) {
         this.description = description;
@@ -150,6 +161,68 @@ public class Experiment implements Parcelable {
     }
 
 
+    /**
+     * This interface gives access to the result of userIsSubscribed
+     */
+    interface GetDataListener {
+        void onSuccess(boolean result);
+    }
+
+
+    /**
+     * This method checks if the current user is subscribed to the experiment it is called on
+     * @param userID The ID of the current user
+     * @param callback Interface for listener that returns the result once the database is done
+     *                 with its task.
+     */
+    public void userIsSubscribed(String userID, GetDataListener callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        /*
+            Author: Joseph Varghese
+            Date published: Sep 29 '14 at 10:20
+            License: Attribution-ShareAlike 3.0 Unported
+            Link: https://stackoverflow.com/a/46997517
+
+            I used this post to help with returning a value after the database is done
+            retrieving data.
+        */
+        db.collection("Users")
+                .whereArrayContains("participatingExperiments", uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                /* There are no users with this experiment in their
+                                   subscription list
+                                 */
+                                callback.onSuccess(false);
+                            }
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                if (document.getId().equals(userID)) {
+                                    /* The local user has the experiment in their
+                                       subscription list.
+                                     */
+                                    callback.onSuccess(true);
+                                    break; // Prevents result from being changed
+                                }
+                                else {
+                                    /* The local user was not one of the users who had the
+                                       experiment in their subscription list
+                                     */
+                                    callback.onSuccess(false);
+                                }
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -169,10 +242,5 @@ public class Experiment implements Parcelable {
         dest.writeString(uid);
 
     }
-
-
-    //TODO Ask about the variables below
-    //private Location region //Region? - from requirements
-    //private int minTrials //ex wont be shown until this amount of trials are submitted
 
 }
