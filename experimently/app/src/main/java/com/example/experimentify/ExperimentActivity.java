@@ -35,7 +35,7 @@ public class ExperimentActivity extends AppCompatActivity {
     private TextView expType;
     private TextView location;
     private Button statsButton;
-    private Button chatButton;
+
     private Experiment exp;
 
     private CardView count;
@@ -55,6 +55,8 @@ public class ExperimentActivity extends AppCompatActivity {
 
     private Button qrCodeGene;
     private ImageView qrCodeShow;
+
+    private Button chatButton;
 
 
     /**
@@ -119,6 +121,16 @@ public class ExperimentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ExperimentActivity.this, qrScanActivity.class);
+                intent.putExtra("Experiment", exp);
+                //startActivity(intent);
+                ExperimentActivity.this.startActivity(intent);
             }
         });
 

@@ -7,6 +7,7 @@
     tools:context=".chatActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.Experimentify.AppBarOverlay">
@@ -20,7 +21,30 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_chat" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/addQuestionButton"
+            android:layout_width="384dp"
+            android:layout_height="43dp"
+            android:layout_marginTop="64dp"
+            android:text="Post a Question"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ListView
+            android:id="@+id/questionList"
+            android:layout_width="399dp"
+            android:layout_height="618dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addQuestionButton" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
