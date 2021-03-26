@@ -22,5 +22,6 @@
     <string name="date_header">"Date: "</string>
     <string name="region_header">"Region: "</string>
     <string name="exp_type_header">"Experiment type: "</string>
+    <string name="replies_header">"Replies: "</string>
     <string name="sub_activity_label">Your Subscriptions</string>
 </resources>
