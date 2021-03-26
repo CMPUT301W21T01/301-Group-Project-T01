@@ -141,6 +141,8 @@ public class ExperimentActivity extends AppCompatActivity {
             chatButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent intent = new Intent(ExperimentActivity.this, chatQuestionActivity.class);
+                    startActivity(intent);
 
                 }
             });
