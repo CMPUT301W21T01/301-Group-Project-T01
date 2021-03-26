@@ -1,11 +1,11 @@
 package com.example.experimentify;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class chatQuestionActivity extends AppCompatActivity {
 
@@ -23,7 +23,7 @@ public class chatQuestionActivity extends AppCompatActivity {
         questionEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //TODO: Add question to DB 
             }
         });
 
