@@ -1,56 +1,46 @@
 package com.example.experimentify;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-
-import java.util.ArrayList;
-
 public abstract class Trial {
-    private String userId;
+    private String UID; //user id
     private String trialLocation;
-    private String trialId;
-    private String eID; //exp id
+    private String TID; //trial id
+    private String EID; //exp id
 
-
-
-    public Trial(String userId, String eID, String trialLocation){
-        this.userId = userId;
+    public Trial(String UID, String EID, String trialLocation){
+        this.UID = UID;
         this.trialLocation = trialLocation;
-
+        this.EID = EID;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUID() {
+        return UID;
     }
 
     public String getTrialLocation() {
         return trialLocation;
     }
 
-    public String getTrialId() {
-        return trialId;
+    public String getTID() {
+        return TID;
     }
 
-    public String geteID() {
-        return eID;
+    public String getEID() {
+        return EID;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUID(String UID) {
+        this.UID = UID;
     }
 
     public void setTrialLocation(String trialLocation) {
         this.trialLocation = trialLocation;
     }
 
-    public void setTrialId(String trialId) {
-        this.trialId = trialId;
+    public void setTID(String tID) {
+        this.TID = tID;
     }
 
-    public void seteID(String eID) {
-        this.eID = eID;
+    public void setEID(String eID) {
+        this.EID = eID;
     }
 }

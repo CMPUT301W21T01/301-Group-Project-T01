@@ -4,35 +4,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-
-import android.util.Log;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentActivity;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.zxing.WriterException;
 
 // AppCompatActivity
 public class ExperimentActivity extends AppCompatActivity {
@@ -66,7 +48,6 @@ public class ExperimentActivity extends AppCompatActivity {
 
 
     public static final String PREFS_NAME = "PrefsFile";
-
 
     private FirebaseFirestore db;
 
@@ -128,9 +109,12 @@ public class ExperimentActivity extends AppCompatActivity {
         qrCodeGene = findViewById(R.id.qrCode);
         qrCodeShow = findViewById(R.id.qrCodeView);
 
+        db = FirebaseFirestore.getInstance();
+
         SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
         String localUID = settings.getString("uid", "0");
 
+        ExperimentController experimentController = new ExperimentController(this);
 
         statsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,8 +122,6 @@ public class ExperimentActivity extends AppCompatActivity {
 
             }
         });
-
-
 
 
         Intent intent = getIntent();
@@ -184,8 +166,8 @@ public class ExperimentActivity extends AppCompatActivity {
                     countButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            CountTrials countTrial = new CountTrials(exp.getOwnerID(), exp.getUID(), exp.getRegion());
-
+                            CountTrials countTrial = new CountTrials(localUID, exp.getUID(), exp.getRegion());
+                            experimentController.addTrialToDB(countTrial, db);
                         }
                     });
                 }
