@@ -2,7 +2,7 @@ package com.example.experimentify;
 
 public abstract class Trial {
     private String UID; //user id
-    private String trialLocation;
+    private String trialLocation; //might need to change to geohash/location
     private String TID; //trial id
     private String EID; //exp id
 
@@ -36,11 +36,11 @@ public abstract class Trial {
         this.trialLocation = trialLocation;
     }
 
-    public void setTID(String tID) {
-        this.TID = tID;
+    public void setTID(String TID) {
+        this.TID = TID;
     }
 
-    public void setEID(String eID) {
-        this.EID = eID;
+    public void setEID(String EID) {
+        this.EID = EID;
     }
 }
