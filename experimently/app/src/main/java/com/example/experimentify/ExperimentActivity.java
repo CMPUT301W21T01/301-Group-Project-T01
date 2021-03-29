@@ -1,5 +1,6 @@
 package com.example.experimentify;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -15,6 +16,8 @@ import androidx.cardview.widget.CardView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.WriterException;
+
+import java.io.Serializable;
 
 // AppCompatActivity
 public class ExperimentActivity extends AppCompatActivity {
@@ -81,6 +84,12 @@ public class ExperimentActivity extends AppCompatActivity {
 
 
     private Trial trial;
+
+    public void enterTrialDetails(Activity activity) {
+        Intent intent = new Intent(activity, MapActivity.class);
+        activity.startActivity(intent);
+    }
+
 
 
     @Override
@@ -166,6 +175,7 @@ public class ExperimentActivity extends AppCompatActivity {
                     countButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            enterTrialDetails(ExperimentActivity.this);
                             CountTrials countTrial = new CountTrials(localUID, exp.getUID(), exp.getRegion());
                             experimentController.addTrialToDB(countTrial, db);
                         }
@@ -207,4 +217,6 @@ public class ExperimentActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }
