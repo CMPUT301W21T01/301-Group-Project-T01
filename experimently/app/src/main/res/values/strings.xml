@@ -6,6 +6,15 @@
         <item>Binomial</item>
         <item>Count</item>
     </string-array>
+
+
+    // this is dropdown options is for search user or experiment
+
+    <string-array name="search">
+        <item>Experiment</item>
+        <item>User</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_experiment">ExperimentActivity</string>
@@ -23,4 +32,11 @@
     <string name="region_header">"Region: "</string>
     <string name="exp_type_header">"Experiment type: "</string>
     <string name="sub_activity_label">Your Subscriptions</string>
+
+    <string name="name_header">"Name: "</string>
+    <string name="email_header">"Email: "</string>
+    <string name="uid_header">"UID: "</string>
+
+
+
 </resources>

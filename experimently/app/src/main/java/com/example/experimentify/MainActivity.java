@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     final String TAG = MainActivity.class.getName();
     public static final String PREFS_NAME = "PrefsFile";
     FirebaseFirestore db;
+    private Spinner searchSpinner;
+
 
     /**
      * This method shows the fragment that allows a user to create a new experiment.
@@ -166,6 +170,22 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         userProfileButton = findViewById(R.id.userProfileButton);
         qrScanner = findViewById(R.id.qrScanner);
         subButton = findViewById(R.id.subButton);
+
+        // used documentation at https://developer.android.com/guide/topics/ui/controls/spinner
+        searchSpinner = (Spinner) findViewById(R.id.search_spinner);
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.search, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        searchSpinner.setAdapter(adapter);
+
+        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.experiments, android.R.layout.simple_spinner_item);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //expType.setAdapter(adapter);
+        //expType.setOnItemSelectedListener(this);
 
         searchBar = findViewById(R.id.searchBar);
         searchButton = findViewById(R.id.searchButton);
@@ -305,6 +325,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         Bundle bundle = new Bundle();
         bundle.putString("keyword", keyword);
         bundle.putSerializable("user", currentUser);
+        bundle.putString("searchType",searchSpinner.getSelectedItem().toString());
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -359,29 +380,12 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
             Map<String, ArrayList<String>> uExps = new HashMap<>();
 
 
-
-            /*collectionReference
-                    .add(data)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error adding document", e);
-                        }
-                    });*/
-
-
-
             DocumentReference documentReference = db.collection("Users").document();
             data.put("email","");    // put empty values for now
             data.put("name","");
             data.put("uid","");
             data.put("username","");
+            data.put("cleanedUsername","");
 
             uExps.put("ownedExperiments", experiments);
             uExps.put("participatingExperiments", experiments);
