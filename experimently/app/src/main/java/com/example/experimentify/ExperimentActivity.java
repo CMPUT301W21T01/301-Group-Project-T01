@@ -91,6 +91,7 @@ public class ExperimentActivity extends AppCompatActivity {
 
     public void enterTrialDetails(Activity activity) {
         Intent intent = new Intent(activity, MapActivity.class);
+        intent.putExtra("experiment", exp);
         activity.startActivity(intent);
     }
 
@@ -183,9 +184,12 @@ public class ExperimentActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             enterTrialDetails(ExperimentActivity.this);
+<<<<<<< HEAD
                             CountTrial countTrial = new CountTrial(localUID, expUID, expRegion);
                             trialController.addTrialToDB(countTrial, countTrial.getValue());
 
+=======
+>>>>>>> locations
                         }
                     });
                 }
@@ -196,13 +200,13 @@ public class ExperimentActivity extends AppCompatActivity {
                     passButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            enterTrialDetails(ExperimentActivity.this);
                         }
                     });
                     failButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            enterTrialDetails(ExperimentActivity.this);
                         }
                     });
                 }
@@ -213,6 +217,7 @@ public class ExperimentActivity extends AppCompatActivity {
                     submitButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+<<<<<<< HEAD
                             try {
                                 intInfo = Integer.parseInt(intInput.getText().toString());
                             }
@@ -225,6 +230,11 @@ public class ExperimentActivity extends AppCompatActivity {
                         }
                     });
 
+=======
+                            enterTrialDetails(ExperimentActivity.this);
+                        }
+                    });
+>>>>>>> locations
                 }
 
                 if (exp.getExpType() .equals("Measurement")) {
@@ -233,6 +243,7 @@ public class ExperimentActivity extends AppCompatActivity {
                     submitButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+<<<<<<< HEAD
                             try {
                                 measurementInfo = Float.parseFloat(measureInput.getText().toString());
                             }
@@ -244,6 +255,12 @@ public class ExperimentActivity extends AppCompatActivity {
                             trialController.addTrialToDB(measurementTrial, db);
                         }
                     });
+=======
+                            enterTrialDetails(ExperimentActivity.this);
+                        }
+                    });
+
+>>>>>>> locations
                 }
 
 
