@@ -10,6 +10,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,9 +25,12 @@ import java.io.IOException;
 import java.util.List;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private MapView map;
+    MapView map;
     private TextView date;
     private GoogleMap gMap;
+    private Button ok;
+    private Button cancelButton;
+    private Button search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +39,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         map = findViewById(R.id.mapView);
         map.onCreate(savedInstanceState);
-        map.getMapAsync((OnMapReadyCallback) this);
+        map.getMapAsync(this);
         date = findViewById(R.id.trialDate);
-
+        search = findViewById(R.id.searchLoc);
+        ok = findViewById(R.id.okButton);
+        cancelButton = findViewById(R.id.cancel);
 
         Intent intent = getIntent();
+    }
+
+    @Override
+    public void onResume() {
+        map.onResume();
+        super.onResume();
     }
 
     @Override
@@ -60,24 +72,25 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         gMap.setMyLocationEnabled(true);
     }
 
-    public void onMapReady(View view){
+    public void onMapReady(View view) {
         EditText searchLoc = findViewById(R.id.searchMap);
         String location = searchLoc.getText().toString();
         List<Address> addressList = null;
-        if (location != null || !location.equals(""));{
+        if (location != null || !location.equals(""))
+        {
             Geocoder geocoder = new Geocoder(this);
             try {
-                addressList = geocoder.getFromLocationName(location,1);
+                addressList = geocoder.getFromLocationName(location, 1);
             } catch (IOException e) {
                 e.printStackTrace();
-                {
-                    e.printStackTrace();
-                }
-                Address address = addressList.get(0);
-                LatLng latLng =  new LatLng(address.getLatitude(), address.getLongitude());
-                gMap.addMarker(new MarkerOptions().position(latLng).title("Trial Marker:" + location));
-                gMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             }
+            Address address = addressList.get(0);
+            Location loc = new Location(address);
+            LatLng latLng = new LatLng(loc.getLatitude(), loc.getLong());
+            MarkerOptions mark = new MarkerOptions().position(latLng).title("Trial Marker:" + location);
+            gMap.addMarker(mark);
+            gMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
         }
 
 
