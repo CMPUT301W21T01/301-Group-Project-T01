@@ -25,6 +25,8 @@ public class TrialController {
 //        enterData.put("TID", newTrial.getTID());
         enterData.put("UID", newTrial.getUID());
         enterData.put("result", result);
+        enterData.put("date", newTrial.getDate());
+
         if (location != null){
             enterData.put("location", location);
         }
@@ -50,6 +52,7 @@ public class TrialController {
 //        enterData.put("TID", newTrial.getTID());
         enterData.put("UID", newTrial.getUID());
         enterData.put("result", result);
+
         if (location != null){
             enterData.put("location", location);
         }
