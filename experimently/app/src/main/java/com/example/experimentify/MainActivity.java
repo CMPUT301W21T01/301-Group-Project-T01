@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private ListView exListView;
     private FloatingActionButton showAddExpUiButton;
     private FloatingActionButton userProfileButton;
+    private Button subButton;
     private EditText searchBar;
     private ImageButton searchButton;
     private FloatingActionButton qrScanner;
@@ -53,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     final String TAG = MainActivity.class.getName();
     public static final String PREFS_NAME = "PrefsFile";
     FirebaseFirestore db;
+    private Spinner searchSpinner;
+
 
     /**
      * This method shows the fragment that allows a user to create a new experiment.
@@ -67,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
      */
     private void showExpOptionsUI(Experiment experiment) {
         String localUID = getLocalUID();
-        ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment, localUID);
+        ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment, localUID, currentUser);
         fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
     }
 
@@ -80,13 +86,14 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     }
 
     /**
-     * This method adds an experiment to the database.
+     * This method adds an experiment to the database and automatically subscribed the creator.
      * It also adds the experiment to the user's list of owned experiments in the DB
      * @param experiment experiment to be added
      */
     private void addExperiment(Experiment experiment) {
         String localUID = getLocalUID();
         experimentController.addExperimentToDB(experiment, db, localUID);
+        currentUser.addSub(localUID, experiment.getUID(), db);
     }
 
     /**
@@ -132,6 +139,18 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         return sp.getString("uid", "0");
     }
 
+    /**
+     * This method brings the user to an activity that shows a list of experiments they are
+     * subscribed  to.
+     */
+    private void viewSubscribedExpList() {
+        Intent intent = new Intent(this, SubscribedActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", currentUser);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +169,23 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         showAddExpUiButton = findViewById(R.id.showAddExpUiButton);
         userProfileButton = findViewById(R.id.userProfileButton);
         qrScanner = findViewById(R.id.qrScanner);
+        subButton = findViewById(R.id.subButton);
+
+        // used documentation at https://developer.android.com/guide/topics/ui/controls/spinner
+        searchSpinner = (Spinner) findViewById(R.id.search_spinner);
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.search, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        searchSpinner.setAdapter(adapter);
+
+        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.experiments, android.R.layout.simple_spinner_item);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //expType.setAdapter(adapter);
+        //expType.setOnItemSelectedListener(this);
 
         searchBar = findViewById(R.id.searchBar);
         searchButton = findViewById(R.id.searchButton);
@@ -197,6 +233,12 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
             }
         });
 
+        subButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                viewSubscribedExpList();
+            }
+        });
+
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -213,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                     String uId          = (String)  doc.getData().get("uid");
                     boolean viewable    = (boolean) doc.getData().get("viewable");
                     boolean editable    = (boolean) doc.getData().get("editable");
+
 
 
                     String localUID = getLocalUID();
@@ -260,6 +303,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     @Override
     public void onOkPressed(Experiment newExp) {
         addExperiment(newExp);
+        //TODO subscribe creator of experiment, maybe in addExperiment method
     }
 
     @Override
@@ -278,7 +322,11 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
      */
     public void openSearchResults(String keyword){
         Intent intent = new Intent(this, SearchResults.class);
-        intent.putExtra("keyword", keyword);
+        Bundle bundle = new Bundle();
+        bundle.putString("keyword", keyword);
+        bundle.putSerializable("user", currentUser);
+        bundle.putString("searchType",searchSpinner.getSelectedItem().toString());
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
@@ -332,29 +380,12 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
             Map<String, ArrayList<String>> uExps = new HashMap<>();
 
 
-
-            /*collectionReference
-                    .add(data)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error adding document", e);
-                        }
-                    });*/
-
-
-
             DocumentReference documentReference = db.collection("Users").document();
             data.put("email","");    // put empty values for now
             data.put("name","");
             data.put("uid","");
             data.put("username","");
+            data.put("cleanedUsername","");
 
             uExps.put("ownedExperiments", experiments);
             uExps.put("participatingExperiments", experiments);

@@ -35,6 +35,7 @@ public class UserProfileFragment extends DialogFragment {
     private TextView userID;
     private EditText userEmail;
     private EditText userName;
+    private EditText userUsername;
     private User user;
 
     private FirebaseFirestore db;
@@ -53,7 +54,7 @@ public class UserProfileFragment extends DialogFragment {
      * @param username new username
      * @param email new email
      */
-    public void updateFirebaseUser(String userID, String username, String email)
+    public void updateFirebaseUser(String userID, String username, String email, String userusername)
     {
         //Update firebase name and email
         db = FirebaseFirestore.getInstance();
@@ -61,6 +62,38 @@ public class UserProfileFragment extends DialogFragment {
 
         //Update name
         userReference.update("name", username)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                    }
+                });
+
+        //Update username
+        userReference.update("username", userusername)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                    }
+                });
+
+        //Update cleaned username
+        String cleanUserUsername = userusername.trim().toLowerCase();
+
+        userReference.update("cleanedUsername", cleanUserUsername)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -119,6 +152,7 @@ public class UserProfileFragment extends DialogFragment {
         userID = view.findViewById(R.id.userID);
         userName = view.findViewById(R.id.userName);
         userEmail = view.findViewById(R.id.userEmail);
+        userUsername = view.findViewById(R.id.userUsername);
         bundle = getArguments();
 
         if (bundle != null) {
@@ -128,6 +162,7 @@ public class UserProfileFragment extends DialogFragment {
             userID.setText(user.getUid());
             userName.setText(user.getName());
             userEmail.setText(user.getEmail());
+            userUsername.setText(user.getUsername());
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -141,8 +176,9 @@ public class UserProfileFragment extends DialogFragment {
                         //Update local name and email
                         user.setName(userName.getText().toString());
                         user.setEmail(userEmail.getText().toString());
+                        user.setUsername(userUsername.getText().toString());
 
-                        updateFirebaseUser(user.getUid(), userName.getText().toString(), userEmail.getText().toString());
+                        updateFirebaseUser(user.getUid(), userName.getText().toString(), userEmail.getText().toString(), userUsername.getText().toString());
 
                     }
                 }).create();

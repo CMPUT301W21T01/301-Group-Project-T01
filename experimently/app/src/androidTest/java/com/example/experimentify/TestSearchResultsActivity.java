@@ -47,13 +47,13 @@ public class TestSearchResultsActivity {
         solo.assertCurrentActivity("Wrong activity",MainActivity.class);
 
 
-        solo.enterText((EditText) solo.getView(R.id.searchBar),"Nice");
+        solo.enterText((EditText) solo.getView(R.id.searchBar),"ADMIN");
         solo.sleep(2000); // 2s
 
         solo.clickOnView(searchButton);
         solo.sleep(2000); // 2s
 
-        assertTrue(solo.searchText("Nice"));
+        assertTrue(solo.searchText("admin"));
 
         // now click on the item in the list to open the activity
         // solo.clickInList(1);
