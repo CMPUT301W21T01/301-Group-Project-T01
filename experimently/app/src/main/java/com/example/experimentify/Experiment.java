@@ -55,7 +55,7 @@ public class Experiment implements Parcelable {
     protected Experiment(Parcel in) {
         /*Make sure these variable are assigned in the same order as the normal constructor
         and writeToParcel() or else the attributes will be set to null for god knows what reason.
-          */
+         */
         description = in.readString();
         date = in.readString();
         region = in.readString();
