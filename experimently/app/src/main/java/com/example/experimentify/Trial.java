@@ -9,21 +9,10 @@ public abstract class Trial {
     private String date;
 
 
-    public Trial(String UID, String EID, String trialLocation, String date){
+    public Trial(String UID, String EID){
         this.UID = UID;
         this.trialLocation = trialLocation;
         this.EID = EID;
-        this.date = date;
-        location = null;
-
-    }
-
-    public Trial(String UID, String EID, String trialLocation, String date, Location location){
-        this.UID = UID;
-        this.trialLocation = trialLocation;
-        this.EID = EID;
-        this.date = date;
-        this.location = location;
     }
 
     public String getUID() {
@@ -70,7 +59,7 @@ public abstract class Trial {
         return date;
     }
 
-    //    public abstract int getInteger();
-//
-//    public abstract float getFloat();
+    public void setDate(String date) {
+        this.date = date;
+    }
 }

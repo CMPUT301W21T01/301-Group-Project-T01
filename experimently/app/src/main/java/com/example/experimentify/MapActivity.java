@@ -23,6 +23,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -108,7 +109,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             gMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
         }
-
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
