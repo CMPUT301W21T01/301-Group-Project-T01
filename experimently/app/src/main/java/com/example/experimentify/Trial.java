@@ -1,12 +1,14 @@
 package com.example.experimentify;
 
+import com.firebase.geofire.GeoLocation;
+
 public abstract class Trial {
     private String UID; //user id
-    private String trialLocation; //might need to change to geohash/location
+    private Location trialLocation; //might need to change to geohash/location
     private String TID; //trial id
     private String EID; //exp id
 
-    public Trial(String UID, String EID, String trialLocation){
+    public Trial(String UID, String EID){
         this.UID = UID;
         this.trialLocation = trialLocation;
         this.EID = EID;
@@ -16,7 +18,7 @@ public abstract class Trial {
         return UID;
     }
 
-    public String getTrialLocation() {
+    public Location getTrialLocation() {
         return trialLocation;
     }
 
@@ -32,7 +34,7 @@ public abstract class Trial {
         this.UID = UID;
     }
 
-    public void setTrialLocation(String trialLocation) {
+    public void setTrialLocation(Location trialLocation) {
         this.trialLocation = trialLocation;
     }
 

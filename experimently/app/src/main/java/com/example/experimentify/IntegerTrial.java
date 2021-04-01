@@ -4,7 +4,7 @@ public class IntegerTrial extends Trial {
     private int integerCount;
     private int intEntered;
 
-    public IntegerTrial(String userId, String eID, String trialLocation) {
+    public IntegerTrial(String userId, String eID, Location trialLocation) {
         super(userId, eID, trialLocation);
     }
 

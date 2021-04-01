@@ -87,6 +87,7 @@ public class ExperimentActivity extends AppCompatActivity {
 
     public void enterTrialDetails(Activity activity) {
         Intent intent = new Intent(activity, MapActivity.class);
+        intent.putExtra("experiment", exp);
         activity.startActivity(intent);
     }
 
@@ -176,8 +177,6 @@ public class ExperimentActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             enterTrialDetails(ExperimentActivity.this);
-                            CountTrials countTrial = new CountTrials(localUID, exp.getUID(), exp.getRegion());
-                            experimentController.addTrialToDB(countTrial, db);
                         }
                     });
                 }
@@ -188,13 +187,13 @@ public class ExperimentActivity extends AppCompatActivity {
                     passButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            enterTrialDetails(ExperimentActivity.this);
                         }
                     });
                     failButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            enterTrialDetails(ExperimentActivity.this);
                         }
                     });
                 }
@@ -202,11 +201,23 @@ public class ExperimentActivity extends AppCompatActivity {
                 if (exp.getExpType().equals("Integer")) {
                     integer.setVisibility(View.VISIBLE);
                     showSubmitButton();
+                    submitButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            enterTrialDetails(ExperimentActivity.this);
+                        }
+                    });
                 }
 
                 if (exp.getExpType() .equals("Measurement")) {
                     measure.setVisibility(View.VISIBLE);
                     showSubmitButton();
+                    submitButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            enterTrialDetails(ExperimentActivity.this);
+                        }
+                    });
 
                 }
 

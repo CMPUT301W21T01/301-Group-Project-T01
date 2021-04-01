@@ -5,7 +5,7 @@ public class MeasurementTrial extends Trial {
     private float measurementEntered;
 
 
-    public MeasurementTrial(String userId, String eID, String trialLocation) {
+    public MeasurementTrial(String userId, String eID, Location trialLocation) {
         super(userId, eID, trialLocation);
     }
 
