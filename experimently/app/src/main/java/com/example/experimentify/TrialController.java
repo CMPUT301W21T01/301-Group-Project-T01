@@ -16,7 +16,7 @@ public class TrialController {
         db = databaseSingleton.getDB();
     }
 
-    //Used @Nullable to prevent 4 separate methods
+    //Integer variation of addTrialToDB
     public void addTrialToDB(Trial newTrial, int result, @Nullable Location location){
 
         Map<String, Object> enterData = new HashMap<>();
@@ -44,6 +44,7 @@ public class TrialController {
         trialRef.update("TID", TID);
     };
 
+    //Float variation of addTrialToDB
     public void addTrialToDB(Trial newTrial, float result, @Nullable Location location){
 
         Map<String, Object> enterData = new HashMap<>();

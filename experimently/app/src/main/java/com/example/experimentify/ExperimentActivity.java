@@ -119,6 +119,7 @@ public class ExperimentActivity extends AppCompatActivity {
         String localUID = settings.getString("uid", "0");
 
         ExperimentController experimentController = new ExperimentController(this);
+        TrialController trialController = new TrialController();
 
         statsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,8 +173,8 @@ public class ExperimentActivity extends AppCompatActivity {
                     countButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            CountTrials countTrial = new CountTrials(localUID, expUID, expRegion);
-                            experimentController.addTrialToDB(countTrial, db);
+                            CountTrial countTrial = new CountTrial(localUID, expUID, expRegion);
+                            trialController.addTrialToDB(countTrial, countTrial.getValue());
                         }
                     });
                 }
@@ -209,7 +210,7 @@ public class ExperimentActivity extends AppCompatActivity {
                                 return;
                             }
                             IntegerTrial integerTrial = new IntegerTrial(localUID, expUID, expRegion, intInfo);
-                            experimentController.addTrialToDB(integerTrial, db);
+                            trialController.addTrialToDB(integerTrial, db);
                         }
                     });
 
@@ -229,7 +230,7 @@ public class ExperimentActivity extends AppCompatActivity {
                                 return;
                             }
                             MeasurementTrial measurementTrial = new MeasurementTrial(localUID, expUID, expRegion, measurementInfo);
-                            experimentController.addTrialToDB(measurementTrial, db);
+                            trialController.addTrialToDB(measurementTrial, db);
                         }
                     });
                 }
