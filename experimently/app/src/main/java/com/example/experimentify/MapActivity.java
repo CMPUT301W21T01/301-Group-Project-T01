@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -11,6 +13,7 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -31,6 +35,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Button ok;
     private Button cancelButton;
     private Button search;
+    private DatePickerDialog.OnDateSetListener selectDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         Intent intent = getIntent();
     }
+
+    private void createCalendar() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog calendarDialog = new DatePickerDialog(this, (DatePickerDialog.OnDateSetListener) selectDate, year, month, day);
+        calendarDialog.show();
+    }
+
 
     @Override
     public void onResume() {
@@ -93,6 +109,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         }
 
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createCalendar();
+            }
+        });
+        selectDate = new DatePickerDialog.OnDateSetListener(){
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String dat = year + "/" + (month + 1) + "/" + dayOfMonth;
+                date.setText(dat);
+            }
+
+        };
 
     }
 }
