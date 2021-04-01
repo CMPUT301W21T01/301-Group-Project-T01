@@ -184,12 +184,8 @@ public class ExperimentActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             enterTrialDetails(ExperimentActivity.this);
-<<<<<<< HEAD
                             CountTrial countTrial = new CountTrial(localUID, expUID, expRegion);
                             trialController.addTrialToDB(countTrial, countTrial.getValue());
-
-=======
->>>>>>> locations
                         }
                     });
                 }
@@ -217,7 +213,6 @@ public class ExperimentActivity extends AppCompatActivity {
                     submitButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-<<<<<<< HEAD
                             try {
                                 intInfo = Integer.parseInt(intInput.getText().toString());
                             }
@@ -226,15 +221,10 @@ public class ExperimentActivity extends AppCompatActivity {
                                 return;
                             }
                             IntegerTrial integerTrial = new IntegerTrial(localUID, expUID, expRegion, intInfo);
+                            enterTrialDetails(ExperimentActivity.this);
                             trialController.addTrialToDB(integerTrial, db);
                         }
                     });
-
-=======
-                            enterTrialDetails(ExperimentActivity.this);
-                        }
-                    });
->>>>>>> locations
                 }
 
                 if (exp.getExpType() .equals("Measurement")) {
@@ -243,7 +233,6 @@ public class ExperimentActivity extends AppCompatActivity {
                     submitButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-<<<<<<< HEAD
                             try {
                                 measurementInfo = Float.parseFloat(measureInput.getText().toString());
                             }
@@ -252,15 +241,10 @@ public class ExperimentActivity extends AppCompatActivity {
                                 return;
                             }
                             MeasurementTrial measurementTrial = new MeasurementTrial(localUID, expUID, expRegion, measurementInfo);
+                            enterTrialDetails(ExperimentActivity.this);
                             trialController.addTrialToDB(measurementTrial, db);
                         }
                     });
-=======
-                            enterTrialDetails(ExperimentActivity.this);
-                        }
-                    });
-
->>>>>>> locations
                 }
 
 

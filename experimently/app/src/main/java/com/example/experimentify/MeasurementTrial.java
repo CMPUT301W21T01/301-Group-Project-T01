@@ -3,7 +3,6 @@ package com.example.experimentify;
 public class MeasurementTrial extends Trial {
     private float value;
 
-<<<<<<< HEAD
     public MeasurementTrial(String userId, String eID, float measurement) {
         super(userId, eID);
         value = measurement;
