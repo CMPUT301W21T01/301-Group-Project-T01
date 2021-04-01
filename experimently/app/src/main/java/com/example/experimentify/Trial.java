@@ -5,11 +5,20 @@ public abstract class Trial {
     private String trialLocation; //might need to change to geohash/location
     private String TID; //trial id
     private String EID; //exp id
+    public Location location;
 
     public Trial(String UID, String EID, String trialLocation){
         this.UID = UID;
         this.trialLocation = trialLocation;
         this.EID = EID;
+        location = null;
+    }
+
+    public Trial(String UID, String EID, String trialLocation, Location location){
+        this.UID = UID;
+        this.trialLocation = trialLocation;
+        this.EID = EID;
+        this.location = location;
     }
 
     public String getUID() {
@@ -43,4 +52,6 @@ public abstract class Trial {
     public void setEID(String EID) {
         this.EID = EID;
     }
+
+    
 }

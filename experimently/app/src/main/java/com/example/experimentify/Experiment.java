@@ -8,7 +8,6 @@ import android.os.Parcelable;
 
 import androidx.annotation.RequiresApi;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -29,6 +28,7 @@ public class Experiment implements Parcelable {
     private String uid;
     private boolean editable;
     private String expType;
+    private long totalTrials;
 
     public Experiment(String description, String region, long minTrials, String date, boolean locationRequired, String expType) {
         this.description = description;
@@ -40,6 +40,7 @@ public class Experiment implements Parcelable {
         editable = true;
         ended = false;
         viewable = true;
+        totalTrials = 0;
     }
 
     protected Experiment(Parcel in) {
@@ -56,6 +57,7 @@ public class Experiment implements Parcelable {
         ended = in.readByte() != 0;
         viewable = in.readByte() != 0;
         uid = in.readString();
+        totalTrials = in.readLong();
     }
 
     public static final Creator<Experiment> CREATOR = new Creator<Experiment>() {
@@ -161,6 +163,7 @@ public class Experiment implements Parcelable {
         dest.writeBoolean(ended);
         dest.writeBoolean(viewable);
         dest.writeString(uid);
+        dest.writeLong(totalTrials);
 
     }
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,7 +46,10 @@ public class ExperimentActivity extends AppCompatActivity {
     private Button qrCodeGene;
     private ImageView qrCodeShow;
 
+    private int intInfo;
+    private float measurementInfo;
 
+    private static final String TAG = ExperimentActivity.class.getName();
 
     public static final String PREFS_NAME = "PrefsFile";
 
@@ -161,12 +165,14 @@ public class ExperimentActivity extends AppCompatActivity {
             });
             // If editable then display ui for conducting trials, else show message
             if (exp.isEditable()) {
+                String expUID = exp.getUID();
+                String expRegion = exp.getRegion();
                 if (exp.getExpType().equals("Count")) {
                     count.setVisibility(View.VISIBLE);
                     countButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            CountTrials countTrial = new CountTrials(localUID, exp.getUID(), exp.getRegion());
+                            CountTrials countTrial = new CountTrials(localUID, expUID, expRegion);
                             experimentController.addTrialToDB(countTrial, db);
                         }
                     });
@@ -192,12 +198,40 @@ public class ExperimentActivity extends AppCompatActivity {
                 if (exp.getExpType().equals("Integer")) {
                     integer.setVisibility(View.VISIBLE);
                     showSubmitButton();
+                    submitButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                intInfo = Integer.parseInt(intInput.getText().toString());
+                            }
+                            catch (NumberFormatException e){
+                                Log.d(TAG, "Integer/onClick/NumberFormatException: " + intInput + e);
+                                return;
+                            }
+                            IntegerTrial integerTrial = new IntegerTrial(localUID, expUID, expRegion, intInfo);
+                            experimentController.addTrialToDB(integerTrial, db);
+                        }
+                    });
+
                 }
 
                 if (exp.getExpType() .equals("Measurement")) {
                     measure.setVisibility(View.VISIBLE);
                     showSubmitButton();
-
+                    submitButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                measurementInfo = Float.parseFloat(measureInput.getText().toString());
+                            }
+                            catch (NumberFormatException e){
+                                Log.d(TAG, "Measurement/onClick/NumberFormatException: " + measureInput + e);
+                                return;
+                            }
+                            MeasurementTrial measurementTrial = new MeasurementTrial(localUID, expUID, expRegion, measurementInfo);
+                            experimentController.addTrialToDB(measurementTrial, db);
+                        }
+                    });
                 }
 
 

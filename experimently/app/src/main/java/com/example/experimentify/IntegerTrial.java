@@ -1,22 +1,27 @@
 package com.example.experimentify;
 
 public class IntegerTrial extends Trial {
-    private int integerCount;
-    private int intEntered;
+    private int value;
 
-    public IntegerTrial(String userId, String eID, String trialLocation) {
+    public IntegerTrial(String userId, String eID, String trialLocation, int userInteger) {
         super(userId, eID, trialLocation);
+        value = userInteger;
     }
 
-    public void addIntCount() {
-        integerCount = 1;
+    public IntegerTrial(String userId, String eID, String trialLocation, Location location, int userInteger) {
+        super(userId, eID, trialLocation, location);
+        value = userInteger;
     }
 
     public int getIntEntered() {
-        return intEntered;
+        return value;
     }
 
     public void setIntEntered(int intEntered) {
-        this.intEntered = intEntered;
+        this.value = intEntered;
+    }
+
+    public int getValue() {
+        return value;
     }
 }
