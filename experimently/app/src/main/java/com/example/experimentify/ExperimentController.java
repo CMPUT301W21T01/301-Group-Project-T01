@@ -30,6 +30,7 @@ import java.util.Map;
 public class ExperimentController{
     private ArrayList<Experiment> experiments;
     private ArrayAdapter<Experiment> listAdapter;
+    private FirebaseFirestore db = null;
 
     public ExperimentController(Context context) {
         experiments = new ArrayList<Experiment>();
@@ -203,24 +204,7 @@ public class ExperimentController{
         return experiments.get(pos);
     }
 
-    public void addTrialToDB(Trial newTrial, FirebaseFirestore db) {
-        Map<String, Object> enterData = new HashMap<>();
 
-        DocumentReference newRef = db.collection("Experiments").document(newTrial.getEID()).collection("Trials").document();
-//        enterData.put("TID", newTrial.getTID());
-        enterData.put("UID", newTrial.getUID());
-//        TODO: add dependencies, understand geohashes, implement to Location class?
-//        requires geohashes https://firebase.google.com/docs/firestore/solutions/geoqueries#java_1
-//        enterData.put("Location")
-
-        String TID = newRef.getId();
-
-        newTrial.setTID(TID);
-        newRef.set(enterData);
-
-        DocumentReference trialRef = db.collection("Experiments").document(newTrial.getEID()).collection("Trials").document(TID);
-        trialRef.update("TID", TID);
-    }
 }
 
 

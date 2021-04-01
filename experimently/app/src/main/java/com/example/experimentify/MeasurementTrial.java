@@ -19,5 +19,4 @@ public class MeasurementTrial extends Trial {
     public void setValue(float measurementEntered) {
         this.value = measurementEntered;
     }
-
 }

@@ -53,5 +53,7 @@ public abstract class Trial {
         this.EID = EID;
     }
 
-    
+//    public abstract int getInteger();
+//
+//    public abstract float getFloat();
 }
