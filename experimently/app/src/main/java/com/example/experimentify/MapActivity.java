@@ -1,13 +1,7 @@
 package com.example.experimentify;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -20,13 +14,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.firestore.GeoPoint;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -42,8 +38,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private DatePickerDialog.OnDateSetListener selectDate;
     private MarkerOptions last = null;
     private Experiment exp;
-    private Trial trial;
     private Location loc;
+    private TrialController trialController;
+    private String dateValue;
+    private int trialResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +56,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         ok = findViewById(R.id.okButton);
         cancelButton = findViewById(R.id.cancel);
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            exp = intent.getParcelableExtra("experiment");
+        trialController = new TrialController();
 
-        }
+//        Intent intent = getIntent();
+//        Bundle extras = intent.getExtras();
+//        if (extras != null) {
+//            exp = intent.getParcelableExtra("experiment");
+//        }
+
+
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,17 +76,29 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Trial trial;
-                if (exp.getExpType().equals("Count")) {
-                    trial = new CountTrials(exp.getUID(), exp.getExperimentId(), loc);
-                } else if (exp.getExpType().equals("Binomial")) {
-                    // trial = new BinomialTrial(exp.getUID(), exp.getExperimentId(),);
-                } else if (exp.getExpType().equals("Integer")) {
-                    //trial = new IntegerTrial(exp.getUID(), exp.getExperimentId(),searchLoc.getText().toString());
-                } else if (exp.getExpType().equals("Measurement")) {
-                    //  trial = new MeasurementTrial(exp.getUID(), exp.getExperimentId(),searchLoc.getText().toString());
+//                if (exp.getExpType().equals("Count")) {
+//                    trial = new CountTrial(exp.getUID(), exp.getExperimentId());
+//                } else if (exp.getExpType().equals("Binomial")) {
+//                    // trial = new BinomialTrial(exp.getUID(), exp.getExperimentId(),);
+//                } else if (exp.getExpType().equals("Integer")) {
+//                    //trial = new IntegerTrial(exp.getUID(), exp.getExperimentId(),searchLoc.getText().toString());
+//                } else if (exp.getExpType().equals("Measurement")) {
+//                    //  trial = new MeasurementTrial(exp.getUID(), exp.getExperimentId(),searchLoc.getText().toString());
+//                }
+//                trialController.addTrialToDB(trial, result);
+//                if (exp.getExpType().equals("Measurement"){
+//                    trial = new MeasurementTrial(exp.getUID(), exp.getExperimentId(),);
+//                }
+                Intent i = new Intent();
+                i.putExtra("date", dateValue);
+                if (loc != null){
+                    i.putExtra("location", loc);
+                    setResult(2, i);
+                    finish();
                 }
-                Toast.makeText(MapActivity.this, "Trial Successfully Created!", Toast.LENGTH_SHORT).show();
+                setResult(1, i);
+                finish();
+//                Toast.makeText(MapActivity.this, "Trial Successfully Created!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -156,8 +169,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         selectDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String dat = year + "/" + (month + 1) + "/" + dayOfMonth;
-                date.setText(dat);
+                dateValue = year + "/" + (month + 1) + "/" + dayOfMonth;
+                date.setText(dateValue);
             }
 
         };

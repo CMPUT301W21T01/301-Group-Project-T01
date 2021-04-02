@@ -1,5 +1,7 @@
 package com.example.experimentify;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.DocumentReference;
@@ -10,6 +12,7 @@ import java.util.Map;
 
 public class TrialController {
     FirebaseFirestore db;
+    private static final String TAG = ExperimentActivity.class.getName();
 
     public TrialController(){
         DatabaseSingleton databaseSingleton = new DatabaseSingleton();
@@ -25,6 +28,8 @@ public class TrialController {
 //        enterData.put("TID", newTrial.getTID());
         enterData.put("UID", newTrial.getUID());
         enterData.put("result", result);
+        Log.d(TAG, "addTrialToDB: GIVE ME DATE - " + newTrial.getDate());
+        Log.d(TAG, "addTrialToDB: GIVE ME UID - " + newTrial.getUID());
         enterData.put("date", newTrial.getDate());
 
         if (location != null){

@@ -1,11 +1,11 @@
 package com.example.experimentify;
 
 public class BinomialTrial extends Trial{
-    private int result;
+    private int value;
 
-    public BinomialTrial(String userId, String eID, int result) {
+    public BinomialTrial(String userId, String eID, int value) {
         super(userId, eID);
-        this.result = result;
+        this.value = value;
     }
 
 }

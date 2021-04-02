@@ -12,13 +12,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.WriterException;
-
-import java.io.Serializable;
 
 // AppCompatActivity
 public class ExperimentActivity extends AppCompatActivity {
@@ -59,6 +58,10 @@ public class ExperimentActivity extends AppCompatActivity {
     private FirebaseFirestore db;
 
     private Trial newTrial;
+    private String dateThatHasBeenSet;
+
+    private Location locationInfo = null;
+    private String dateInfo;
 
     /**
      * This method sets text in the UI.
@@ -91,11 +94,23 @@ public class ExperimentActivity extends AppCompatActivity {
 
     public void enterTrialDetails(Activity activity) {
         Intent intent = new Intent(activity, MapActivity.class);
-        intent.putExtra("experiment", exp);
-        activity.startActivity(intent);
+//        intent.putExtra("experiment", exp);
+        activity.startActivityForResult(intent, 1);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        dateInfo = data.getStringExtra("date");
+        Log.d(TAG, "onActivityResult: dateInfo - " + dateInfo);
+
+        if(requestCode == 2){
+            locationInfo = data.getParcelableExtra("location");
+
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,17 +192,24 @@ public class ExperimentActivity extends AppCompatActivity {
             // If editable then display ui for conducting trials, else show message
             if (exp.isEditable()) {
                 String expUID = exp.getUID();
-                String expRegion = exp.getRegion();
                 if (exp.getExpType().equals("Count")) {
                     count.setVisibility(View.VISIBLE);
                     countButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             enterTrialDetails(ExperimentActivity.this);
-                            CountTrial countTrial = new CountTrial(localUID, expUID, expRegion);
-                            trialController.addTrialToDB(countTrial, countTrial.getValue());
+//                            Log.d(TAG, "onClick: dateInfo" + dateInfo);
+//                            Log.d(TAG, "onClick: Did it set date? " + countTrial.getDate());
+                            //code below is for map activity.
+//                            trialController.addTrialToDB(countTrial, countTrial.getValue());
                         }
                     });
+                    CountTrial countTrial = new CountTrial(localUID, expUID);
+                    countTrial.setDate(dateInfo);
+                    if (locationInfo != null){
+                        countTrial.setTrialLocation(locationInfo);
+                    }
+                    trialController.addTrialToDB(countTrial, countTrial.value, locationInfo);
                 }
 
                 if (exp.getExpType().equals("Binomial")) {
@@ -220,9 +242,10 @@ public class ExperimentActivity extends AppCompatActivity {
                                 Log.d(TAG, "Integer/onClick/NumberFormatException: " + intInput + e);
                                 return;
                             }
-                            IntegerTrial integerTrial = new IntegerTrial(localUID, expUID, expRegion, intInfo);
+                            IntegerTrial integerTrial = new IntegerTrial(localUID, expUID, intInfo);
                             enterTrialDetails(ExperimentActivity.this);
-                            trialController.addTrialToDB(integerTrial, db);
+//                            working on countTrial first
+//                            trialController.addTrialToDB(integerTrial);
                         }
                     });
                 }
@@ -240,9 +263,10 @@ public class ExperimentActivity extends AppCompatActivity {
                                 Log.d(TAG, "Measurement/onClick/NumberFormatException: " + measureInput + e);
                                 return;
                             }
-                            MeasurementTrial measurementTrial = new MeasurementTrial(localUID, expUID, expRegion, measurementInfo);
+                            MeasurementTrial measurementTrial = new MeasurementTrial(localUID, expUID, measurementInfo);
                             enterTrialDetails(ExperimentActivity.this);
-                            trialController.addTrialToDB(measurementTrial, db);
+//                            working on countTrial first
+//                            trialController.addTrialToDB(measurementTrial, db);
                         }
                     });
                 }
