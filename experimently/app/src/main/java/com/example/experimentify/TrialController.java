@@ -1,7 +1,5 @@
 package com.example.experimentify;
 
-import android.util.Log;
-
 import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.DocumentReference;
@@ -28,8 +26,8 @@ public class TrialController {
 //        enterData.put("TID", newTrial.getTID());
         enterData.put("UID", newTrial.getUID());
         enterData.put("result", result);
-        Log.d(TAG, "addTrialToDB: GIVE ME DATE - " + newTrial.getDate());
-        Log.d(TAG, "addTrialToDB: GIVE ME UID - " + newTrial.getUID());
+//        Log.d(TAG, "addTrialToDB: GIVE ME DATE - " + newTrial.getDate());
+//        Log.d(TAG, "addTrialToDB: GIVE ME UID - " + newTrial.getUID());
         enterData.put("date", newTrial.getDate());
 
         if (location != null){
