@@ -5,7 +5,7 @@ public class IntegerTrial extends Trial {
     private int intEntered;
 
     public IntegerTrial(String userId, String eID, Location trialLocation) {
-        super(userId, eID, trialLocation);
+        super(userId, eID);
     }
 
     public void addIntCount() {

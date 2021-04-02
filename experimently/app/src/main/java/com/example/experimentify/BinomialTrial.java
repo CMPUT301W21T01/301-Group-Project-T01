@@ -4,7 +4,7 @@ public class BinomialTrial extends Trial{
     private int fail ;
     private int pass;
     public BinomialTrial(String userId, String eID, Location trialLocation) {
-        super(userId, eID, trialLocation);
+        super(userId, eID);
     }
 
     public void addFail(){

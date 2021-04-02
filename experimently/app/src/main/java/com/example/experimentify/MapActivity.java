@@ -125,7 +125,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         gMap.setMyLocationEnabled(true);
     }
 
-    public Location onMapReady(View view) {
+    public void onMapReady(View view) {
         EditText searchLoc = findViewById(R.id.searchMap);
         String location = searchLoc.getText().toString();
         List<Address> addressList = null;
@@ -162,6 +162,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         };
 
-        return loc;
+
     }
 }

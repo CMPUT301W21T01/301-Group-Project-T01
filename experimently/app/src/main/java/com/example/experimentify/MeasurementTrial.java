@@ -6,7 +6,7 @@ public class MeasurementTrial extends Trial {
 
 
     public MeasurementTrial(String userId, String eID, Location trialLocation) {
-        super(userId, eID, trialLocation);
+        super(userId, eID);
     }
 
 

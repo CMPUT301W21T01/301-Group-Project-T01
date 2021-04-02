@@ -12,6 +12,21 @@ public class Location {
         this.address = address;
     }
 
+    public LatLng getLatLng(Address address){
+        LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+        return  latLng;
+    }
+
+    public double getLatitude(){
+        double latitude = address.getLatitude();
+        return  latitude;
+    }
+
+    public double getLong(){
+        double longitude = address.getLongitude();
+        return longitude;
+    }
+
     public GeoLocation getGeoLocation(Address address){
         return new GeoLocation(address.getLatitude(), address.getLongitude());
 
