@@ -57,8 +57,11 @@ public class ExperimentActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
 
+    private Activity activity;
+
     private Trial newTrial;
     private String dateThatHasBeenSet;
+    TrialController trialController;
 
     private Location locationInfo = null;
     private String dateInfo;
@@ -92,24 +95,25 @@ public class ExperimentActivity extends AppCompatActivity {
 
     private Trial trial;
 
-    public void enterTrialDetails(Activity activity) {
-        Intent intent = new Intent(activity, MapActivity.class);
-//        intent.putExtra("experiment", exp);
-        activity.startActivityForResult(intent, 1);
-    }
+//    public void enterTrialDetails(Activity activity) {
+//        Intent intent = new Intent(activity, MapActivity.class);
+//        activity.startActivityForResult(intent, 1);
+//        Log.d(TAG, "enterTrialDetails: 2");
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         dateInfo = data.getStringExtra("date");
-        Log.d(TAG, "onActivityResult: dateInfo - " + dateInfo);
+        trial.setDate(dateInfo);
+        Log.d(TAG, "onActivityResult: 3");
 
         if(requestCode == 2){
             locationInfo = data.getParcelableExtra("location");
-
+            trial.setTrialLocation(locationInfo);
         }
-
+        trialController.addTrialToDB(trial, trial.getValue(), trial.getTrialLocation());
     }
 
     @Override
@@ -139,12 +143,13 @@ public class ExperimentActivity extends AppCompatActivity {
         qrCodeShow = findViewById(R.id.qrCodeView);
 
         db = FirebaseFirestore.getInstance();
+        activity = ExperimentActivity.this;
 
         SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
         String localUID = settings.getString("uid", "0");
 
         ExperimentController experimentController = new ExperimentController(this);
-        TrialController trialController = new TrialController();
+        trialController = new TrialController();
 
         statsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,23 +199,26 @@ public class ExperimentActivity extends AppCompatActivity {
                 String expUID = exp.getUID();
                 if (exp.getExpType().equals("Count")) {
                     count.setVisibility(View.VISIBLE);
+                    trial = new CountTrial(localUID, expUID);
                     countButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            enterTrialDetails(ExperimentActivity.this);
+                            Log.d(TAG, "onClick: 1");
+                            Intent intent = new Intent(ExperimentActivity.this, MapActivity.class);
+                            activity.startActivityForResult(intent, 1);
 //                            Log.d(TAG, "onClick: dateInfo" + dateInfo);
 //                            Log.d(TAG, "onClick: Did it set date? " + countTrial.getDate());
                             //code below is for map activity.
 //                            trialController.addTrialToDB(countTrial, countTrial.getValue());
+                            trial.setDate(dateInfo);
+                            if (locationInfo != null) {
+                                trial.setTrialLocation(locationInfo);
+                            }
                         }
                     });
-                    CountTrial countTrial = new CountTrial(localUID, expUID);
-                    countTrial.setDate(dateInfo);
-                    if (locationInfo != null){
-                        countTrial.setTrialLocation(locationInfo);
-                    }
-                    trialController.addTrialToDB(countTrial, countTrial.value, locationInfo);
+
                 }
+
 
                 if (exp.getExpType().equals("Binomial")) {
                     binomial.setVisibility(View.VISIBLE);
@@ -218,13 +226,13 @@ public class ExperimentActivity extends AppCompatActivity {
                     passButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            enterTrialDetails(ExperimentActivity.this);
+//                            enterTrialDetails(ExperimentActivity.this);
                         }
                     });
                     failButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            enterTrialDetails(ExperimentActivity.this);
+//                            enterTrialDetails(ExperimentActivity.this);
                         }
                     });
                 }
@@ -243,7 +251,7 @@ public class ExperimentActivity extends AppCompatActivity {
                                 return;
                             }
                             IntegerTrial integerTrial = new IntegerTrial(localUID, expUID, intInfo);
-                            enterTrialDetails(ExperimentActivity.this);
+//                            enterTrialDetails(ExperimentActivity.this);
 //                            working on countTrial first
 //                            trialController.addTrialToDB(integerTrial);
                         }
@@ -264,7 +272,7 @@ public class ExperimentActivity extends AppCompatActivity {
                                 return;
                             }
                             MeasurementTrial measurementTrial = new MeasurementTrial(localUID, expUID, measurementInfo);
-                            enterTrialDetails(ExperimentActivity.this);
+//                            enterTrialDetails(ExperimentActivity.this);
 //                            working on countTrial first
 //                            trialController.addTrialToDB(measurementTrial, db);
                         }

@@ -1,18 +1,13 @@
 package com.example.experimentify;
 
 public class MeasurementTrial extends Trial {
-    private float value;
 
     public MeasurementTrial(String userId, String eID, float measurement) {
         super(userId, eID);
-        value = measurement;
+        this.value = measurement;
     }
 
-    public float getValue() {
-        return value;
-    }
-
-    public void setValue(float measurementEntered) {
-        this.value = measurementEntered;
+    public void setValue(Double value) {
+        this.value = value;
     }
 }

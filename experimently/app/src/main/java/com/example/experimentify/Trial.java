@@ -6,6 +6,7 @@ public abstract class Trial {
     private String TID; //trial id
     private String EID; //exp id
     private String date;
+    protected Number value;
 
     public Trial(String UID, String EID){
         this.UID = UID;
@@ -52,4 +53,9 @@ public abstract class Trial {
     public void setDate(String date) {
         this.date = date;
     }
+
+    public Number getValue() {
+        return value;
+    }
+
 }
