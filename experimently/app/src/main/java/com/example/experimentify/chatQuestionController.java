@@ -38,13 +38,13 @@ public class chatQuestionController {
      * @param newQuestion experiment to bed added
      * @param db          the database the experiment will be saved to
      */
-    public void addQuestionToDB(chatQuestion newQuestion, FirebaseFirestore db, String uid) {
+    public void addQuestionToDB(chatQuestion newQuestion, FirebaseFirestore db) {
         String EID = newQuestion.getEID();
-        DocumentReference newRef = db.collection("Experiment").document(EID).collection("Questions").document();
+        DocumentReference newRef = db.collection("Experiments").document(EID).collection("Questions").document();
 
         Map<String, Object> enterData = new HashMap<>();
         enterData.put("description", newQuestion.getDescription());
-        enterData.put("uid", uid);
+        enterData.put("uid", newQuestion.getUID());
         enterData.put("date", newQuestion.getDate());
         enterData.put("eid", EID);
         newRef.set(enterData);

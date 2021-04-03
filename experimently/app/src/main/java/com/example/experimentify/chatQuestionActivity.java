@@ -11,6 +11,8 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class chatQuestionActivity extends AppCompatActivity {
 
     private EditText userQuestionInput;
@@ -22,6 +24,7 @@ public class chatQuestionActivity extends AppCompatActivity {
     private String userID;
     private Intent intent;
     private chatQuestionController questionController;
+    private FirebaseFirestore db;
 
 
 
@@ -42,6 +45,7 @@ public class chatQuestionActivity extends AppCompatActivity {
         userID = settings.getString("uid", "0");
         System.out.println("userID..." + userID);
 
+        db = DatabaseSingleton.getDB();
 
         intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -57,10 +61,9 @@ public class chatQuestionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //TODO: Add question to DB
                 String description = userQuestionInput.getText().toString();
-                System.out.println("userinput..." + description);
+//                System.out.println("userinput..." + description);
                 chatQuestion question = new chatQuestion(description, userID, experimentID);
-                questionController.addQuestionToDB(temp,db,experimentid);
-
+                questionController.addQuestionToDB(question, db);
 
             }
         });
