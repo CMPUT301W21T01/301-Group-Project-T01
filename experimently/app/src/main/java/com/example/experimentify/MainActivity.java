@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         return sp.getString("uid", "0");
     }
 
+
     /**
      * This method brings the user to an activity that shows a list of experiments they are
      * subscribed  to.

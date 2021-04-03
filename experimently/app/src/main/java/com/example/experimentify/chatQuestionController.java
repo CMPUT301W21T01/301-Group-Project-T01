@@ -59,7 +59,7 @@ public class chatQuestionController {
     }
 
     /**
-     * sets the experiments variablee
+     * sets the experiments variable
      */
     public void setQuestion(ArrayList<chatQuestion> set_experiments) {
         questions = set_experiments;

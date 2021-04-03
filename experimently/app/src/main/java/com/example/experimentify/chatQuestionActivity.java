@@ -18,6 +18,12 @@ public class chatQuestionActivity extends AppCompatActivity {
     private Button questionEnter;
     private SharedPreferences settings;
     public static final String PREFS_NAME = "PrefsFile";
+    private String experimentid;
+    private String userid;
+    private Intent intent;
+    private User currentUser;
+
+
 
 
     @Override
@@ -28,13 +34,31 @@ public class chatQuestionActivity extends AppCompatActivity {
         questionEnter = findViewById(R.id.questionInputButton);
         questionsList = findViewById(R.id.questionList);
 
+        //SharedPreferences sp = currentUser.getSettings(getApplicationContext());
+        //userid = sp.getString("uid", "0");
+        //System.out.println("userID..." + userid);
+
+        SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
+        String userid = settings.getString("uid", "0");
+        System.out.println("userID..." + userid);
+
+
+        intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if(extras != null) {
+            experimentid = extras.getString("experiment");
+            System.out.println("experimentID..." + experimentid);
+        }
+
         questionEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO: Add question to DB
+                String temp = userQuestionInput.getText().toString();
+                System.out.println("userinput..." + temp);
 
-                userQuestionInput.getText();
-                //settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
+                //chatQuestionController.addQuestionToDB(temp,db,experimentid);
+
             }
         });
 
@@ -43,7 +67,7 @@ public class chatQuestionActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int pos, long id) {
                 Intent intent = new Intent(chatQuestionActivity.this, chatAnswerActivity.class);
-                //intent.putExtra("qid", queuestionID);
+                //intent.putExtra("qid", questionID);
                 startActivity(intent);
             }
         });
