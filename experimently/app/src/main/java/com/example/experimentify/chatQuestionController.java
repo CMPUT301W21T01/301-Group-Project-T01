@@ -16,40 +16,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class chatController {
+public class chatQuestionController {
 
     private ArrayList<chatQuestion> questions;
     private ArrayAdapter<chatQuestion> listAdapter;
 
-    public chatController(Context context) {
+    public chatQuestionController(Context context) {
         questions = new ArrayList<chatQuestion>();
         listAdapter = new chatQuestionAdaptor(context, questions);
-    }
-    /**
-     * THIS CONSTRUCTOR WITH EMPTY PARAMETERS IS FOR TESTING PURPOSES ONLY, DON'T USE IT IN PRODUCTION (CANT MOCK CONTEXT CURRENTLY) IN ExperimentControllerTests
-     */
-    public chatController(){
-        questions = new ArrayList<chatQuestion>();
-    }
-
-    public ArrayAdapter<chatQuestion> getAdapter() {
-        return listAdapter;
-    }
-
-    public int getSize() {
-        return questions.size();
-    }
-
-    public ArrayList<chatQuestion> getExperiments() {
-        return questions;
     }
 
     /**
      * This method adds an experiment to the database.
+     *
      * @param newQuestion experiment to bed added
-     * @param db the database the experiment will be saved to
+     * @param db          the database the experiment will be saved to
      */
-    public void addQuestionToDB(chatQuestion newQuestion, FirebaseFirestore db, String ownerID){
+    public void addQuestionToDB(chatQuestion newQuestion, FirebaseFirestore db, String ownerID) {
         Map<String, Object> enterData = new HashMap<>();
 
         List<String> searchable = new ArrayList<String>();
@@ -80,15 +63,17 @@ public class chatController {
 
 
     }
+
     /**
      * sets the experiments variablee
      */
-    public void setQuestion(ArrayList<chatQuestion>set_experiments){
+    public void setQuestion(ArrayList<chatQuestion> set_experiments) {
         questions = set_experiments;
     }
 
     /**
      * This method brings the user to the trial screen for the experiment they clicked on.
+     *
      * @param exp experiment to be viewed
      */
     public void viewQuestion(Activity activity, Experiment exp) {
@@ -96,8 +81,10 @@ public class chatController {
         intent.putExtra("clickedExp", exp);
         activity.startActivity(intent);
     }
+
     /**
      * This method returns an experiment based on its position in the ListView.
+     *
      * @param pos position of experiment in ListView
      * @return experiment that was clicked on
      */
@@ -106,7 +93,7 @@ public class chatController {
     }
 
 
-
+}
 
 
 

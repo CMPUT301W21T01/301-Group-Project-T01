@@ -1,5 +1,6 @@
 package com.example.experimentify;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,8 @@ public class chatQuestionActivity extends AppCompatActivity {
 
     private EditText userQuestionInput;
     private Button questionEnter;
+    private SharedPreferences settings;
+    public static final String PREFS_NAME = "PrefsFile";
 
 
     @Override
@@ -23,7 +26,11 @@ public class chatQuestionActivity extends AppCompatActivity {
         questionEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Add question to DB 
+                //TODO: Add question to DB
+                userQuestionInput.getText();
+                settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
+
+
             }
         });
 
