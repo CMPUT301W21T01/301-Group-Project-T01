@@ -19,6 +19,12 @@ public class chatQuestionController {
         questions = new ArrayList<chatQuestion>();
         listAdapter = new chatQuestionAdaptor(context, questions);
     }
+    /**
+     * THIS CONSTRUCTOR WITH EMPTY PARAMETERS IS FOR TESTING PURPOSES ONLY, DON'T USE IT IN PRODUCTION (CANT MOCK CONTEXT CURRENTLY) IN ExperimentControllerTests
+     */
+    public chatQuestionController() {
+        questions = new ArrayList<chatQuestion>();
+    }
 
     public ArrayAdapter<chatQuestion> getAdapter() {
         return listAdapter;
@@ -48,13 +54,15 @@ public class chatQuestionController {
         enterData.put("date", newQuestion.getDate());
         enterData.put("eid", EID);
         newRef.set(enterData);
+
+
     }
 
     /**
      * sets the experiments variable
      */
-    public void setQuestion(ArrayList<chatQuestion> set_experiments) {
-        questions = set_experiments;
+    public void setQuestion(ArrayList<chatQuestion> set_questions) {
+        questions = set_questions;
     }
 
 

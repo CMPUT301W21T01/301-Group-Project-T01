@@ -27,7 +27,8 @@ public class chatQuestionAdaptor extends ArrayAdapter<chatQuestion> {
 
     private TextView descBox;
     private TextView dateBox;
-    private TextView repliesBox;
+    private TextView userID;
+    private TextView repliesCount;
 
     public chatQuestionAdaptor(Context context, ArrayList<chatQuestion> questions) {
         super(context, 0, questions);
@@ -39,10 +40,11 @@ public class chatQuestionAdaptor extends ArrayAdapter<chatQuestion> {
      * This method sets the TextViews of the question adapter.
      * @param question Question whose data is displayed by the question adapter
      */
-    public void setUi(chatQuestion question) {
-        descBox.setText(context.getResources().getString(R.string.description_header) + question.getDescription());
-        dateBox.setText(context.getResources().getString(R.string.date_header) + question.getDate());
-        repliesBox.setText(context.getResources().getString(R.string.replies_header) + question.getNumReplies());
+    public void setQuestionUi(chatQuestion question) {
+        descBox.setText(question.getDescription());
+        dateBox.setText(question.getDate());
+        userID.setText(question.getUID());
+        repliesCount.setText(question.getNumReplies());
     }
 
     //TODO add javadocs comment
@@ -55,12 +57,13 @@ public class chatQuestionAdaptor extends ArrayAdapter<chatQuestion> {
 
         chatQuestion question = questions.get(position);
 
-
         descBox = view.findViewById(R.id.userQuestion);
+        System.out.println("descbox..." + descBox);
         dateBox = view.findViewById(R.id.userQuestionDate);
-        repliesBox = view.findViewById(R.id.userQuestionReplies);
+        userID = view.findViewById(R.id.userQuestionID);
+        repliesCount = view.findViewById(R.id.userQuestionReplies);
 
-        setUi(question);
+        setQuestionUi(question);
 
         return view;
     }

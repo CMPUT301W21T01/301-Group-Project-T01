@@ -13,10 +13,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+
 public class chatQuestionActivity extends AppCompatActivity {
 
     private EditText userQuestionInput;
-    private ListView questionsList;
+    private ArrayList<chatQuestion> questionsList;
+    private ListView questionsListView;
     private Button questionEnter;
     private SharedPreferences settings;
     public static final String PREFS_NAME = "PrefsFile";
@@ -35,11 +38,8 @@ public class chatQuestionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat_question);
         userQuestionInput = findViewById(R.id.questionInput);
         questionEnter = findViewById(R.id.questionInputButton);
-        questionsList = findViewById(R.id.questionList);
+        questionsListView = findViewById(R.id.questionList);
 
-        //SharedPreferences sp = currentUser.getSettings(getApplicationContext());
-        //userid = sp.getString("uid", "0");
-        //System.out.println("userID..." + userid);
 
         settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
         userID = settings.getString("uid", "0");
@@ -55,6 +55,9 @@ public class chatQuestionActivity extends AppCompatActivity {
         }
 
         questionController = new chatQuestionController(this);
+        questionsList = questionController.getQuestions();
+        questionsListView.setAdapter(questionController.getAdapter());
+
 
         questionEnter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +72,7 @@ public class chatQuestionActivity extends AppCompatActivity {
         });
 
 
-        questionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        questionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int pos, long id) {
                 Intent intent = new Intent(chatQuestionActivity.this, chatAnswerActivity.class);
