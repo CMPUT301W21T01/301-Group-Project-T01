@@ -7,26 +7,28 @@ import java.util.Date;
 
 public class chatQuestion {
     private String description;
-    private String uID;
+    private String UID;
     // Not sure how the date should be stored yet.
     private String date;
     private int numReplies;
     private ArrayList<chatAnswer> answers;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    private String EID;
 
-    public chatQuestion(String description, String uID) {
+    public chatQuestion(String description, String UID, String EID) {
         this.description = description;
-        this.uID = uID;
+        this.UID = UID;
         this.numReplies = 0;
         date = sdf.format(new Date(System.currentTimeMillis()));
+        this.EID = EID;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public String getuID() {
-        return uID;
+    public String getUID() {
+        return UID;
     }
 
     public String getDate() {
@@ -37,4 +39,7 @@ public class chatQuestion {
         return numReplies;
     }
 
+    public String getEID() {
+        return EID;
+    }
 }

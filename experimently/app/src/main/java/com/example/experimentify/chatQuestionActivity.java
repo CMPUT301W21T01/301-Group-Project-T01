@@ -18,10 +18,10 @@ public class chatQuestionActivity extends AppCompatActivity {
     private Button questionEnter;
     private SharedPreferences settings;
     public static final String PREFS_NAME = "PrefsFile";
-    private String experimentid;
-    private String userid;
+    private String experimentID;
+    private String userID;
     private Intent intent;
-    private User currentUser;
+    private chatQuestionController questionController;
 
 
 
@@ -38,26 +38,29 @@ public class chatQuestionActivity extends AppCompatActivity {
         //userid = sp.getString("uid", "0");
         //System.out.println("userID..." + userid);
 
-        SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
-        String userid = settings.getString("uid", "0");
-        System.out.println("userID..." + userid);
+        settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
+        userID = settings.getString("uid", "0");
+        System.out.println("userID..." + userID);
 
 
         intent = getIntent();
         Bundle extras = intent.getExtras();
         if(extras != null) {
-            experimentid = extras.getString("experiment");
-            System.out.println("experimentID..." + experimentid);
+            experimentID = extras.getString("experiment");
+            System.out.println("experimentID..." + experimentID);
         }
+
+        questionController = new chatQuestionController(this);
 
         questionEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO: Add question to DB
-                String temp = userQuestionInput.getText().toString();
-                System.out.println("userinput..." + temp);
+                String description = userQuestionInput.getText().toString();
+                System.out.println("userinput..." + description);
+                chatQuestion question = new chatQuestion(description, userID, experimentID);
+                questionController.addQuestionToDB(temp,db,experimentid);
 
-                //chatQuestionController.addQuestionToDB(temp,db,experimentid);
 
             }
         });
