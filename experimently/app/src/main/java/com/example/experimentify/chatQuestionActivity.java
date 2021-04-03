@@ -3,15 +3,22 @@ package com.example.experimentify;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -23,11 +30,13 @@ public class chatQuestionActivity extends AppCompatActivity {
     private Button questionEnter;
     private SharedPreferences settings;
     public static final String PREFS_NAME = "PrefsFile";
+    public static final String TAG = chatQuestionActivity.class.getName();
     private String experimentID;
     private String userID;
     private Intent intent;
     private chatQuestionController questionController;
     private FirebaseFirestore db;
+
 
 
 
@@ -47,12 +56,14 @@ public class chatQuestionActivity extends AppCompatActivity {
 
         db = DatabaseSingleton.getDB();
 
+
         intent = getIntent();
         Bundle extras = intent.getExtras();
         if(extras != null) {
             experimentID = extras.getString("experiment");
             System.out.println("experimentID..." + experimentID);
         }
+        CollectionReference questionRef = db.collection("Experiments").document(experimentID).collection("Questions");
 
         questionController = new chatQuestionController(this);
         questionsList = questionController.getQuestions();
@@ -62,11 +73,12 @@ public class chatQuestionActivity extends AppCompatActivity {
         questionEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Add question to DB
+
                 String description = userQuestionInput.getText().toString();
 //                System.out.println("userinput..." + description);
                 chatQuestion question = new chatQuestion(description, userID, experimentID);
                 questionController.addQuestionToDB(question, db);
+                userQuestionInput.getText().clear();
 
             }
         });
@@ -81,7 +93,22 @@ public class chatQuestionActivity extends AppCompatActivity {
             }
         });
 
+        questionRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                questionController.getQuestions().clear();
+                for (QueryDocumentSnapshot doc : value) {
+                    Log.d(TAG, String.valueOf(doc.getData().get("EID")));
+                    String description = (String) doc.getData().get("description");
+                    String date = (String) doc.getData().get("date");
+                    String eid = (String) doc.getData().get("eid");
+                    String uId = (String) doc.getData().get("uid");
+                    questionsList.add(new chatQuestion(description, uId, eid, date));
+                }
+                questionController.getAdapter().notifyDataSetChanged();
 
 
+            }
+        });
     }
 }

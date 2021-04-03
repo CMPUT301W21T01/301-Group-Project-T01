@@ -2,6 +2,8 @@ package com.example.experimentify;
 
 import android.icu.text.SimpleDateFormat;
 
+import com.google.firebase.Timestamp;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -21,6 +23,16 @@ public class chatQuestion {
         this.numReplies = 0;
         date = sdf.format(new Date(System.currentTimeMillis()));
         this.EID = EID;
+    }
+
+    //need to implement timestamp change date
+    public chatQuestion(String description, String UID, String EID, String date) {
+        this.description = description;
+        this.UID = UID;
+        this.numReplies = 0;
+        //date = sdf.format(new Date(System.currentTimeMillis()));
+        this.EID = EID;
+        this.date = date;
     }
 
     public String getDescription() {

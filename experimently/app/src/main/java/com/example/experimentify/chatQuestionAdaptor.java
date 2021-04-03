@@ -44,7 +44,7 @@ public class chatQuestionAdaptor extends ArrayAdapter<chatQuestion> {
         descBox.setText(question.getDescription());
         dateBox.setText(question.getDate());
         userID.setText(question.getUID());
-        repliesCount.setText(question.getNumReplies());
+        repliesCount.setText("1"); //this is where the query should be for finding amount of replies per question
     }
 
     //TODO add javadocs comment

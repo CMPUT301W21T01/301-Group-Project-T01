@@ -59,6 +59,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
 
         //TODO show status and owner of experiment in list
         descBox = view.findViewById(R.id.generalExDescription);
+        System.out.println("descbox..." + descBox);
         userID = view.findViewById(R.id.generalExLocation);
         dateBox = view.findViewById(R.id.generalExDate);
 
