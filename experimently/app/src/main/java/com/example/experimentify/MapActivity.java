@@ -151,7 +151,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 e.printStackTrace();
             }
             Address address = addressList.get(0);
-            Location loc = new Location(address);
+            loc = new Location(address);
             LatLng latLng = new LatLng(loc.getLatitude(), loc.getLong());
             MarkerOptions mark = new MarkerOptions().position(latLng).title("Trial Marker:" + location);
             gMap.clear();

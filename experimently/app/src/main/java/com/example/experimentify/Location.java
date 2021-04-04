@@ -4,10 +4,13 @@ import android.location.Address;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.firestore.GeoPoint;
+
 public class Location implements Parcelable {
     private Address address;
     private double longitude;
     private double latitude;
+    private GeoPoint geoPoint;
 
     public Location(Address address) {
         this.address = address;
@@ -59,6 +62,11 @@ public class Location implements Parcelable {
     public double getLong(){
         double longitude = address.getLongitude();
         return longitude;
+    }
+
+    public GeoPoint getGeoPoint(){
+        geoPoint = new GeoPoint(latitude, longitude);
+        return geoPoint;
     }
 }
 

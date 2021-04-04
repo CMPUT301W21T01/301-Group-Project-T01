@@ -85,12 +85,8 @@ public class TrialController {
         enterData.put("date", newTrial.getDate());
 
         if (location != null){
-            enterData.put("location", location);
+            enterData.put("location", location.getGeoPoint());
         }
-
-//        TODO: add dependencies, understand geohashes, implement to Location class?
-//        requires geohashes https://firebase.google.com/docs/firestore/solutions/geoqueries#java_1
-//        enterData.put("Location")
 
         String TID = newRef.getId();
 

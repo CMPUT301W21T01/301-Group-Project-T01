@@ -107,10 +107,10 @@ public class ExperimentActivity extends AppCompatActivity {
 
         dateInfo = data.getStringExtra("date");
         trial.setDate(dateInfo);
-        Log.d(TAG, "onActivityResult: 3");
 
-        if(requestCode == 2){
+        if(resultCode == 2){
             locationInfo = data.getParcelableExtra("location");
+            Log.d(TAG, "onActivityResult: "+ locationInfo);
             trial.setTrialLocation(locationInfo);
         }
         trialController.addTrialToDB(trial, trial.getValue(), trial.getTrialLocation());
@@ -164,7 +164,6 @@ public class ExperimentActivity extends AppCompatActivity {
             exp = intent.getParcelableExtra("clickedExp");
             initUi();
 
-
             statsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -204,12 +203,9 @@ public class ExperimentActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             Log.d(TAG, "onClick: 1");
+                            //Did not put next two lines in a method to ensure the correct sequence.
                             Intent intent = new Intent(ExperimentActivity.this, MapActivity.class);
                             activity.startActivityForResult(intent, 1);
-//                            Log.d(TAG, "onClick: dateInfo" + dateInfo);
-//                            Log.d(TAG, "onClick: Did it set date? " + countTrial.getDate());
-                            //code below is for map activity.
-//                            trialController.addTrialToDB(countTrial, countTrial.getValue());
                             trial.setDate(dateInfo);
                             if (locationInfo != null) {
                                 trial.setTrialLocation(locationInfo);
@@ -222,17 +218,28 @@ public class ExperimentActivity extends AppCompatActivity {
 
                 if (exp.getExpType().equals("Binomial")) {
                     binomial.setVisibility(View.VISIBLE);
-
                     passButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-//                            enterTrialDetails(ExperimentActivity.this);
+                            trial = new BinomialTrial(localUID, expUID, 1);
+                            Intent intent = new Intent(ExperimentActivity.this, MapActivity.class);
+                            activity.startActivityForResult(intent, 1);
+                            trial.setDate(dateInfo);
+                            if (locationInfo != null) {
+                                trial.setTrialLocation(locationInfo);
+                            }
                         }
                     });
                     failButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-//                            enterTrialDetails(ExperimentActivity.this);
+                            trial = new BinomialTrial(localUID, expUID, 0);
+                            Intent intent = new Intent(ExperimentActivity.this, MapActivity.class);
+                            activity.startActivityForResult(intent, 1);
+                            trial.setDate(dateInfo);
+                            if (locationInfo != null) {
+                                trial.setTrialLocation(locationInfo);
+                            }
                         }
                     });
                 }
@@ -250,10 +257,13 @@ public class ExperimentActivity extends AppCompatActivity {
                                 Log.d(TAG, "Integer/onClick/NumberFormatException: " + intInput + e);
                                 return;
                             }
-                            IntegerTrial integerTrial = new IntegerTrial(localUID, expUID, intInfo);
-//                            enterTrialDetails(ExperimentActivity.this);
-//                            working on countTrial first
-//                            trialController.addTrialToDB(integerTrial);
+                            trial = new IntegerTrial(localUID, expUID, intInfo);
+                            Intent intent = new Intent(ExperimentActivity.this, MapActivity.class);
+                            activity.startActivityForResult(intent, 1);
+                            trial.setDate(dateInfo);
+                            if (locationInfo != null) {
+                                trial.setTrialLocation(locationInfo);
+                            }
                         }
                     });
                 }
@@ -271,10 +281,14 @@ public class ExperimentActivity extends AppCompatActivity {
                                 Log.d(TAG, "Measurement/onClick/NumberFormatException: " + measureInput + e);
                                 return;
                             }
-                            MeasurementTrial measurementTrial = new MeasurementTrial(localUID, expUID, measurementInfo);
-//                            enterTrialDetails(ExperimentActivity.this);
-//                            working on countTrial first
-//                            trialController.addTrialToDB(measurementTrial, db);
+                            Log.d(TAG, "onClick: measurementInfo = " + measurementInfo);
+                            trial = new MeasurementTrial(localUID, expUID, measurementInfo);
+                            Intent intent = new Intent(ExperimentActivity.this, MapActivity.class);
+                            activity.startActivityForResult(intent, 1);
+                            trial.setDate(dateInfo);
+                            if (locationInfo != null) {
+                                trial.setTrialLocation(locationInfo);
+                            }
                         }
                     });
                 }
