@@ -40,7 +40,7 @@ public class chatAnswerController {
     }
 
     /**
-     * This method adds an experiment to the database.
+     * This method adds an answer to the database.
      *
      * @param newAnswer experiment to bed added
      * @param db          the database the experiment will be saved to
@@ -62,7 +62,7 @@ public class chatAnswerController {
     }
 
     /**
-     * sets the experiments variable
+     * sets the answers variable
      */
     public void setAnswer(ArrayList<chatAnswer> set_answers) {
         answers = set_answers;
@@ -70,7 +70,7 @@ public class chatAnswerController {
 
 
     /**
-     * This method returns an experiment based on its position in the ListView.
+     * This method returns an answer based on its position in the ListView.
      *
      * @param pos position of experiment in ListView
      * @return experiment that was clicked on

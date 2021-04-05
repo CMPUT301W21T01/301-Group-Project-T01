@@ -7,12 +7,15 @@ import com.google.firebase.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
+
+/**
+ * This is a class that models an answer to a question.
+ */
 public class chatAnswer {
     private String description;
     private String UID;
     // Not sure how the date should be stored yet.
     private String date;
-    private int numReplies;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private String EID;
     private String QID;
@@ -20,19 +23,19 @@ public class chatAnswer {
     public chatAnswer(String description, String UID, String EID, String QID) {
         this.description = description;
         this.UID = UID;
-        this.numReplies = 0;
         date = sdf.format(new Date(System.currentTimeMillis()));
         this.EID = EID;
+        this.QID = QID;
     }
 
     //need to implement timestamp change date
     public chatAnswer(String description, String UID, String EID, String date, String QID) {
         this.description = description;
         this.UID = UID;
-        this.numReplies = 0;
         //date = sdf.format(new Date(System.currentTimeMillis()));
         this.EID = EID;
         this.date = date;
+        this.QID = QID;
     }
 
     public String getDescription() {
@@ -47,8 +50,9 @@ public class chatAnswer {
         return date;
     }
 
-    public int getNumReplies() {
-        return numReplies;
+
+    public void setQID(String QID) {
+        this.QID = QID;
     }
 
     public String getEID() {
@@ -57,4 +61,6 @@ public class chatAnswer {
     public String getQID() {
         return QID;
     }
+
+
 }

@@ -44,10 +44,18 @@ public class chatQuestionAdaptor extends ArrayAdapter<chatQuestion> {
         descBox.setText(question.getDescription());
         dateBox.setText(question.getDate());
         userID.setText(question.getUID());
-        repliesCount.setText("1"); //this is where the query should be for finding amount of replies per question
+        //int Temp = question.getNumReplies();
+        repliesCount.setText(String.valueOf(question.getNumReplies()));
+        System.out.println("replies..." + String.valueOf(question.getNumReplies()));
+        //repliesCount.setText("1");
     }
 
-    //TODO add javadocs comment
+    /**
+     * This method sets the overall view of the question adapter.
+     * @param position the location of the object in list
+     * @param convertView is the view converter can be null
+     * @param convertView is the view groups parent can be null
+     */
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
 
@@ -58,7 +66,7 @@ public class chatQuestionAdaptor extends ArrayAdapter<chatQuestion> {
         chatQuestion question = questions.get(position);
 
         descBox = view.findViewById(R.id.userQuestion);
-        System.out.println("descbox..." + descBox);
+        //System.out.println("descbox..." + descBox);
         dateBox = view.findViewById(R.id.userQuestionDate);
         userID = view.findViewById(R.id.userQuestionID);
         repliesCount = view.findViewById(R.id.userQuestionReplies);

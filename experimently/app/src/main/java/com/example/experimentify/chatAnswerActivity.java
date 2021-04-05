@@ -44,7 +44,7 @@ public class chatAnswerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat_answer);
         userAnswerInput = findViewById(R.id.answerInput);
         answersEnter = findViewById(R.id.answerInputButton);
-        answersListView = findViewById(R.id.questionList);
+        answersListView = findViewById(R.id.answerList);
 
         settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
         userID = settings.getString("uid", "0");
@@ -56,14 +56,18 @@ public class chatAnswerActivity extends AppCompatActivity {
         intent = getIntent();
         Bundle extras = intent.getExtras();
         if(extras != null) {
-            experimentID = extras.getString("experiment");
-            System.out.println("experimentID..." + experimentID);
+            experimentID = extras.getString("eid");
+            questionID = extras.getString("qid");
+            System.out.println("experimentID after..." + experimentID);
+            System.out.println("questionID after..." + questionID);
         }
         CollectionReference questionRef = db.collection("Experiments").document(experimentID).collection("Questions").document(questionID).collection("Answers");
 
+        System.out.println("answersSize..." + questionRef.get());
         answerController = new chatAnswerController(this);
         answersList = answerController.getAnswers();
         answersListView.setAdapter(answerController.getAdapter());
+
 
         answersEnter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,20 +75,11 @@ public class chatAnswerActivity extends AppCompatActivity {
 
                 String description = userAnswerInput.getText().toString();
 //                System.out.println("userinput..." + description);
-                chatAnswer answer = new chatAnswer(description, userID, experimentID, "0bS5h2smxQAW2LXndFCE");
+                chatAnswer answer = new chatAnswer(description, userID, experimentID, questionID);
+
                 answerController.addAnswerToDB(answer, db);
                 userAnswerInput.getText().clear();
 
-            }
-        });
-
-
-        answersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int pos, long id) {
-                //Intent intent = new Intent(chatQuestionActivity.this, chatAnswerActivity.class);
-                //intent.putExtra("qid", questionID);
-                //startActivity(intent);
             }
         });
 
@@ -101,7 +96,6 @@ public class chatAnswerActivity extends AppCompatActivity {
                     answersList.add(new chatAnswer(description, uId, eid, date));
                 }
                 answerController.getAdapter().notifyDataSetChanged();
-
 
             }
         });

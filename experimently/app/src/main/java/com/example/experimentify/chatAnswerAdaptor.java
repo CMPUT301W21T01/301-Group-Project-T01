@@ -19,7 +19,7 @@ import java.util.ArrayList;
   Code for this class is based on examples from lab 3.
   */
 /**
- * This class is an ArrayAdapter for Questions.
+ * This class is an ArrayAdapter for answers.
  */
 public class chatAnswerAdaptor extends ArrayAdapter<chatAnswer> {
     private ArrayList<chatAnswer> answers;
@@ -28,7 +28,6 @@ public class chatAnswerAdaptor extends ArrayAdapter<chatAnswer> {
     private TextView descBox;
     private TextView dateBox;
     private TextView userID;
-    private TextView repliesCount;
 
     public chatAnswerAdaptor(Context context, ArrayList<chatAnswer> answers) {
         super(context, 0, answers);
@@ -46,18 +45,23 @@ public class chatAnswerAdaptor extends ArrayAdapter<chatAnswer> {
         userID.setText(answer.getUID());
     }
 
-    //TODO add javadocs comment
+    /**
+     * This method sets the overall view of the answer adapter.
+     * @param position the location of the object in list
+     * @param convertView is the view converter can be null
+     * @param convertView is the view groups parent can be null
+     */
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
 
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.chat_question_content, parent, false);
+            view = LayoutInflater.from(context).inflate(R.layout.chat_answer_content, parent, false);
         }
 
         chatAnswer answer = answers.get(position);
 
         descBox = view.findViewById(R.id.userAnswer);
-        System.out.println("descbox..." + descBox);
+        //System.out.println("descbox..." + descBox);
         dateBox = view.findViewById(R.id.userAnswerDate);
         userID = view.findViewById(R.id.userAnswerID);
 

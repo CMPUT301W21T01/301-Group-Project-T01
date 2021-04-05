@@ -4,6 +4,9 @@ import android.icu.text.SimpleDateFormat;
 
 import java.util.Date;
 
+/**
+ * This is a class that models an question which people can respond to.
+ */
 public class chatQuestion {
     private String description;
     private String UID;
@@ -23,13 +26,14 @@ public class chatQuestion {
     }
 
     //need to implement timestamp change date
-    public chatQuestion(String description, String UID, String EID, String date) {
+    public chatQuestion(String description, String UID, String EID, String date, String QID) {
         this.description = description;
         this.UID = UID;
         this.numReplies = 0;
         //date = sdf.format(new Date(System.currentTimeMillis()));
         this.EID = EID;
         this.date = date;
+        this.QID = QID;
     }
 
     public String getDescription() {

@@ -32,6 +32,7 @@ public class chatQuestionActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "PrefsFile";
     public static final String TAG = chatQuestionActivity.class.getName();
     private String experimentID;
+    private String questionID;
     private String userID;
     private Intent intent;
     private chatQuestionController questionController;
@@ -88,7 +89,11 @@ public class chatQuestionActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int pos, long id) {
                 Intent intent = new Intent(chatQuestionActivity.this, chatAnswerActivity.class);
-                //intent.putExtra("qid", questionID);
+                questionID = questionsList.get(pos).getQID();
+                intent.putExtra("qid", questionID);
+                intent.putExtra("eid", experimentID);
+                System.out.println("question id..." + questionID);
+                System.out.println("experiment id..." + experimentID);
                 startActivity(intent);
             }
         });
@@ -103,7 +108,8 @@ public class chatQuestionActivity extends AppCompatActivity {
                     String date = (String) doc.getData().get("date");
                     String eid = (String) doc.getData().get("eid");
                     String uId = (String) doc.getData().get("uid");
-                    questionsList.add(new chatQuestion(description, uId, eid, date));
+                    String qid = (String) doc.getData().get("qid");
+                    questionsList.add(new chatQuestion(description, uId, eid, date, qid));
                 }
                 questionController.getAdapter().notifyDataSetChanged();
 
