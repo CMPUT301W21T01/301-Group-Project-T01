@@ -252,8 +252,9 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                     String uId          = (String)  doc.getData().get("uid");
                     boolean viewable    = (boolean) doc.getData().get("viewable");
                     boolean editable    = (boolean) doc.getData().get("editable");
-                    long questionCount  = (long)    doc.getData().get("questionCount");
-                    long trialCount     = (long)    doc.getData().get("trialCount");
+                    //commented out to fix error
+                    //long questionCount  = (long)    doc.getData().get("questionCount");
+                    //long trialCount     = (long)    doc.getData().get("trialCount");
 
                     String localUID = getLocalUID();
 
@@ -267,8 +268,9 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                         newExperiment.setViewable(viewable);
                         newExperiment.setEditable(editable);
                         newExperiment.setExpType(expType);
-                        newExperiment.setTrialCount(trialCount);
-                        newExperiment.setQuestionCount(questionCount);
+                        //commented out to fix error
+                        //newExperiment.setTrialCount(trialCount);
+                        //newExperiment.setQuestionCount(questionCount);
                         experimentList.add(newExperiment);
                     }
                 }
