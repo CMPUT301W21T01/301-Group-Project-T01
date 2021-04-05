@@ -2,9 +2,6 @@ package com.example.experimentify;
 
 import android.icu.text.SimpleDateFormat;
 
-import com.google.firebase.Timestamp;
-
-import java.util.ArrayList;
 import java.util.Date;
 
 public class chatQuestion {
@@ -15,6 +12,7 @@ public class chatQuestion {
     private int numReplies;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private String EID;
+    private String QID;
 
     public chatQuestion(String description, String UID, String EID) {
         this.description = description;
@@ -44,6 +42,14 @@ public class chatQuestion {
 
     public String getDate() {
         return date;
+    }
+
+    public String getQID() {
+        return QID;
+    }
+
+    public void setQID(String QID) {
+        this.QID = QID;
     }
 
     public int getNumReplies() {

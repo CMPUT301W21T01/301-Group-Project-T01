@@ -82,6 +82,8 @@ public class ExperimentController{
         enterData.put("viewable", newExp.isViewable());
         enterData.put("date", newExp.getDate());
         enterData.put("ExperimentType", newExp.getExpType());
+        enterData.put("questionCount", newExp.getQuestionCount());
+        enterData.put("trialCount", newExp.getTrialCount());
         newRef.set(enterData);
 
         String experimentID = newRef.getId();

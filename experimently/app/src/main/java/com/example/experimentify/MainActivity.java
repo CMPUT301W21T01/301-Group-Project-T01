@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -245,16 +244,16 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                     Log.d(TAG, String.valueOf(doc.getData().get("EID")));
                     String description  = (String)  doc.getData().get("description");
                     String region       = (String)  doc.getData().get("region");
-                    Long minTrials      = (Long)    doc.getData().get("minTrials");
+                    long minTrials      = (long)    doc.getData().get("minTrials");
                     String date         = (String)  doc.getData().get("date");
                     boolean locationReq = (boolean) doc.getData().get("locationRequired");
-                    String expType      = (String) doc.getData().get("ExperimentType");
+                    String expType      = (String)  doc.getData().get("ExperimentType");
                     String ownerID      = (String)  doc.getData().get("ownerID");
                     String uId          = (String)  doc.getData().get("uid");
                     boolean viewable    = (boolean) doc.getData().get("viewable");
                     boolean editable    = (boolean) doc.getData().get("editable");
-
-
+                    long questionCount  = (long)    doc.getData().get("questionCount");
+                    long trialCount     = (long)    doc.getData().get("trialCount");
 
                     String localUID = getLocalUID();
 
@@ -268,6 +267,8 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                         newExperiment.setViewable(viewable);
                         newExperiment.setEditable(editable);
                         newExperiment.setExpType(expType);
+                        newExperiment.setTrialCount(trialCount);
+                        newExperiment.setQuestionCount(questionCount);
                         experimentList.add(newExperiment);
                     }
                 }

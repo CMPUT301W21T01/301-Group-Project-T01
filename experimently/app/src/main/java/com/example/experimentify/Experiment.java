@@ -6,7 +6,7 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
-import android.widget.CheckBox;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
@@ -36,7 +36,8 @@ public class Experiment implements Parcelable {
     private String uid;
     private boolean editable;
     private String expType;
-    private long totalTrials;
+    private long trialCount;
+    private long questionCount;
     static final String TAG = Experiment.class.getName();
 
     public Experiment(String description, String region, long minTrials, String date, boolean locationRequired, String expType) {
@@ -49,7 +50,8 @@ public class Experiment implements Parcelable {
         editable = true;
         ended = false;
         viewable = true;
-        totalTrials = 0;
+        trialCount = 0;
+        questionCount = 0;
     }
 
     protected Experiment(Parcel in) {
@@ -66,7 +68,8 @@ public class Experiment implements Parcelable {
         ended = in.readByte() != 0;
         viewable = in.readByte() != 0;
         uid = in.readString();
-        totalTrials = in.readLong();
+        trialCount = in.readLong();
+        questionCount = in.readLong();
     }
 
     public static final Creator<Experiment> CREATOR = new Creator<Experiment>() {
@@ -161,6 +164,28 @@ public class Experiment implements Parcelable {
         this.editable = editable;
     }
 
+    public long getQuestionCount() {
+        return questionCount;
+    }
+
+    public void incrementTrialCount(){
+        trialCount++;
+    }
+    public void incrementQuestionCount(){
+        questionCount++;
+    }
+
+    public long getTrialCount() {
+        return trialCount;
+    }
+
+    public void setTrialCount(long trialCount) {
+        this.trialCount = trialCount;
+    }
+
+    public void setQuestionCount(long questionCount) {
+        this.questionCount = questionCount;
+    }
 
     /**
      * This interface gives access to the result of userIsSubscribed
@@ -242,8 +267,8 @@ public class Experiment implements Parcelable {
         dest.writeBoolean(ended);
         dest.writeBoolean(viewable);
         dest.writeString(uid);
-        dest.writeLong(totalTrials);
-
+        dest.writeLong(trialCount);
+        dest.writeLong(questionCount);
     }
 
 }

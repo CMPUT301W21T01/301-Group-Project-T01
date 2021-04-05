@@ -28,7 +28,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
     //private String exDescription;
 
     private TextView descBox;
-    private TextView userID;
+    private TextView region;
     private TextView dateBox;
 
     public ExperimentListAdapter(Context context, ArrayList<Experiment> experiments) {
@@ -43,7 +43,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
      */
     public void setUi(Experiment exp) {
         descBox.setText(context.getResources().getString(R.string.description_header) + exp.getDescription());
-        userID.setText(context.getResources().getString(R.string.description_header) + exp.getUID());
+        region.setText(context.getResources().getString(R.string.region_header) + exp.getRegion());
         dateBox.setText(context.getResources().getString(R.string.date_header) + exp.getDate());
     }
 
@@ -60,7 +60,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
         //TODO show status and owner of experiment in list
         descBox = view.findViewById(R.id.generalExDescription);
         System.out.println("descbox..." + descBox);
-        userID = view.findViewById(R.id.generalExLocation);
+        region = view.findViewById(R.id.generalExLocation);
         dateBox = view.findViewById(R.id.generalExDate);
 
         setUi(experiment);
