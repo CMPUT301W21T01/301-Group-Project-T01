@@ -4,13 +4,13 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/userQuestion"
+        android:id="@+id/userAnswer"
         android:layout_width="match_parent"
         android:layout_height="86dp"
         android:text="Question" />
 
     <TextView
-        android:id="@+id/userQuestionID"
+        android:id="@+id/userAnswerID"
         android:layout_width="match_parent"
         android:layout_height="33dp"
         android:text="UserID" />
@@ -21,17 +21,11 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/userQuestionDate"
+            android:id="@+id/userAnswerDate"
             android:layout_width="291dp"
             android:layout_height="37dp"
             android:layout_weight="1"
             android:text="Date" />
 
-        <TextView
-            android:id="@+id/userQuestionReplies"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_weight="1"
-            android:text="Reply Count" />
     </LinearLayout>
 </LinearLayout>

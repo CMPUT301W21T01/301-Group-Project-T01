@@ -13,7 +13,6 @@ public class chatQuestion {
     // Not sure how the date should be stored yet.
     private String date;
     private int numReplies;
-    private ArrayList<chatAnswer> answers;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private String EID;
 
