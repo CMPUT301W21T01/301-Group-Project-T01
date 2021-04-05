@@ -3,6 +3,8 @@ package com.example.experimentify;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
+import java.util.ArrayList;
+
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
