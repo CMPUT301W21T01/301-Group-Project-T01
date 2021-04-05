@@ -109,7 +109,10 @@ public class chatQuestionActivity extends AppCompatActivity {
                     String eid = (String) doc.getData().get("eid");
                     String uId = (String) doc.getData().get("uid");
                     String qid = (String) doc.getData().get("qid");
-                    questionsList.add(new chatQuestion(description, uId, eid, date, qid));
+                    long questionTotal = (long) doc.getData().get("answerTotal");
+                    chatQuestion question = new chatQuestion(description, uId, eid, date, qid);
+                    question.setNumReplies(questionTotal);
+                    questionsList.add(question);
                 }
                 questionController.getAdapter().notifyDataSetChanged();
 

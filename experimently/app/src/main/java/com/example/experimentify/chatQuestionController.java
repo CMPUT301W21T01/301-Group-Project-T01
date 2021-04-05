@@ -3,8 +3,6 @@ package com.example.experimentify;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
-import java.util.ArrayList;
-
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -56,6 +54,7 @@ public class chatQuestionController {
         enterData.put("uid", newQuestion.getUID());
         enterData.put("date", newQuestion.getDate());
         enterData.put("eid", EID);
+        enterData.put("answerTotal", 0);
         newRef.set(enterData);
 
         db.collection("Experiments").document(newQuestion.getEID()).update("questionCount", FieldValue.increment(1));
