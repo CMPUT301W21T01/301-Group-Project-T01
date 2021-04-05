@@ -7,38 +7,20 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-<<<<<<< HEAD
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/searchBar"
             android:layout_width="182dp"
             android:layout_height="wrap_content"
-=======
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <EditText
-            android:id="@+id/searchBar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
->>>>>>> chatV2
             android:layout_marginTop="10dp"
             android:ems="10"
             android:hint="Search "
             android:inputType="textPersonName"
-<<<<<<< HEAD
-=======
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/searchButton"
->>>>>>> chatV2
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,19 +28,11 @@
             android:id="@+id/searchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-<<<<<<< HEAD
             android:layout_marginTop="8dp"
-=======
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/subButton"
->>>>>>> chatV2
             app:layout_constraintStart_toEndOf="@+id/searchBar"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/ic_menu_search" />
 
-<<<<<<< HEAD
         <Spinner
             android:id="@+id/search_spinner"
             android:layout_width="153dp"
@@ -69,20 +43,6 @@
             app:layout_constraintStart_toEndOf="@+id/searchButton"
             app:layout_constraintTop_toTopOf="parent" />
 
-=======
-        <Button
-            android:id="@+id/subButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:text="Subscriptions"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/searchButton"
-            app:layout_constraintTop_toTopOf="parent" />
->>>>>>> chatV2
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -103,20 +63,12 @@
         android:id="@+id/userProfileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-<<<<<<< HEAD
         android:layout_marginTop="10dp"
-=======
-        android:layout_marginTop="20dp"
->>>>>>> chatV2
         android:layout_marginEnd="30dp"
         android:clickable="true"
         android:rotation="0"
         app:layout_constraintEnd_toEndOf="parent"
-<<<<<<< HEAD
         app:layout_constraintTop_toTopOf="@+id/exListView"
-=======
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
->>>>>>> chatV2
         app:maxImageSize="35dp"
         app:srcCompat="@android:drawable/ic_dialog_info" />
 
@@ -136,15 +88,9 @@
     <ListView
         android:id="@+id/exListView"
         android:layout_width="match_parent"
-<<<<<<< HEAD
         android:layout_height="670dp"
-=======
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
->>>>>>> chatV2
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-<<<<<<< HEAD
         app:layout_constraintTop_toBottomOf="@+id/subButton">
 
     </ListView>
@@ -158,10 +104,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-=======
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
-
-    </ListView>
-
->>>>>>> chatV2
 </androidx.constraintlayout.widget.ConstraintLayout>

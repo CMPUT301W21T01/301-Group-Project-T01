@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Experimentify">
-        
+
         <activity
             android:name=".MapActivity"
             android:label="MapActivity" />
@@ -34,11 +34,6 @@
             android:name=".SubscribedActivity"
             android:label="@string/sub_activity_label"
             android:parentActivityName=".MainActivity" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCn-EUE2xAXK0d3ovPQCfvPW1hWR-Y485s" />
-
 
         <activity
             android:name=".qrScanActivity"
