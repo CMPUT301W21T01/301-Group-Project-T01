@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.experimentify">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
@@ -10,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Experimentify">
+        
         <activity
             android:name=".MapActivity"
             android:label="MapActivity" />
@@ -24,6 +27,18 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCQvFAt13cGTs9QMLO5a5fH1I3OyfzdZ7g" />
+
+        <activity android:name=".chatAnswerActivity"></activity>
+        <activity android:name=".chatQuestionActivity" />
+        <activity
+            android:name=".SubscribedActivity"
+            android:label="@string/sub_activity_label"
+            android:parentActivityName=".MainActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCn-EUE2xAXK0d3ovPQCfvPW1hWR-Y485s" />
+
 
         <activity
             android:name=".qrScanActivity"

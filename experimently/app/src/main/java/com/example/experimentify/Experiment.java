@@ -6,7 +6,7 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
-
+import android.widget.CheckBox;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 

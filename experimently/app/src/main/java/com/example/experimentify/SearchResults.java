@@ -122,6 +122,13 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
             }
         });
 
+        exListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> parent, View v, int pos, long id) {
+                Experiment experiment = experimentList.get(pos);
+                showExpOptionsUI(experiment, user);
+                return true;
+            }
+        });
 
         // the search results should be a one time thing and do not auto update
         collectionReference
@@ -131,8 +138,7 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {     // querysnapshot contains 0..* document snapshots
                         if (task.isSuccessful()) {
-
-                            String localUID = settings.getString("uid", "0");
+                            String localUID = settings.getString("uid","0");
                             // https://firebase.google.com/docs/reference/android/com/google/firebase/firestore/QueryDocumentSnapshot
                             for (QueryDocumentSnapshot doc : task.getResult()) {                      // iterate over query results of the document
                                 Log.d("Test holder", doc.getId() + " => " + doc.getData());                // this for each document from our query result where we can filter and extract results
@@ -141,16 +147,17 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
                                 // experimentId.add(document.getId());
 
                                 // every document from first query results will be unique
-                                String description = (String) doc.getData().get("description");
-                                String region = (String) doc.getData().get("region");
-                                Long minTrials = (Long) doc.getData().get("minTrials");
-                                String date = (String) doc.getData().get("date");
+
+                                String description  = (String)  doc.getData().get("description");
+                                String region       = (String)  doc.getData().get("region");
+                                Long minTrials      = (Long)    doc.getData().get("minTrials");
+                                String date         = (String)  doc.getData().get("date");
                                 boolean locationReq = (boolean) doc.getData().get("locationRequired");
-                                String expType = (String) doc.getData().get("experimentType");
-                                String ownerID = (String) doc.getData().get("ownerID");
-                                String uId = (String) doc.getData().get("uid");
-                                boolean viewable = (boolean) doc.getData().get("viewable");
-                                boolean editable = (boolean) doc.getData().get("editable");
+                                String expType      = (String)  doc.getData().get("experimentType");
+                                String ownerID      = (String)  doc.getData().get("ownerID");
+                                String uId          = (String)  doc.getData().get("uid");
+                                boolean viewable    = (boolean) doc.getData().get("viewable");
+                                boolean editable    = (boolean) doc.getData().get("editable");
 
                                 // Experiments are only displayed in ListView if they are viewable or current user is the owner.
                                 if (viewable || ownerID.equals(localUID)) {
@@ -230,13 +237,11 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
 
     }
 
-
     @Override
     public void onConfirmEdits(Experiment exp) {
         editExperiment(exp);
     }
 
-    @Override
     public void onDeletePressed(Experiment exp) {
         delExperiment(exp);
         experimentList.remove(exp);

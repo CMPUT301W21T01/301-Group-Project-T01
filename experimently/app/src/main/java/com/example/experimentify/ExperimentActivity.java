@@ -174,6 +174,12 @@ public class ExperimentActivity extends AppCompatActivity {
             chatButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent intent = new Intent(ExperimentActivity.this, chatQuestionActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("experiment",exp.getUID());
+                    System.out.println("experiment before..." + exp.getUID());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
 
                 }
             });

@@ -151,7 +151,6 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         startActivity(intent);
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         userProfileButton = findViewById(R.id.userProfileButton);
         qrScanner = findViewById(R.id.qrScanner);
         subButton = findViewById(R.id.subButton);
-
         // used documentation at https://developer.android.com/guide/topics/ui/controls/spinner
         searchSpinner = (Spinner) findViewById(R.id.search_spinner);
 
