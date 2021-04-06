@@ -104,10 +104,23 @@ public class UserOptionsFragment extends DialogFragment {
      * uploaded to the database.
      */
     private void subscribeHandler() {
-        boolean ignoring = !ignoreBox.isChecked();
+        boolean ignoring = ignoreBox.isChecked();
 
-
+        handleIgnoreChange(ignoring);
         //listener.onConfirmEdits(experiment);
+    }
+
+    /**
+     * This method adds and deletes the current user's subscriptions from the database.
+     * @param isIgnoring true if subscribed box is checked, false if subscribe box is unchecked
+     */
+    private void handleIgnoreChange(boolean isIgnoring) {
+        if (isIgnoring) {
+            user.addIgnore(localUID, userToModify.getUid(), db);
+        }
+        else {
+            user.deleteIgnore(localUID, userToModify.getUid(), db);
+        }
     }
 
     @Override

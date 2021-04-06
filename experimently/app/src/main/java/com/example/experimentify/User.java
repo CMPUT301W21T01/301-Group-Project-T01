@@ -40,7 +40,7 @@ public class User implements Serializable, Parcelable {
 
     /**
      * This method checks if the current user is subscribed to the experiment it is called on
-     * @param userID The ID of the user to check
+     * @param userID The ID of the user to check for if the current user is ignoring
      * @param callback Interface for listener that returns the result once the database is done
      *                 with its task.
      */
@@ -214,6 +214,31 @@ public class User implements Serializable, Parcelable {
         DocumentReference ref = db.collection("Users").document(userID);
         ref.update("participatingExperiments", FieldValue.arrayRemove(expID));
     }
+
+    //TODO maybe move addSub and deleteSub to different class, not sure if they belong here
+    /**
+     * This method adds an experiment to a user's list of subscribed experiments.
+     * @param userID user id saved on users device
+     * @param userToModifyID id of user to add to ignore list
+     * @param db database where user's subscription list will be updated
+     */
+    public void addIgnore(String userID, String userToModifyID, FirebaseFirestore db) {
+        DocumentReference ref = db.collection("Users").document(userID);
+        ref.update("usersIgnoring", FieldValue.arrayUnion(userToModifyID));
+    }
+
+    /**
+     * This method deletes an experiment to a user's list of subscribed experiments.
+     * @param userID user id saved on users device
+     * @param userToModifyID id of user to add to ignore list
+     * @param db database where user's subscription list will be updated
+     */
+    public void deleteIgnore(String userID, String userToModifyID, FirebaseFirestore db) {
+        DocumentReference ref = db.collection("Users").document(userID);
+        ref.update("usersIgnoring", FieldValue.arrayRemove(userToModifyID));
+    }
+
+
 
 
     @Override
