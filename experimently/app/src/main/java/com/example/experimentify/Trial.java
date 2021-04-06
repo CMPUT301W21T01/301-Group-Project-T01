@@ -1,117 +1,61 @@
 package com.example.experimentify;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
+public abstract class Trial {
+    private String UID; //user id
+    private Location trialLocation; //might need to change to geohash/location
+    private String TID; //trial id
+    private String EID; //exp id
+    private String date;
+    protected Number value;
 
-import java.util.ArrayList;
+    public Trial(String UID, String EID){
+        this.UID = UID;
+        this.EID = EID;
+        trialLocation = null;
+    }
 
-public class Trial {
-    private String userId;
-    private String trialLocation;
-    private String trialId;
+    public String getUID() {
+        return UID;
+    }
 
+    public Location getTrialLocation() {
+        return trialLocation;
+    }
 
-    public Trial(String userId, String trialLocation, String trialId){
-        this.userId = userId;
+    public String getTID() {
+        return TID;
+    }
+
+    public String getEID() {
+        return EID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
+
+    public void setTrialLocation(Location trialLocation) {
         this.trialLocation = trialLocation;
-        this.trialId = trialId;
     }
 
-    public class CountTrial {
-        private Trial trial;
-        private int totalCount;
-        private int trialCount = 1;
-        public CountTrial(Trial trial, int trialCount){
-            this.trial = trial;
-            this.trialCount = trialCount;
-        }
-
-        public void incrementCount(){
-            totalCount += 1;
-
-        }
-        /*
-        public void decrementCount(){
-            count -=1;
-        }
-        */
-        public int getTotalCount(){
-            return totalCount;
-        }
-
+    public void setTID(String TID) {
+        this.TID = TID;
     }
 
-    public class BinomialTrial{
-        private Trial trial;
-        private int fail;
-        private int pass;
-        public BinomialTrial(Trial trial, int pass, int fail){
-            this.trial = trial;
-            this.pass = pass;
-            this.fail = fail;
-        }
-
-        public void incrementBinomialFail(){
-            fail += 1;
-        }
-
-        public void incrementBinomialPass(){
-            pass += 1;
-        }
-
-        public int getBinomialTrials(){
-            int total = pass + fail;
-            return total;
-        }
-
-        public int getBinomialPasses(){
-            return pass;
-        }
-
-        public int getBinomialFails(){
-            return fail;
-        }
+    public void setEID(String EID) {
+        this.EID = EID;
     }
 
-
-    public class IntegerTrial{
-        private int integerCount;
-        private int intEntered;
-        private Trial trial;
-        public IntegerTrial(Trial trial, int intEntered){
-            this.trial = trial;
-            this.intEntered = intEntered;
-            this.integerCount = 0;
-
-        }
-        public int getIntegerCount(){
-            return integerCount;
-        }
-        public int getIntEntered(){
-            return intEntered;
-        }
-
+    public String getDate() {
+        return date;
     }
 
-    public class MeasurementTrial{
-        private int measurementCount;
-        private Trial trial;
-        private float measurementEntered;
-        public MeasurementTrial(Trial trial, float measurementEntered){
-            this.trial=trial;
-            this.measurementEntered = measurementEntered;
-            this.measurementCount = 0;
-        }
-        public void createMeasurementTrial(){
-            measurementCount += 1;
-        }
-
-        public float getMeasurementEntered(){return measurementEntered;}
+    public void setDate(String date) {
+        this.date = date;
     }
 
-
+    public Number getValue() {
+        return value;
+    }
 
 }

@@ -32,10 +32,12 @@
     <string name="region_header">"Region: "</string>
     <string name="exp_type_header">"Experiment type: "</string>
     <string name="sub_activity_label">Your Subscriptions</string>
-
     <string name="name_header">"Name: "</string>
     <string name="email_header">"Email: "</string>
     <string name="uid_header">"UID: "</string>
+    <string name="replies_header">"Replies: "</string>
+    <string name="user_ID">userID</string>
+    <string name="replies_count">replyCount</string>
 
 
 

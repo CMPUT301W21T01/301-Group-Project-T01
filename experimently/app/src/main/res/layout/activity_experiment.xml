@@ -18,19 +18,19 @@
         app:layout_constraintEnd_toStartOf="@+id/chat"
         app:layout_constraintStart_toEndOf="@+id/stats" />
 
+
     <Button
         android:id="@+id/submitTrials"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="30dp"
         android:text="Submit trials"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/qrCode"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
-
 
     <Button
         android:id="@+id/stats"
@@ -59,9 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
         android:layout_marginBottom="5dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/submitTrials"
@@ -97,15 +95,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
         android:layout_marginBottom="5dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/submitTrials"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
 
 
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
-import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -37,9 +36,9 @@ public class Experiment implements Parcelable {
     private String uid;
     private boolean editable;
     private String expType;
-    final String TAG = Experiment.class.getName();
-
-
+    private long trialCount;
+    private long questionCount;
+    static final String TAG = Experiment.class.getName();
 
     public Experiment(String description, String region, long minTrials, String date, boolean locationRequired, String expType) {
         this.description = description;
@@ -51,21 +50,26 @@ public class Experiment implements Parcelable {
         editable = true;
         ended = false;
         viewable = true;
+        trialCount = 0;
+        questionCount = 0;
     }
 
     protected Experiment(Parcel in) {
         /*Make sure these variable are assigned in the same order as the normal constructor
         and writeToParcel() or else the attributes will be set to null for god knows what reason.
-          */
+         */
         description = in.readString();
         date = in.readString();
         region = in.readString();
         minTrials = in.readLong();
         locationRequired = in.readByte() != 0;
+        expType = in.readString();
         editable = in.readByte() != 0;
         ended = in.readByte() != 0;
         viewable = in.readByte() != 0;
         uid = in.readString();
+        trialCount = in.readLong();
+        questionCount = in.readLong();
     }
 
     public static final Creator<Experiment> CREATOR = new Creator<Experiment>() {
@@ -160,6 +164,28 @@ public class Experiment implements Parcelable {
         this.editable = editable;
     }
 
+    public long getQuestionCount() {
+        return questionCount;
+    }
+
+    public void incrementTrialCount(){
+        trialCount++;
+    }
+    public void incrementQuestionCount(){
+        questionCount++;
+    }
+
+    public long getTrialCount() {
+        return trialCount;
+    }
+
+    public void setTrialCount(long trialCount) {
+        this.trialCount = trialCount;
+    }
+
+    public void setQuestionCount(long questionCount) {
+        this.questionCount = questionCount;
+    }
 
     /**
      * This interface gives access to the result of userIsSubscribed
@@ -236,11 +262,13 @@ public class Experiment implements Parcelable {
         dest.writeString(region);
         dest.writeLong(minTrials);
         dest.writeBoolean(locationRequired);
+        dest.writeString(expType);
         dest.writeBoolean(editable);
         dest.writeBoolean(ended);
         dest.writeBoolean(viewable);
         dest.writeString(uid);
-
+        dest.writeLong(trialCount);
+        dest.writeLong(questionCount);
     }
 
 }

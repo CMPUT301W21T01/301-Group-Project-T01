@@ -37,8 +37,8 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String txt = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(), txt, Toast.LENGTH_SHORT).show();
+        //String txt = parent.getItemAtPosition(position).toString();
+        //Toast.makeText(parent.getContext(), txt, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
         String region1 = region.getText().toString();
         String desc = descriptionBox.getText().toString();
         String minTrialsStr = minTrialsBox.getText().toString();
-        String expTypeInput = (String) expType.getPrompt();
+        String expTypeInput =  expType.getSelectedItem().toString();
         boolean locationRequired = locationRequiredBox.isChecked();
         int minTrials;
 
