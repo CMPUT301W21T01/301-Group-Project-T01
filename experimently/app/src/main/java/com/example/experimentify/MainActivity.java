@@ -171,21 +171,22 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         userProfileButton = findViewById(R.id.userProfileButton);
         qrScanner = findViewById(R.id.qrScanner);
         subButton = findViewById(R.id.subButton);
-        // used documentation at https://developer.android.com/guide/topics/ui/controls/spinner
-        searchSpinner = (Spinner) findViewById(R.id.search_spinner);
 
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.search, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        searchSpinner.setAdapter(adapter);
-
-        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.experiments, android.R.layout.simple_spinner_item);
-        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //expType.setAdapter(adapter);
-        //expType.setOnItemSelectedListener(this);
+//        // used documentation at https://developer.android.com/guide/topics/ui/controls/spinner
+//        searchSpinner = (Spinner) findViewById(R.id.search_spinner);
+//
+//        // Create an ArrayAdapter using the string array and a default spinner layout
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+//                R.array.search, android.R.layout.simple_spinner_item);
+//        // Specify the layout to use when the list of choices appears
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        // Apply the adapter to the spinner
+//        searchSpinner.setAdapter(adapter);
+//
+//        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.experiments, android.R.layout.simple_spinner_item);
+//        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        //expType.setAdapter(adapter);
+//        //expType.setOnItemSelectedListener(this);
 
         // used documentation at https://developer.android.com/guide/topics/ui/controls/spinner
         searchSpinner = (Spinner) findViewById(R.id.search_spinner);
