@@ -92,6 +92,15 @@ public class ExperimentActivity extends AppCompatActivity {
         submitButton.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * This method brings the user to the stats activity
+     */
+    private void launchStatsActivity() {
+        Log.d("ughhh", "dfsfsdf");
+        Intent intent = new Intent(this, StatsActivity.class);
+        startActivity(intent);
+    }
+
 
     private Trial trial;
 
@@ -150,6 +159,7 @@ public class ExperimentActivity extends AppCompatActivity {
         endedMessageBox = findViewById(R.id.trialEndedMessage);
         submitButton = findViewById(R.id.submitTrials);
 
+
         qrCodeGene = findViewById(R.id.qrCode);
         qrCodeShow = findViewById(R.id.qrCodeView);
 
@@ -162,12 +172,6 @@ public class ExperimentActivity extends AppCompatActivity {
         ExperimentController experimentController = new ExperimentController(this);
         trialController = new TrialController();
 
-        statsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
 
         Intent intent = getIntent();
@@ -192,6 +196,13 @@ public class ExperimentActivity extends AppCompatActivity {
                     intent.putExtras(bundle);
                     startActivity(intent);
 
+                }
+            });
+
+            statsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    launchStatsActivity();
                 }
             });
 
