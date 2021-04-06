@@ -111,6 +111,7 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 expController.viewExperiment(SearchResults.this, experimentList.get(position));
+
             }
         });
 
@@ -122,13 +123,6 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
             }
         });
 
-        exListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> parent, View v, int pos, long id) {
-                Experiment experiment = experimentList.get(pos);
-                showExpOptionsUI(experiment, user);
-                return true;
-            }
-        });
 
         // the search results should be a one time thing and do not auto update
         collectionReference
@@ -139,6 +133,7 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {     // querysnapshot contains 0..* document snapshots
                         if (task.isSuccessful()) {
                             String localUID = settings.getString("uid","0");
+
                             // https://firebase.google.com/docs/reference/android/com/google/firebase/firestore/QueryDocumentSnapshot
                             for (QueryDocumentSnapshot doc : task.getResult()) {                      // iterate over query results of the document
                                 Log.d("Test holder", doc.getId() + " => " + doc.getData());                // this for each document from our query result where we can filter and extract results
@@ -152,12 +147,13 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
                                 String region       = (String)  doc.getData().get("region");
                                 Long minTrials      = (Long)    doc.getData().get("minTrials");
                                 String date         = (String)  doc.getData().get("date");
+
                                 boolean locationReq = (boolean) doc.getData().get("locationRequired");
-                                String expType      = (String)  doc.getData().get("experimentType");
-                                String ownerID      = (String)  doc.getData().get("ownerID");
-                                String uId          = (String)  doc.getData().get("uid");
-                                boolean viewable    = (boolean) doc.getData().get("viewable");
-                                boolean editable    = (boolean) doc.getData().get("editable");
+                                String expType = (String) doc.getData().get("experimentType");
+                                String ownerID = (String) doc.getData().get("ownerID");
+                                String uId = (String) doc.getData().get("uid");
+                                boolean viewable = (boolean) doc.getData().get("viewable");
+                                boolean editable = (boolean) doc.getData().get("editable");
 
                                 // Experiments are only displayed in ListView if they are viewable or current user is the owner.
                                 if (viewable || ownerID.equals(localUID)) {
@@ -184,6 +180,36 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
         CollectionReference collectionReference = db.collection("Users");
         userList = new ArrayList<User>();
         cleanedKeyword = keyword.trim().toLowerCase(); // we should allow user to search case insensitive
+
+
+//         //set up adapter
+//         userAdapter = new UserListAdapter(this, userList);
+//         exListView.setAdapter(userAdapter);
+
+//         // the search results should be a one time thing and do not auto update
+//         collectionReference
+//                 .whereEqualTo("cleanedUsername", cleanedKeyword)//query line, can be combined and turned into complex queries (this one queries for name)
+//                 .get()
+//                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {    // when you finish getting the data from the firebase
+//                     @Override
+//                     public void onComplete(@NonNull Task<QuerySnapshot> task) {     // querysnapshot contains 0..* document snapshots
+//                         if (task.isSuccessful()) {
+
+//                             // https://firebase.google.com/docs/reference/android/com/google/firebase/firestore/QueryDocumentSnapshot
+//                             for (QueryDocumentSnapshot doc : task.getResult()) {                      // iterate over query results of the document
+//                                 Log.d("Test holder", doc.getId() + " => " + doc.getData());                // this for each document from our query result where we can filter and extract results
+//                                 // the idea is here we use document snapshot methods such as get(String field) or getData()(returns fields of doc as a map) and we can
+//                                 // filter, then grab and use all the data we could need from the firebase ()
+//                                 // experimentId.add(document.getId());
+
+//                                 // every document from first query results will be unique
+//                                 String email = (String) doc.getData().get("email");
+//                                 String name = (String) doc.getData().get("name");
+//                                 ArrayList<String> ownedExp = (ArrayList<String>) doc.getData().get("ownedExperiments");
+//                                 ArrayList<String> participatingExp = (ArrayList<String>) doc.getData().get("participatingExperiments");
+//                                 String username = (String) doc.getData().get("username");
+//                                 String userID = (String) doc.getData().get("uid");
+
 
         //set up adapter
         userAdapter = new UserListAdapter(this, userList);

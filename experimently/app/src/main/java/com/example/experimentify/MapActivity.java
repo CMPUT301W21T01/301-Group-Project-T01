@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -42,7 +43,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private TrialController trialController;
     private String dateValue;
     private int trialResult;
-
+    private EditText searchLoc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         search = findViewById(R.id.searchLoc);
         ok = findViewById(R.id.okButton);
         cancelButton = findViewById(R.id.cancel);
-
+        searchLoc = findViewById(R.id.searchMap);
         trialController = new TrialController();
 
 
@@ -64,7 +65,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (extras != null) {
             exp = intent.getParcelableExtra("experiment");
         }
+        if(exp.isLocationRequired() == false){
+            map.setVisibility(View.GONE);
+            search.setVisibility(View.GONE);
+            searchLoc.setVisibility(View.GONE);
 
+        }
+        Log.d("exp123", "onCreate: ");
+        
         selectDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -159,7 +167,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public Location onMapReady(View view) {
-        EditText searchLoc = findViewById(R.id.searchMap);
         String location = searchLoc.getText().toString();
         List<Address> addressList = null;
         if (location != null || !location.equals("")) {
