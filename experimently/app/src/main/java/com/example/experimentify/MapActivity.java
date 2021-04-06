@@ -37,7 +37,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Button search;
     private DatePickerDialog.OnDateSetListener selectDate;
     private MarkerOptions last = null;
-    private Experiment exp;
+    private Experiment exp = null;
     private Location loc;
     private TrialController trialController;
     private String dateValue;
@@ -58,16 +58,34 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         trialController = new TrialController();
 
-//        Intent intent = getIntent();
-//        Bundle extras = intent.getExtras();
-//        if (extras != null) {
-//            exp = intent.getParcelableExtra("experiment");
-//        }
 
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            exp = intent.getParcelableExtra("experiment");
+        }
+
+        selectDate = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                dateValue = year + "/" + (month + 1) + "/" + dayOfMonth;
+                date.setText(dateValue);
+            }
+
+        };
+
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createCalendar();
+            }
+        });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent();
+                setResult(0, i);
                 finish();
                 Toast.makeText(MapActivity.this, "Cancelled Trial Creation", Toast.LENGTH_SHORT).show();
             }
@@ -76,19 +94,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (exp.getExpType().equals("Count")) {
-//                    trial = new CountTrial(exp.getUID(), exp.getExperimentId());
-//                } else if (exp.getExpType().equals("Binomial")) {
-//                    // trial = new BinomialTrial(exp.getUID(), exp.getExperimentId(),);
-//                } else if (exp.getExpType().equals("Integer")) {
-//                    //trial = new IntegerTrial(exp.getUID(), exp.getExperimentId(),searchLoc.getText().toString());
-//                } else if (exp.getExpType().equals("Measurement")) {
-//                    //  trial = new MeasurementTrial(exp.getUID(), exp.getExperimentId(),searchLoc.getText().toString());
-//                }
-//                trialController.addTrialToDB(trial, result);
-//                if (exp.getExpType().equals("Measurement"){
-//                    trial = new MeasurementTrial(exp.getUID(), exp.getExperimentId(),);
-//                }
+                if (dateValue == null) {
+                    Intent i = new Intent();
+                    setResult(0, i);
+                    Toast.makeText(MapActivity.this, "Cancelled Trial Creation: trial did not have date.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+
+                if (loc == null && exp.isLocationRequired()) {
+                    Intent i = new Intent();
+                    setResult(0, i);
+                    Toast.makeText(MapActivity.this, "Cancelled Trial Creation: trial did not have location", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+
                 Intent i = new Intent();
                 i.putExtra("date", dateValue);
                 if (loc != null){
@@ -160,20 +179,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
         }
-        date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createCalendar();
-            }
-        });
-        selectDate = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                dateValue = year + "/" + (month + 1) + "/" + dayOfMonth;
-                date.setText(dateValue);
-            }
 
-        };
+
 
         return loc;
     }

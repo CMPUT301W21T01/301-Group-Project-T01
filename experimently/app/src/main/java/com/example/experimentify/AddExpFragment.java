@@ -37,8 +37,8 @@ public class AddExpFragment extends DialogFragment implements AdapterView.OnItem
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String txt = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(), txt, Toast.LENGTH_SHORT).show();
+        //String txt = parent.getItemAtPosition(position).toString();
+        //Toast.makeText(parent.getContext(), txt, Toast.LENGTH_SHORT).show();
     }
 
     @Override

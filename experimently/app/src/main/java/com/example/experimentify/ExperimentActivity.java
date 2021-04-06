@@ -105,8 +105,19 @@ public class ExperimentActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        dateInfo = data.getStringExtra("date");
-        trial.setDate(dateInfo);
+        Log.d("requestCode", Integer.toString(resultCode));
+
+
+        if (resultCode == 0) {
+            return;
+        }
+        else {
+            dateInfo = data.getStringExtra("date");
+            trial.setDate(dateInfo);
+        }
+
+
+
 
         if(resultCode == 2){
             locationInfo = data.getParcelableExtra("location");
@@ -211,6 +222,7 @@ public class ExperimentActivity extends AppCompatActivity {
                             Log.d(TAG, "onClick: 1");
                             //Did not put next two lines in a method to ensure the correct sequence.
                             Intent intent = new Intent(ExperimentActivity.this, MapActivity.class);
+                            intent.putExtra("experiment", exp);
                             activity.startActivityForResult(intent, 1);
                             trial.setDate(dateInfo);
                             if (locationInfo != null) {
@@ -229,6 +241,7 @@ public class ExperimentActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             trial = new BinomialTrial(localUID, expUID, 1);
                             Intent intent = new Intent(ExperimentActivity.this, MapActivity.class);
+                            intent.putExtra("experiment", exp);
                             activity.startActivityForResult(intent, 1);
                             trial.setDate(dateInfo);
                             if (locationInfo != null) {
@@ -242,6 +255,7 @@ public class ExperimentActivity extends AppCompatActivity {
                             trial = new BinomialTrial(localUID, expUID, 0);
                             Intent intent = new Intent(ExperimentActivity.this, MapActivity.class);
                             activity.startActivityForResult(intent, 1);
+                            intent.putExtra("experiment", exp);
                             trial.setDate(dateInfo);
                             if (locationInfo != null) {
                                 trial.setTrialLocation(locationInfo);
@@ -265,6 +279,7 @@ public class ExperimentActivity extends AppCompatActivity {
                             }
                             trial = new IntegerTrial(localUID, expUID, intInfo);
                             Intent intent = new Intent(ExperimentActivity.this, MapActivity.class);
+                            intent.putExtra("experiment", exp);
                             activity.startActivityForResult(intent, 1);
                             trial.setDate(dateInfo);
                             if (locationInfo != null) {
@@ -290,6 +305,7 @@ public class ExperimentActivity extends AppCompatActivity {
                             Log.d(TAG, "onClick: measurementInfo = " + measurementInfo);
                             trial = new MeasurementTrial(localUID, expUID, measurementInfo);
                             Intent intent = new Intent(ExperimentActivity.this, MapActivity.class);
+                            intent.putExtra("experiment", exp);
                             activity.startActivityForResult(intent, 1);
                             trial.setDate(dateInfo);
                             if (locationInfo != null) {
