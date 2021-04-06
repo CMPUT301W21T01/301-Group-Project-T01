@@ -19,7 +19,7 @@ import androidx.cardview.widget.CardView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.WriterException;
 
-// AppCompatActivity
+
 public class ExperimentActivity extends AppCompatActivity {
 
     private TextView description;
@@ -96,8 +96,8 @@ public class ExperimentActivity extends AppCompatActivity {
      * This method brings the user to the stats activity
      */
     private void launchStatsActivity() {
-        Log.d("ughhh", "dfsfsdf");
         Intent intent = new Intent(this, StatsActivity.class);
+        intent.putExtra("experiment", exp);
         startActivity(intent);
     }
 
@@ -179,12 +179,6 @@ public class ExperimentActivity extends AppCompatActivity {
             exp = intent.getParcelableExtra("clickedExp");
             initUi();
 
-            statsButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
 
             chatButton.setOnClickListener(new View.OnClickListener() {
                 @Override

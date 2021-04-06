@@ -6,12 +6,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TrialController {
     FirebaseFirestore db;
     private static final String TAG = ExperimentActivity.class.getName();
+    private ArrayList<Trial> trials;
 
     public TrialController(){
         DatabaseSingleton databaseSingleton = new DatabaseSingleton();
@@ -42,4 +44,8 @@ public class TrialController {
         DocumentReference trialRef = db.collection("Experiments").document(newTrial.getEID()).collection("Trials").document(TID);
         trialRef.update("TID", TID);
     };
+
+    public ArrayList<Trial> getTrials() {
+        return trials;
+    }
 }
