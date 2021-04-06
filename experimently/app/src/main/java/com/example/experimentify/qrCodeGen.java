@@ -10,6 +10,9 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
 
 public class qrCodeGen extends ExperimentActivity {
     static int whitePixel = 0xFFFFFFFF;
@@ -28,11 +31,13 @@ public class qrCodeGen extends ExperimentActivity {
      * @param height
      * @throws null pointer exception
      */
-    public static Bitmap textToImage(String input, int width, int height) throws WriterException, NullPointerException {
+    public static ArrayList<Object> textToImage(String input, int width, int height, int mode) throws WriterException, NullPointerException {
         BitMatrix bitMatrix;
+        System.out.println("doyouget");
+        ArrayList<Object> list = new ArrayList<>();
+
         try {
-            bitMatrix = new MultiFormatWriter().encode(input, BarcodeFormat.DATA_MATRIX.QR_CODE,
-                    width, height, null);
+            bitMatrix = new MultiFormatWriter().encode(input, BarcodeFormat.DATA_MATRIX.QR_CODE, width, height, null);
         } catch (IllegalArgumentException Illegalargumentexception) {
             return null;
         }
@@ -51,7 +56,39 @@ public class qrCodeGen extends ExperimentActivity {
 
         qrbitmap.setPixels(pixels, 0, width, 0, 0, bitMatrixWidth, bitMatrixHeight);
 
-        return qrbitmap;
+
+        list.set(0, qrbitmap);
+        System.out.println("set0"+list.set(0, qrbitmap));
+        list.set(1, mode);
+        System.out.println("set1"+list.set(0, mode));
+
+        return list;
     }
+
+//    public static Bitmap textToImage(String input, int width, int height) throws WriterException, NullPointerException {
+//        BitMatrix bitMatrix;
+//        try {
+//            bitMatrix = new MultiFormatWriter().encode(input, BarcodeFormat.DATA_MATRIX.QR_CODE,
+//                    width, height, null);
+//        } catch (IllegalArgumentException Illegalargumentexception) {
+//            return null;
+//        }
+//        int bitMatrixWidth = bitMatrix.getWidth();
+//        int bitMatrixHeight = bitMatrix.getHeight();
+//        int[] pixels = new int[bitMatrixWidth * bitMatrixHeight];
+//
+//
+//        for (int y = 0; y < bitMatrixHeight; y++) {
+//            int offset = y * bitMatrixWidth;
+//            for (int x = 0; x < bitMatrixWidth; x++) {
+//                pixels[offset + x] = bitMatrix.get(x, y) ? blackPixel : whitePixel;
+//            }
+//        }
+//        Bitmap qrbitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444);
+//
+//        qrbitmap.setPixels(pixels, 0, width, 0, 0, bitMatrixWidth, bitMatrixHeight);
+//
+//        return qrbitmap;
+//    }
     //END OF CODE USED
 }

@@ -19,6 +19,8 @@ import androidx.cardview.widget.CardView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.WriterException;
 
+import java.util.ArrayList;
+
 // AppCompatActivity
 public class ExperimentActivity extends AppCompatActivity {
 
@@ -209,15 +211,16 @@ public class ExperimentActivity extends AppCompatActivity {
             qrCodeGene.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Bitmap temp = null;
+                    ArrayList<Object> temp = new ArrayList<>();
                     String tempID = (exp.getUID().toString());
                     try {
-                        temp = qrCodeGen.textToImage(tempID,500,500);
+                        temp = qrCodeGen.textToImage(tempID,500,500, 0);
+                        //qrCodeShow.setImageBitmap((Bitmap) temp.get(0));
                     } catch (WriterException e) {
                         e.printStackTrace();
                     }
-                    qrCodeShow.setImageBitmap(temp);
-                    //System.out.println("testtest"+temp);
+                    qrCodeShow.setImageBitmap((Bitmap) temp.get(0));
+                    System.out.println("testtest"+temp.get(0));
                     qrCodeShow.setVisibility(View.VISIBLE);
                 }
             });
