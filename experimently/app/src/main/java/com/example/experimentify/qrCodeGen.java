@@ -51,4 +51,12 @@ public class qrCodeGen extends ExperimentActivity {
         return qrbitmap;
     }
     //END OF CODE USED
+
+
+
+
+
+
+
+
 }
