@@ -212,26 +212,29 @@ public class ExperimentActivity extends AppCompatActivity {
             });
 
 
-            qrCodeGene.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bitmap temp = null;
-                    String genID = exp.getUID();
-                    try {
-                        temp = qrCodeGen.textToImage(genID, 500, 500, 0, exp.getExpType());
-                    } catch (WriterException e) {
-                        e.printStackTrace();
-                    }
-                    qrCodeShow.setImageBitmap(temp);
-                    //System.out.println("testtest"+temp);
-                    qrCodeShow.setVisibility(View.VISIBLE);
-                }
-            });
+//            qrCodeGene.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Bitmap temp = null;
+//                    String genID = exp.getUID();
+//                    try {
+//                        temp = qrCodeGen.textToImage(genID, 500, 500, 0, exp.getExpType());
+//                    } catch (WriterException e) {
+//                        e.printStackTrace();
+//                    }
+//                    qrCodeShow.setImageBitmap(temp);
+//                    //System.out.println("testtest"+temp);
+//                    qrCodeShow.setVisibility(View.VISIBLE);
+//                }
+//            });
 
             // If editable then display ui for conducting trials, else show message
             if (exp.isEditable()) {
                 String expUID = exp.getUID();
-                if (exp.getExpType().equals("Count")) {
+                System.out.println("Before if " + exp.getExpType());
+                //(exp.getExpType().equals("Count"))
+                if (("Count").equals(exp.getExpType())) {
+                    System.out.println("after if " + exp.getExpType());
                     count.setVisibility(View.VISIBLE);
                     trial = new CountTrial(localUID, expUID);
                     countButton.setOnClickListener(new View.OnClickListener() {
@@ -251,8 +254,8 @@ public class ExperimentActivity extends AppCompatActivity {
 
                 }
 
-
-                if (exp.getExpType().equals("Binomial")) {
+//exp.getExpType().equals("Binomial")
+                if (("Binomial").equals(exp.getExpType())) {
                     binomial.setVisibility(View.VISIBLE);
                     passButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -282,7 +285,7 @@ public class ExperimentActivity extends AppCompatActivity {
                     });
                 }
 
-                if (exp.getExpType().equals("Integer")) {
+                if (("Integer").equals(exp.getExpType())) {
                     integer.setVisibility(View.VISIBLE);
                     showSubmitButton();
                     submitButton.setOnClickListener(new View.OnClickListener() {
@@ -306,7 +309,7 @@ public class ExperimentActivity extends AppCompatActivity {
                     });
                 }
 
-                if (exp.getExpType().equals("Measurement")) {
+                if (("Measurement").equals(exp.getExpType())) {
                     measure.setVisibility(View.VISIBLE);
                     showSubmitButton();
                     submitButton.setOnClickListener(new View.OnClickListener() {
