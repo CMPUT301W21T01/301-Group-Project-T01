@@ -217,7 +217,7 @@ public class ExperimentActivity extends AppCompatActivity {
                     Bitmap temp = null;
                     String genID = exp.getUID();
                     try {
-                        temp = qrCodeGen.textToImage(genID, 500, 500, 0);
+                        temp = qrCodeGen.textToImage(genID, 500, 500, 0, exp.getExpType());
                     } catch (WriterException e) {
                         e.printStackTrace();
                     }
@@ -410,8 +410,6 @@ public class ExperimentActivity extends AppCompatActivity {
                 System.out.println("testtest" + codeQR);
                 qrCodeShow.setVisibility(View.VISIBLE);
                 return true;
-
-
         }
         return true;
     }

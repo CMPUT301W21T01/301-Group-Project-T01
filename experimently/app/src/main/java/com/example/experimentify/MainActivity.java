@@ -1,8 +1,14 @@
 package com.example.experimentify;
 
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +23,10 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,8 +41,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -55,10 +66,11 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private User currentUser;
     final String TAG = MainActivity.class.getName();
     public static final String PREFS_NAME = "PrefsFile";
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
     private Spinner searchSpinner;
     private TrialController trialController;
-    String localUID;
+    private String localUID;
+    private FusedLocationProviderClient fusedLocationProviderClient;
 
 
     /**
@@ -213,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         searchButton = findViewById(R.id.searchButton);
         // search button on click listener, pass query with intent
         searchButton.setOnClickListener((v) -> {
-            if(searchBar.getText().toString().trim().length() > 0) { // search if the edit text is not empty
+            if (searchBar.getText().toString().trim().length() > 0) { // search if the edit text is not empty
                 openSearchResults(searchBar.getText().toString());
             }
         });
@@ -265,18 +277,18 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 experimentController.getExperiments().clear();
-                for (QueryDocumentSnapshot doc : value){
+                for (QueryDocumentSnapshot doc : value) {
                     Log.d(TAG, String.valueOf(doc.getData().get("EID")));
-                    String description  = (String)  doc.getData().get("description");
-                    String region       = (String)  doc.getData().get("region");
-                    long minTrials      = (long)    doc.getData().get("minTrials");
-                    String date         = (String)  doc.getData().get("date");
+                    String description = (String) doc.getData().get("description");
+                    String region = (String) doc.getData().get("region");
+                    long minTrials = (long) doc.getData().get("minTrials");
+                    String date = (String) doc.getData().get("date");
                     boolean locationReq = (boolean) doc.getData().get("locationRequired");
-                    String expType      = (String)  doc.getData().get("ExperimentType");
-                    String ownerID      = (String)  doc.getData().get("ownerID");
-                    String uId          = (String)  doc.getData().get("uid");
-                    boolean viewable    = (boolean) doc.getData().get("viewable");
-                    boolean editable    = (boolean) doc.getData().get("editable");
+                    String expType = (String) doc.getData().get("ExperimentType");
+                    String ownerID = (String) doc.getData().get("ownerID");
+                    String uId = (String) doc.getData().get("uid");
+                    boolean viewable = (boolean) doc.getData().get("viewable");
+                    boolean editable = (boolean) doc.getData().get("editable");
                     //commented out to fix error
                     //long questionCount  = (long)    doc.getData().get("questionCount");
                     //long trialCount     = (long)    doc.getData().get("trialCount");
@@ -303,45 +315,86 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
             }
         });
     }
+
     /**
      * This method is what is used to direct the from the scan to the correct activity, it first will check
      * if we make sure that the scan its self isnt null and then we make sure the contents of the values arent null adn then direct
      * the user to the new experiment page
      */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent){
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
         IntentResult experimentValue = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if(experimentValue != null){
-            if(experimentValue.getContents() != null){
+        if (experimentValue != null) {
+            if (experimentValue.getContents() != null) {
                 String[] temp = experimentValue.getContents().split("/");
                 String experimentID = temp[0];
                 String experimentType = temp[1];
                 String experimentMode = temp[2];
-                for (Experiment experiment: experimentList){
-                    if (experiment.getUID() != null && experiment.getUID().contains(experimentID)){
+                for (Experiment experiment : experimentList) {
+                    if (experiment.getUID() != null && experiment.getUID().contains(experimentID)) {
                         if (experimentMode.equals("2")) {
                             experimentController.viewExperiment(this, experiment);
-                        }
-                        else if(experimentMode.equals("1")) {
-                            Trial trial = createTrialForDB(experimentID, experimentType, localUID, experimentMode);
-                            //TODO: Probably have to call MapActivity.
-                            trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), null);
+                        } else if (experimentMode.equals("1")) {
+                            Trial trial = createTrialFromQR(experimentID, experimentType, localUID, experimentMode);
+                            //TODO: Get Location from Android Built-in Locations
+                            //Initialize fusedLocationProviderClient
+                            com.example.experimentify.Location location = null;
+                            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+                            if (ActivityCompat.checkSelfPermission(MainActivity.this,
+                                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                                //Permission Granted
+                                location = getLocation();
+                            } else {
+                                //When permission is denied
+                                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                            }
+                            trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location);
                         }
                     }
                 }
             }
-        } else{
+        } else {
             super.onActivityResult(requestCode, resultCode, intent);
         }
     }
+
+    @SuppressLint("MissingPermission")
+    private com.example.experimentify.Location getLocation() {
+        final com.example.experimentify.Location[] dataLocation = {null};
+        //This function only gets called when permissions is true therefore we suppressed the warning.
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                //Initialize Location from Android
+                Location location = task.getResult();
+                Address address = null;
+
+
+                if(location != null){
+                    //Initialize Geocoder
+                    Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+                    try {
+                        //Returns a list, but only one result so get the 0th element.
+                        address = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1).get(0);
+                        dataLocation[0] = new com.example.experimentify.Location(address);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        return dataLocation[0];
+    }
+
     //0 is fail, 1 is success, 2 is view.
-    public Trial createTrialForDB(String EID, String expType, String UID, String result){
+    public Trial createTrialFromQR(String EID, String expType, String UID, String result){
         Trial trial = null;
         if (expType.equals("Count")){
             trial = new CountTrial(UID, EID);
         }
         else if (expType.equals("Binomial")){
-            trial = new BinomialTrial(UID, EID, Integer.getInteger(result));
+            trial = new BinomialTrial(UID, EID, Integer.parseInt(result));
         }
         return trial;
     }
