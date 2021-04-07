@@ -1,12 +1,10 @@
 package com.example.experimentify;
 
 import android.app.Activity;
-import android.util.Log;
+import android.app.Fragment;
 import android.view.View;
 import android.widget.EditText;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
@@ -52,17 +50,15 @@ public class MainActivityTest {
     @Test
     public void addExpFragmentTest() {
         solo.assertCurrentActivity("Not in MainActivity", MainActivity.class);
-        //https://stackoverflow.com/a/19052227
         Activity activity = solo.getCurrentActivity();
-        View button = solo.getView("showAddExpUiButton");
+        //
+        View button = activity.findViewById(R.id.showAddExpUiButton);
         solo.clickOnView(button);
+        Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.addExpCL);
+        assertTrue(fragment.isVisible());
+        EditText description = (EditText) solo.getView(R.id.expDescription);
+        solo.enterText(description, "Edmonton");
 
-        FragmentActivity myContext = (FragmentActivity) activity;
-        Fragment fragment1 = myContext.getSupportFragmentManager().findFragmentByTag("ADD_EXPERIMENT");
-        Fragment fragment2 = myContext.getSupportFragmentManager().findFragmentById(R.id.addExpCL);
-//        assertTrue(solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.addExpCL));
-
-        Log.d(TAG, "addExpFragmentTest: " + fragment1 + "/" + fragment2);
 //        FragmentManager showFrag = activity.getFragmentManager().findFragmentById(R.id.mainActivityCL).getChildFragmentManager();
 
 
@@ -72,7 +68,7 @@ public class MainActivityTest {
 //        boolean fragShow = solo.waitForFragmentById(R.id.addExpCL);
 //        boolean viewShow = solo.waitForView(solo.waitForFragmentById(R.id.addExpCL));
 //        Log.d(TAG, "fragShow: " + fragShow + " viewShow: " + viewShow + " mainActivity: " + mainActivity);
-
+//
 //        addExpFragment = solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.addExpCL);
 
 
