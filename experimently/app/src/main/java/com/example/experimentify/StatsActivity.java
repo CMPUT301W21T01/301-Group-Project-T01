@@ -20,8 +20,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+
 /**
  * This class is an activity that displays stats for an experiment
+ * The implementation imports DescriptiveStatistics found on:
+ * http://commons.apache.org/proper/commons-math/javadocs/api-3.3/org/apache/commons/math3/stat/descriptive/DescriptiveStatistics.html
+ * which accurately calculates the stats for us, and keeps the design of this activity straightforward(initialize the object, add the data, then simply call the methods for the statistics we want to show)
+ * which is simple and keeps the code relatively shorter
  */
 public class StatsActivity extends AppCompatActivity {
 
@@ -36,92 +42,25 @@ public class StatsActivity extends AppCompatActivity {
     final String TAG = StatsActivity.class.getName();
     private String expType;
     private String expID;
+    private DescriptiveStatistics stats;
 
-    /**
-     * This method calculates the mean of the trials for the experiment.
-     * @return returns a double that represents mean of the trials
-     */
-    private double calculateMean() {
-        double sum = 0.0;
-        if (!trials.isEmpty()) {
-            for (Trial trial : trials) {
-                sum += (double) trial.getValue(); //TODO fix error with casting int to double
-            }
-            return sum/trials.size();
-        }
-        else {
-            return 0.0;
-        }
-    }
-
-    //TODO check that this method calculates median correctly
-    /**
-     * This method calculates the median of the trials for the experiment.
-     * @return returns a double that represents median of the trials
-     */
-    public double calculateMedian() {
-
-        if (!trials.isEmpty()) {
-            int size = trials.size();
-            Collections.sort(trials, new Comparator<Trial>() {
-                @Override
-                public int compare(Trial o1, Trial o2) {
-                    //https://stackoverflow.com/a/15111857
-                    BigDecimal b1 = new BigDecimal((double) o1.getValue());
-                    BigDecimal b2 = new BigDecimal((double) o2.getValue());
-                    return b1.compareTo(b2);
-                }
-            });
-
-
-            if (size % 2 == 0) {
-                // When size is even
-                return (double) trials.get(size / 2).getValue();
-            } else {
-                // When size is odd
-                return ((double) trials.get((size - 1) / 2).getValue() + (double) trials.get((size + 1) / 2).getValue()) / 2;
-
-            }
-        }
-        else {
-            return 0.0;
-        }
-
-
-    }
-
-    //TODO calculate standard deviation
-    public double calculateStdDev() {
-        return 0.0; //placeholder
-    }
-
-    //TODO calculate the list of quartiles
-    public double[] calculateQuartiles() {
-        //quartiles should be empty at start, need values below as placeholder to avoid crash
-        double [] quartiles = {1.0, 2.0, 3.0};
-        return quartiles;
-    }
 
     public void setUI() {
-        double mean = calculateMean();
-        double median = calculateMedian();
-        double stdDev = calculateStdDev();
-        double[] quartiles = calculateQuartiles();
+
+        double mean = stats.getMean();
+        meanTV.setText("Mean: " + Double.toString(mean));
+        double median = stats.getPercentile(50);
+        medianTV.setText("Median: " + Double.toString(median));
+        double stdDev = stats.getStandardDeviation();
+        stdDevTV.setText("Standard Deviation: " + Double.toString(stdDev));
+        //double[] quartiles = calculateQuartiles();
         String quartileString = "";
+        quartileString += Double.toString(stats.getPercentile(25));
+        quartileString += ", ";
+        quartileString += Double.toString(stats.getPercentile(50));
+        quartileString += ", ";
+        quartileString += Double.toString(stats.getPercentile(75));
 
-        meanTV.setText(this.getResources().getString(R.string.mean_header) + Double.toString(mean));
-        medianTV.setText(this.getResources().getString(R.string.median_header) + Double.toString(median));
-        stdDevTV.setText(this.getResources().getString(R.string.std_dev_header) + Double.toString(stdDev));
-
-
-        // Generates string to display for quartiles
-        //TODO throw exception if array size is not == 4
-        for (int i = 0; i < 3; i++) {
-            quartileString += quartiles[i];
-            if (i != 2) {
-                quartileString += ", ";
-            }
-        }
 
         quartilesTV.setText(this.getResources().getString(R.string.quartiles_header) + quartileString);
 
@@ -147,11 +86,17 @@ public class StatsActivity extends AppCompatActivity {
 
                     //TODO design pattern?
                     if (expType.equals("Measurement")) {
+                        stats.addValue((double) result);
+
+
                         MeasurementTrial newTrial = new MeasurementTrial(UID, expID, (double) result);
                         newTrial.setDate(date);
                         newTrial.setTID(TID);
                         trials.add(newTrial);
                     } else if (expType.equals("Integer")) {
+                        stats.addValue((int) result);
+
+
                         IntegerTrial newTrial = new IntegerTrial(UID, expID, (int) result);
                         newTrial.setDate(date);
                         newTrial.setTID(TID);
@@ -162,6 +107,8 @@ public class StatsActivity extends AppCompatActivity {
                         newTrial.setTID(TID);
                         trials.add(newTrial);
                     } else if (expType.equals("Binomial")) {
+                        stats.addValue((int) result);
+
                         BinomialTrial newTrial = new BinomialTrial(UID, expID, (int) result);
                         newTrial.setDate(date);
                         newTrial.setTID(TID);
@@ -174,15 +121,13 @@ public class StatsActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
         db = FirebaseFirestore.getInstance();
+
+        stats = new DescriptiveStatistics();
 
 
         Intent intent = getIntent();
@@ -202,8 +147,6 @@ public class StatsActivity extends AppCompatActivity {
                 updateList(value, error);
             }
         });
-
-
 
     }
 }
