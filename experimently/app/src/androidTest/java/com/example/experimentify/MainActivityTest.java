@@ -1,7 +1,6 @@
 package com.example.experimentify;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.view.View;
 import android.widget.EditText;
 
@@ -51,11 +50,12 @@ public class MainActivityTest {
     public void addExpFragmentTest() {
         solo.assertCurrentActivity("Not in MainActivity", MainActivity.class);
         Activity activity = solo.getCurrentActivity();
-        //
+        //showAddExpUiButton is the FloatActionButton
         View button = activity.findViewById(R.id.showAddExpUiButton);
+        //Clicks on View since FloatActionButton is not considered a button.
         solo.clickOnView(button);
-        Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.addExpCL);
-        assertTrue(fragment.isVisible());
+        //Waits for Fragment
+        solo.waitForFragmentById(R.id.addExpCL);
         EditText description = (EditText) solo.getView(R.id.expDescription);
         solo.enterText(description, "Edmonton");
 
