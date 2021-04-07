@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.icu.text.SimpleDateFormat;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -43,6 +44,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -324,6 +326,9 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
+        final String VIEW = "2";
+        final String PASS = "1";
+        final String FAIL = "0";
         IntentResult experimentValue = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (experimentValue != null) {
             if (experimentValue.getContents() != null) {
@@ -333,10 +338,31 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                 String experimentMode = temp[2];
                 for (Experiment experiment : experimentList) {
                     if (experiment.getUID() != null && experiment.getUID().contains(experimentID)) {
-                        if (experimentMode.equals("2")) {
+                        if (experimentMode.equals(VIEW)) {
                             experimentController.viewExperiment(this, experiment);
-                        } else if (experimentMode.equals("1")) {
+                        } else if (experimentMode.equals(PASS)) {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                            String date = sdf.format(new Date(System.currentTimeMillis()));
                             Trial trial = createTrialFromQR(experimentID, experimentType, localUID, experimentMode);
+                            trial.setDate(date);
+                            //TODO: Get Location from Android Built-in Locations
+                            //Initialize fusedLocationProviderClient
+                            com.example.experimentify.Location location = null;
+                            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+                            if (ActivityCompat.checkSelfPermission(MainActivity.this,
+                                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                                //Permission Granted
+                                location = getLocation();
+                            } else {
+                                //When permission is denied
+                                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                            }
+                            trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location);
+                        } else if (experimentMode.equals(FAIL)){
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                            String date = sdf.format(new Date(System.currentTimeMillis()));
+                            Trial trial = createTrialFromQR(experimentID, experimentType, localUID, experimentMode);
+                            trial.setDate(date);
                             //TODO: Get Location from Android Built-in Locations
                             //Initialize fusedLocationProviderClient
                             com.example.experimentify.Location location = null;
@@ -358,6 +384,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
             super.onActivityResult(requestCode, resultCode, intent);
         }
     }
+
 
     @SuppressLint("MissingPermission")
     private com.example.experimentify.Location getLocation() {
@@ -388,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     }
 
     //0 is fail, 1 is success, 2 is view.
-    public Trial createTrialFromQR(String EID, String expType, String UID, String result){
+    private Trial createTrialFromQR(String EID, String expType, String UID, String result){
         Trial trial = null;
         if (expType.equals("Count")){
             trial = new CountTrial(UID, EID);
