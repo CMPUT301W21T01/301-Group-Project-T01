@@ -166,7 +166,7 @@ public class ExperimentActivity extends AppCompatActivity {
         submitButton = findViewById(R.id.submitTrials);
 
 
-        qrCodeGene = findViewById(R.id.qrCode);
+        //qrCodeGene = findViewById(R.id.qrCode);
         qrCodeShow = findViewById(R.id.qrCodeView);
 
         db = FirebaseFirestore.getInstance();
@@ -211,21 +211,21 @@ public class ExperimentActivity extends AppCompatActivity {
                 }
             });
 
-            qrCodeGene.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bitmap temp = null;
-                    String genID = exp.getUID();
-                    try {
-                        temp = qrCodeGen.textToImage(genID, 500, 500, 0);
-                    } catch (WriterException e) {
-                        e.printStackTrace();
-                    }
-                    qrCodeShow.setImageBitmap(temp);
-                    //System.out.println("testtest"+temp);
-                    qrCodeShow.setVisibility(View.VISIBLE);
-                }
-            });
+//            qrCodeGene.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Bitmap temp = null;
+//                    String genID = exp.getUID();
+//                    try {
+//                        temp = qrCodeGen.textToImage(genID, 500, 500, 0);
+//                    } catch (WriterException e) {
+//                        e.printStackTrace();
+//                    }
+//                    qrCodeShow.setImageBitmap(temp);
+//                    //System.out.println("testtest"+temp);
+//                    qrCodeShow.setVisibility(View.VISIBLE);
+//                }
+//            });
             // If editable then display ui for conducting trials, else show message
             if (exp.isEditable()) {
                 String expUID = exp.getUID();

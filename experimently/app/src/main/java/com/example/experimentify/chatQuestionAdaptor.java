@@ -41,9 +41,9 @@ public class chatQuestionAdaptor extends ArrayAdapter<chatQuestion> {
      * @param question Question whose data is displayed by the question adapter
      */
     public void setQuestionUi(chatQuestion question) {
-        descBox.setText(question.getDescription());
-        dateBox.setText(question.getDate());
-        userID.setText(question.getUID());
+        descBox.setText("Question: "+ System.lineSeparator() +question.getDescription());
+        dateBox.setText("Date: "+question.getDate());
+        userID.setText("User: "+question.getUID());
         //int Temp = question.getNumReplies();
         repliesCount.setText(String.valueOf(question.getNumReplies()));
         System.out.println("replies..." + String.valueOf(question.getNumReplies()));

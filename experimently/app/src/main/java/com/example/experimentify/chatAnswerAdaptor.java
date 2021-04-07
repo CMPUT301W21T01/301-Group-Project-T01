@@ -40,9 +40,9 @@ public class chatAnswerAdaptor extends ArrayAdapter<chatAnswer> {
      * @param answer Question whose data is displayed by the question adapter
      */
     public void setAnswersUi(chatAnswer answer) {
-        descBox.setText(answer.getDescription());
-        dateBox.setText(answer.getDate());
-        userID.setText(answer.getUID());
+        descBox.setText("Answer: " + System.lineSeparator() + answer.getDescription());
+        dateBox.setText("Date: "+answer.getDate());
+        userID.setText("User: "+answer.getUID());
     }
 
     /**
