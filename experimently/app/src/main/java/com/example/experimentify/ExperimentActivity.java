@@ -210,9 +210,9 @@ public class ExperimentActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Bitmap temp = null;
-                    String tempID = (exp.getUID().toString());
+                    String genID = exp.getUID();
                     try {
-                        temp = qrCodeGen.textToImage(tempID,500,500);
+                        temp = qrCodeGen.textToImage(genID,500,500, 0);
                     } catch (WriterException e) {
                         e.printStackTrace();
                     }

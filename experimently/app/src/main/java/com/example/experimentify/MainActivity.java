@@ -14,9 +14,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import android.widget.Toast;
-
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     public static final String PREFS_NAME = "PrefsFile";
     FirebaseFirestore db;
     private Spinner searchSpinner;
+    private TrialController trialController;
 
 
     /**
@@ -162,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         currentUser = initializeUser(db);
 
         final CollectionReference collectionReference = db.collection("Experiments");
-
+        trialController = new TrialController();
 
 
         //get ui resources
@@ -171,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         userProfileButton = findViewById(R.id.userProfileButton);
         qrScanner = findViewById(R.id.qrScanner);
         subButton = findViewById(R.id.subButton);
+
 
 //        // used documentation at https://developer.android.com/guide/topics/ui/controls/spinner
 //        searchSpinner = (Spinner) findViewById(R.id.search_spinner);
@@ -299,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         });
     }
     /**
-     * This method is what is used to direct the from the scan to the ccrrect activity, it first will check
+     * This method is what is used to direct the from the scan to the correct activity, it first will check
      * if we make sure that the scan its self isnt null and then we make sure the contents of the values arent null adn then direct
      * the user to the new experiment page
      */
@@ -308,10 +307,18 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         IntentResult experimentValue = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if(experimentValue != null){
             if(experimentValue.getContents() != null){
-                String temp = experimentValue.getContents();
+                String[] temp = experimentValue.getContents().split("/");
+                String experimentName = temp[0];
+                String experimentMode = temp[1];
                 for (Experiment experiment: experimentList){
-                    if (experiment.getUID() != null && experiment.getUID().contains(temp)){
-                        experimentController.viewExperiment(this, experiment);
+                    if (experiment.getUID() != null && experiment.getUID().contains(experimentName)){
+                        if (experimentMode.equals("0")) {
+                            experimentController.viewExperiment(this, experiment);
+                        }
+//                        else if(experimentMode.equals("1"){
+//                            trialController.addTrialToDB(new Trial() {
+//                            });
+//                        }
                     }
                 }
             }
