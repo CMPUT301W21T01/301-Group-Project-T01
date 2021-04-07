@@ -374,32 +374,43 @@ public class ExperimentActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        String expUID = exp.getUID();
+        Bitmap codeQR = null;
+        String expType = exp.getExpType();
         switch (item.getItemId()) {
-            case R.id.qrGenExp:
-
-                Bitmap temp = null;
-                String genID = exp.getUID();
-                try {
-                    temp = qrCodeGen.textToImage(genID, 500, 500, 0);
+            case R.id.qrFailMenu:
+                try{
+                    codeQR = qrCodeGen.textToImage(expUID, 500, 500, 0, expType);
                 } catch (WriterException e) {
                     e.printStackTrace();
                 }
-                qrCodeShow.setImageBitmap(temp);
-                System.out.println("testtest" + temp);
+                qrCodeShow.setImageBitmap(codeQR);
                 qrCodeShow.setVisibility(View.VISIBLE);
                 return true;
 
-
+            case R.id.qrIncreMenu:
             case R.id.qrPassMenu:
-            // User chose the "Favorite" action, mark the current item
-            // as a favorite...
-            return true;
+                try{
+                    codeQR = qrCodeGen.textToImage(expUID, 500, 500, 1, expType);
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
+                qrCodeShow.setImageBitmap(codeQR);
+                System.out.println("qrPassMenu: " + codeQR);
+                qrCodeShow.setVisibility(View.VISIBLE);
+                return true;
 
-            //default:
-            // If we got here, the user's action was not recognized.
-            // Invoke the superclass to handle it.
-            //return super.onOptionsItemSelected(item);
+            case R.id.qrGenExp:
+                try {
+                    codeQR = qrCodeGen.textToImage(expUID, 500, 500, 2, expType);
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
+                qrCodeShow.setImageBitmap(codeQR);
+                System.out.println("testtest" + codeQR);
+                qrCodeShow.setVisibility(View.VISIBLE);
+                return true;
+
 
         }
         return true;

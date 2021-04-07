@@ -25,10 +25,10 @@ public class qrCodeGen extends ExperimentActivity {
      * @param height
      * @throws null pointer exception
      */
-    public static Bitmap textToImage(String input, int width, int height, int mode) throws WriterException, NullPointerException {
+    public static Bitmap textToImage(String input, int width, int height, int mode, String expType) throws WriterException, NullPointerException {
         BitMatrix bitMatrix;
         try {
-            bitMatrix = new MultiFormatWriter().encode(input + "/" + mode, BarcodeFormat.DATA_MATRIX.QR_CODE,
+            bitMatrix = new MultiFormatWriter().encode(input + "/" + expType + "/"  + mode, BarcodeFormat.DATA_MATRIX.QR_CODE,
                     width, height, null);
         } catch (IllegalArgumentException Illegalargumentexception) {
             return null;
