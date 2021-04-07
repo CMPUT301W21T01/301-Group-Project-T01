@@ -1,31 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/border"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/userAnswer"
-        android:layout_width="match_parent"
-        android:layout_height="86dp"
-        android:text="Question" />
+        android:id="@+id/userAnswerDate"
+        android:layout_width="360dp"
+        android:layout_height="29dp"
+        android:layout_weight="1"
+        android:background="#C4FAFC"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="Date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userAnswerID" />
 
     <TextView
         android:id="@+id/userAnswerID"
-        android:layout_width="match_parent"
-        android:layout_height="33dp"
-        android:text="UserID" />
+        android:layout_width="360dp"
+        android:layout_height="29dp"
+        android:background="#C4FAFC"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="UserID"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userAnswer" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+    <TextView
+        android:id="@+id/userAnswer"
+        android:layout_width="360dp"
+        android:layout_height="91dp"
+        android:background="#C4FAFC"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="Question"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/userAnswerDate"
-            android:layout_width="291dp"
-            android:layout_height="37dp"
-            android:layout_weight="1"
-            android:text="Date" />
-
-    </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

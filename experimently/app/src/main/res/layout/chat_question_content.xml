@@ -1,37 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/userQuestion"
-        android:layout_width="match_parent"
+        android:layout_width="360dp"
         android:layout_height="86dp"
-        android:text="Question" />
+        android:gravity="center_vertical"
+        android:background="#FFFF99"
+        android:paddingLeft="7dp"
+        android:text="Question"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/userQuestionID"
-        android:layout_width="match_parent"
-        android:layout_height="33dp"
-        android:text="UserID" />
+        android:layout_width="310dp"
+        android:layout_height="36dp"
+        android:gravity="center_vertical"
+        android:background="#FFFF99"
+        android:text="UserID"
+        android:paddingLeft="7dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userQuestionDate" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+    <TextView
+        android:id="@+id/userQuestionReplies"
+        android:layout_width="50dp"
+        android:layout_height="36dp"
+        android:layout_weight="1"
+        android:background="#FFFF99"
+        android:gravity="center_vertical"
+        android:text="Reply Count"
+        android:paddingLeft="7dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/userQuestionID"
+        app:layout_constraintTop_toBottomOf="@+id/userQuestionDate" />
 
-        <TextView
-            android:id="@+id/userQuestionDate"
-            android:layout_width="291dp"
-            android:layout_height="37dp"
-            android:layout_weight="1"
-            android:text="Date" />
+    <TextView
+        android:id="@+id/userQuestionDate"
+        android:layout_width="360dp"
+        android:layout_height="36dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="7dp"
+        android:layout_weight="1"
+        android:background="#FFFF99"
+        android:text="Date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userQuestion" />
 
-        <TextView
-            android:id="@+id/userQuestionReplies"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_weight="1"
-            android:text="Reply Count" />
-    </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

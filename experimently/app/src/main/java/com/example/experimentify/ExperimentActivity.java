@@ -166,7 +166,7 @@ public class ExperimentActivity extends AppCompatActivity {
         submitButton = findViewById(R.id.submitTrials);
 
 
-        qrCodeGene = findViewById(R.id.qrCode);
+        //qrCodeGene = findViewById(R.id.qrCode);
         qrCodeShow = findViewById(R.id.qrCodeView);
 
         db = FirebaseFirestore.getInstance();
@@ -211,6 +211,7 @@ public class ExperimentActivity extends AppCompatActivity {
                 }
             });
 
+
             qrCodeGene.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -226,6 +227,7 @@ public class ExperimentActivity extends AppCompatActivity {
                     qrCodeShow.setVisibility(View.VISIBLE);
                 }
             });
+
             // If editable then display ui for conducting trials, else show message
             if (exp.isEditable()) {
                 String expUID = exp.getUID();
@@ -410,7 +412,12 @@ public class ExperimentActivity extends AppCompatActivity {
                 System.out.println("testtest" + codeQR);
                 qrCodeShow.setVisibility(View.VISIBLE);
                 return true;
+
+            case android.R.id.home:
+                this.finish();
+                return true;
         }
+
         return true;
     }
 }
