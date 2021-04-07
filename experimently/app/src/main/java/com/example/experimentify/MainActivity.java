@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         });
     }
     /**
-     * This method is what is used to direct the from the scan to the ccrrect activity, it first will check
+     * This method is what is used to direct the from the scan to the correct activity, it first will check
      * if we make sure that the scan its self isnt null and then we make sure the contents of the values arent null adn then direct
      * the user to the new experiment page
      */

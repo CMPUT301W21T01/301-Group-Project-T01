@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * SearchResults Activity that displays the results of searching a specific keyword of matching experiments
  * that will display a listview of Experiments that match with the search (searchable field in db)
  */
-public class SearchResults extends AppCompatActivity implements ExpOptionsFragment.OnFragmentInteractionListener {
+public class SearchResults extends AppCompatActivity implements ExpOptionsFragment.OnFragmentInteractionListener, UserOptionsFragment.OnFragmentInteractionListener {
 
     private ExperimentController expController;
     private ExperimentListAdapter experimentAdapter;
@@ -53,6 +53,16 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
     private void showExpOptionsUI(Experiment experiment, User currentUser) {
         String localUID = settings.getString("uid","0");
         ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment, localUID, currentUser);
+        fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
+    }
+
+    /**
+     * This method shows the fragment that gives users options for the experiment they long clicked on.
+     * @param newUser experiment whose options will be edited
+     */
+    private void showUserOptionsUI(User newUser, User currentUser) {
+        String localUID = settings.getString("uid","0");
+        UserOptionsFragment fragment = UserOptionsFragment.newInstance(newUser, localUID, currentUser);
         fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
     }
 
@@ -214,6 +224,14 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
         //set up adapter
         userAdapter = new UserListAdapter(this, userList);
         exListView.setAdapter(userAdapter);
+
+        exListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> parent, View v, int pos, long id) {
+                User userToModify = userList.get(pos);
+                showUserOptionsUI(userToModify, user);
+                return true;
+            }
+        });
 
         // the search results should be a one time thing and do not auto update
         collectionReference
