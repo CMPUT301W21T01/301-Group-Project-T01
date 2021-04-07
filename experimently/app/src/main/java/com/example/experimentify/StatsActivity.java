@@ -15,10 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
@@ -35,6 +32,8 @@ public class StatsActivity extends AppCompatActivity {
     private TextView medianTV;
     private TextView meanTV;
     private TextView stdDevTV;
+    private TextView Min;
+    private TextView Max;
     private CollectionReference collectionReference;
     private Experiment exp;
     private ArrayList<Trial> trials;
@@ -53,6 +52,7 @@ public class StatsActivity extends AppCompatActivity {
         medianTV.setText("Median: " + Double.toString(median));
         double stdDev = stats.getStandardDeviation();
         stdDevTV.setText("Standard Deviation: " + Double.toString(stdDev));
+
         //double[] quartiles = calculateQuartiles();
         String quartileString = "";
         quartileString += Double.toString(stats.getPercentile(25));
@@ -63,6 +63,15 @@ public class StatsActivity extends AppCompatActivity {
 
 
         quartilesTV.setText(this.getResources().getString(R.string.quartiles_header) + quartileString);
+
+        String minText = "";
+        String maxText = "";
+        minText += Double.toString(stats.getMin());
+        maxText += Double.toString(stats.getMax());
+
+        Min.setText("Min: " + minText);
+        Max.setText("Max: " + maxText);
+
 
     }
 
@@ -139,7 +148,9 @@ public class StatsActivity extends AppCompatActivity {
         quartilesTV = findViewById(R.id.quartiles);
         medianTV = findViewById(R.id.median);
         meanTV = findViewById(R.id.mean);
-        stdDevTV = findViewById(R.id.stdDev);
+        stdDevTV = findViewById(R.id.stdDev3);
+        Max = findViewById(R.id.Max);
+        Min = findViewById(R.id.Min);
 
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
