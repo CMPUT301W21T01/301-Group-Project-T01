@@ -411,8 +411,11 @@ public class ExperimentActivity extends AppCompatActivity {
                 qrCodeShow.setVisibility(View.VISIBLE);
                 return true;
 
-
+            case android.R.id.home:
+                this.finish();
+                return true;
         }
+
         return true;
     }
 }
