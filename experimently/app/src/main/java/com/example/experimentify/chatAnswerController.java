@@ -5,6 +5,7 @@ import android.widget.ArrayAdapter;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -49,7 +50,8 @@ public class chatAnswerController {
         String EID = newAnswer.getEID();
         String QID = newAnswer.getQID();
         DocumentReference newRef = db.collection("Experiments").document(EID).collection("Questions").document(QID).collection("Answers").document();
-
+        db.collection("Experiments").document(EID).collection("Questions").document(newAnswer.getQID()).update("answerTotal", FieldValue.increment(1));
+        listAdapter.notifyDataSetChanged();
 
         Map<String, Object> enterData = new HashMap<>();
         enterData.put("description", newAnswer.getDescription());
