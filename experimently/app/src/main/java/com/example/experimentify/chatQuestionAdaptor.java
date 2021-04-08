@@ -45,7 +45,7 @@ public class chatQuestionAdaptor extends ArrayAdapter<chatQuestion> {
         dateBox.setText("Date: "+question.getDate());
         userID.setText("User: "+question.getUID());
         //int Temp = question.getNumReplies();
-        repliesCount.setText(String.valueOf(question.getNumReplies()));
+        repliesCount.setText("Reply count: "+String.valueOf(question.getNumReplies()));
         System.out.println("replies..." + String.valueOf(question.getNumReplies()));
         //repliesCount.setText("1");
     }
