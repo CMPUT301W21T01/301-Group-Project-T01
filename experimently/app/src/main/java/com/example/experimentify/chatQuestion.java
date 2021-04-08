@@ -12,7 +12,7 @@ public class chatQuestion {
     private String UID;
     // Not sure how the date should be stored yet.
     private String date;
-    private int numReplies;
+    private long numReplies;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private String EID;
     private String QID;
@@ -56,11 +56,18 @@ public class chatQuestion {
         this.QID = QID;
     }
 
-    public int getNumReplies() {
+    public long getNumReplies() {
         return numReplies;
+    }
+
+    public void setNumReplies(long numReplies) {
+        this.numReplies = numReplies;
     }
 
     public String getEID() {
         return EID;
+    }
+    public void incrementNumReplies(){
+        numReplies++;
     }
 }
