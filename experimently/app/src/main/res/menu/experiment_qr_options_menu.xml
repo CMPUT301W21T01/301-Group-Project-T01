@@ -20,21 +20,22 @@
         </menu>
     </item>
     <item
+        android:id="@+id/setOwnMenu"
         android:title="Set Own Code" >
         <menu >
             <item
                 android:id="@+id/selfGenExp"
                 android:title="Experiment QR Code" />
             <item
-                android:id="@+id/selfGenPass"
+                android:id="@+id/selfSetPass"
                 android:title="Set Pass Code" />
 
             <item
-                android:id="@+id/selfGenFail"
+                android:id="@+id/selfSetFail"
                 android:title="Set Fail Code" />
 
             <item
-                android:id="@+id/selfGenIncre"
+                android:id="@+id/selfSetIncre"
                 android:title="Set Increment Code" />
         </menu>
     </item>
