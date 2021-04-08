@@ -12,8 +12,6 @@
 
 package com.example.experimentify;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,16 +21,12 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 
-import com.example.experimentify.MainActivity;
-import com.example.experimentify.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.ViewfinderView;
 
 import java.util.Random;
-
-import javax.xml.transform.Result;
 
 /**
  * Custom Scannner Activity extending from Activity to display a custom layout form scanner view.
@@ -56,7 +50,7 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
         switchFlashlightButton = findViewById(R.id.switch_flashlight);
 
         viewfinderView = findViewById(R.id.zxing_viewfinder_view);
-
+        
         // if the device does not have flashlight in its camera,
         // then remove the switch flashlight button...
         if (!hasFlash()) {
@@ -67,8 +61,6 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
         capture.initializeFromIntent(getIntent(), savedInstanceState);
         capture.setShowMissingCameraPermissionDialog(false);
         capture.decode();
-
-        System.out.println("capture string " + capture.toString()); // We could implemenet the arituary thing here just depends what capture decode to string string returns
 
         changeMaskColor(null);
         changeLaserVisibility(true);

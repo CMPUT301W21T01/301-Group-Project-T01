@@ -64,15 +64,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Bundle extras = intent.getExtras();
         if (extras != null) {
             exp = intent.getParcelableExtra("experiment");
+            Log.d("exp123", "onCreate: " + exp.isLocationRequired());
         }
-        if(exp.isLocationRequired() == false){
+
+        if(!exp.isLocationRequired()){
             map.setVisibility(View.GONE);
             search.setVisibility(View.GONE);
             searchLoc.setVisibility(View.GONE);
 
         }
-        Log.d("exp123", "onCreate: ");
-        
+
         selectDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {

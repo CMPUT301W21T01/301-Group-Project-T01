@@ -333,6 +333,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         if (experimentValue != null) {
             if (experimentValue.getContents() != null) {
                 String[] temp = experimentValue.getContents().split("/");
+                if (temp.length == 3){
                 String experimentID = temp[0];
                 String experimentType = temp[1];
                 String experimentMode = temp[2];
@@ -358,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
                             }
                             trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location);
-                        } else if (experimentMode.equals(FAIL)){
+                        } else if (experimentMode.equals(FAIL)) {
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
                             String date = sdf.format(new Date(System.currentTimeMillis()));
                             Trial trial = createTrialFromQR(experimentID, experimentType, localUID, experimentMode);
@@ -376,6 +377,10 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
                             }
                             trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location);
+                        }
+//                        else if (temp.length == 1){
+//                            //Read from collection called Barcodes
+//                            db.collection("Barcodes");
                         }
                     }
                 }
