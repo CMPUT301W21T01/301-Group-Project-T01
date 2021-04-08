@@ -36,8 +36,7 @@
             android:label="@string/sub_activity_label"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".qrScanActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".qrScanActivity" />
         <activity
             android:name=".ExperimentActivity"
             android:label="@string/title_activity_experiment"

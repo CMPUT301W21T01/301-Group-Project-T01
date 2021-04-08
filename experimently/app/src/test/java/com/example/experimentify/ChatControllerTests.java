@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -19,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 
 public class ChatControllerTests {
 
-    private FirebaseFirestore db;
+    private FirebaseFirestore dbs;
     private chatQuestion mockQues;
     private chatAnswer mockAns;
     private String ownerID;
@@ -34,8 +35,6 @@ public class ChatControllerTests {
     private String dbQID;
     private String dbEID;
 
-    private ArrayList<String> ownedExp;
-    private ArrayList<String> emptyExp;
 
 
     /**
@@ -49,15 +48,16 @@ public class ChatControllerTests {
 
         ownerID = "Gnt580viu6ErzEnqTFiS";
         mockQues = new chatQuestion("unitTest for adding to db","edmonton","123","01/01/01","123");
-        db = FirebaseFirestore.getInstance();
+        dbs = FirebaseFirestore.getInstance();
+       // dbs = DatabaseSingleton.getDB();
 
         testController = new chatQuestionController();
 
         // add the mock experiment to the DB
-        testController.addQuestionToDB(mockQues, db);
+        testController.addQuestionToDB(mockQues, dbs);
 
         // now prove it worked by querying the db in the experiment collection
-        DocumentReference docRef = db.collection("Experiments").document("123").collection("Questions").document();
+        DocumentReference docRef = dbs.collection("Experiments").document(mockQues.getEID()).collection("Questions").document();
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -100,15 +100,15 @@ public class ChatControllerTests {
 
         ownerID = "Gnt580viu6ErzEnqTFiS";
         mockAns = new chatAnswer("unitTest for adding to db","edmonton","123","01/01/01","123");
-        db = FirebaseFirestore.getInstance();
+        dbs = FirebaseFirestore.getInstance();
 
         testControllerAns = new chatAnswerController();
 
         // add the mock experiment to the DB
-        testControllerAns.addAnswerToDB(mockAns, db);
+        testControllerAns.addAnswerToDB(mockAns, dbs);
 
         // now prove it worked by querying the db in the experiment collection
-        DocumentReference docRef = db.collection("Experiments").document("123").collection("Questions").document();
+        DocumentReference docRef = dbs.collection("Experiments").document("123").collection("Answers").document();
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
