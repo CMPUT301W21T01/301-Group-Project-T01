@@ -65,7 +65,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (extras != null) {
             exp = intent.getParcelableExtra("experiment");
         }
+        System.out.println("location " + exp.isLocationRequired());
         if(exp.isLocationRequired() == false){
+
             map.setVisibility(View.GONE);
             search.setVisibility(View.GONE);
             searchLoc.setVisibility(View.GONE);
