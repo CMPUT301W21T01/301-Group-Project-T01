@@ -68,7 +68,7 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
         capture.setShowMissingCameraPermissionDialog(false);
         capture.decode();
 
-        System.out.println("capture string " + capture.toString()); // We could implemenet the arituary thing here just depends what capture decode to string string returns
+
 
         changeMaskColor(null);
         changeLaserVisibility(true);
