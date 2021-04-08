@@ -378,9 +378,12 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                             }
                             trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location);
                         }
-//                        else if (temp.length == 1){
-//                            //Read from collection called Barcodes
-//                            db.collection("Barcodes");
+                        else if (temp.length == 1){
+                            //Read from collection called Barcodes
+                            DocumentSnapshot docRef = db.collection("Barcodes").document(temp[0]).get().getResult();
+                            String trialString = docRef.getString("contributingTrial");
+                            //TODO: Split the string. Then call add databaseTrialToDB.
+                            }
                         }
                     }
                 }
