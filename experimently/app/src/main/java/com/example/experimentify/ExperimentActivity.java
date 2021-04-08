@@ -31,6 +31,7 @@ public class ExperimentActivity extends AppCompatActivity {
     private TextView location;
     private Button statsButton;
     private Button chatButton;
+    private Button usersButton;
     private Experiment exp;
 
     private CardView count;
@@ -164,6 +165,7 @@ public class ExperimentActivity extends AppCompatActivity {
         measureInput = findViewById(R.id.meaasurementInput);
         endedMessageBox = findViewById(R.id.trialEndedMessage);
         submitButton = findViewById(R.id.submitTrials);
+        usersButton = findViewById(R.id.participantsButton);
 
 
         //qrCodeGene = findViewById(R.id.qrCode);
@@ -198,6 +200,18 @@ public class ExperimentActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle.putString("experiment", exp.getUID());
                     System.out.println("experiment before..." + exp.getUID());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+
+                }
+            });
+
+            usersButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ExperimentActivity.this, ParticipantsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("experiment", exp.getUID());
                     intent.putExtras(bundle);
                     startActivity(intent);
 

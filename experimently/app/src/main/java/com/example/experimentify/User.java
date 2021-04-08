@@ -91,6 +91,14 @@ public class User implements Serializable, Parcelable {
                 });
     }
 
+    /*
+    public void isParticipant(String userID, User.GetDataListener callback) {
+
+    }
+
+     */
+
+
 
     public User() {
         this.uid = "";
