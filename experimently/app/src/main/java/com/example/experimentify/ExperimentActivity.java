@@ -76,6 +76,9 @@ public class ExperimentActivity extends AppCompatActivity {
     private Location locationInfo = null;
     private String dateInfo;
 
+    private SharedPreferences settings;
+    private String localUID;
+
     /**
      * This method sets text in the UI.
      */
@@ -140,7 +143,7 @@ public class ExperimentActivity extends AppCompatActivity {
             Log.d(TAG, "onActivityResult: " + locationInfo);
             trial.setTrialLocation(locationInfo);
         }
-        trialController.addTrialToDB(trial, trial.getValue(), trial.getTrialLocation());
+        trialController.addTrialToDB(trial, trial.getValue(), trial.getTrialLocation(), localUID);
     }
 
     @Override
@@ -174,8 +177,8 @@ public class ExperimentActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         activity = ExperimentActivity.this;
 
-        SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
-        String localUID = settings.getString("uid", "0");
+        settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
+        localUID = settings.getString("uid", "0");
 
         ExperimentController experimentController = new ExperimentController(this);
         trialController = new TrialController();

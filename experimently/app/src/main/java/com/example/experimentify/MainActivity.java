@@ -357,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                                 //When permission is denied
                                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
                             }
-                            trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location);
+                            trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location, localUID);
                         } else if (experimentMode.equals(FAIL)){
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
                             String date = sdf.format(new Date(System.currentTimeMillis()));
@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                                 //When permission is denied
                                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
                             }
-                            trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location);
+                            trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location, localUID);
                         }
                     }
                 }
