@@ -71,6 +71,11 @@ public class ExperimentActivity extends AppCompatActivity {
     private MenuItem qrFailMenu;
     private MenuItem qrIncreMenu;
 
+    private MenuItem selfGenExp;
+    private MenuItem selfGenPass;
+    private MenuItem selfGenFail;
+    private MenuItem selfGenIncre;
+
 
     private Location locationInfo = null;
     private String dateInfo;
@@ -350,12 +355,22 @@ public class ExperimentActivity extends AppCompatActivity {
         qrIncreMenu = menu.findItem(R.id.qrIncreMenu);
         qrGenExp = menu.findItem(R.id.qrGenExp);
 
+        selfGenPass = menu.findItem(R.id.selfGenPass);
+        selfGenFail = menu.findItem(R.id.selfGenFail);
+        selfGenIncre = menu.findItem(R.id.selfGenIncre);
+        selfGenExp = menu.findItem(R.id.selfGenExp);
+
         if (exp.getExpType().equals("Count")){
             System.out.println("exp type" + exp.getExpType());
             qrGenExp.setVisible(true);
             qrPassMenu.setVisible(false);
             qrFailMenu.setVisible(false);
             qrIncreMenu.setVisible(true);
+
+            selfGenExp.setVisible(true);
+            selfGenIncre.setVisible(true);
+            selfGenPass.setVisible(false);
+            selfGenFail.setVisible(true);
         }
         else if (exp.getExpType().equals("Binomial")){
             System.out.println("exp type" + exp.getExpType());
@@ -363,6 +378,11 @@ public class ExperimentActivity extends AppCompatActivity {
             qrPassMenu.setVisible(true);
             qrFailMenu.setVisible(true);
             qrIncreMenu.setVisible(false);
+
+            selfGenExp.setVisible(true);
+            selfGenIncre.setVisible(false);
+            selfGenPass.setVisible(true);
+            selfGenFail.setVisible(true);
         }
 
         else if(exp.getExpType().equals("Integer") || exp.getExpType().equals("Measurement")){
@@ -370,6 +390,11 @@ public class ExperimentActivity extends AppCompatActivity {
             qrPassMenu.setVisible(false);
             qrFailMenu.setVisible(false);
             qrIncreMenu.setVisible(false);
+
+            selfGenExp.setVisible(true);
+            selfGenIncre.setVisible(false);
+            selfGenPass.setVisible(false);
+            selfGenFail.setVisible(false);
         }
 
         return true;
@@ -416,9 +441,22 @@ public class ExperimentActivity extends AppCompatActivity {
                 qrCodeShow.setVisibility(View.VISIBLE);
                 return true;
 
-            case android.R.id.home:
-                this.finish();
+            case R.id.selfGenFail: //self gen QR / barcode fail
+
                 return true;
+
+            case R.id.selfGenIncre: //self gen QR / barcode Increment
+
+                return true;
+
+            case R.id.selfGenPass: //self gen QR / barcode Pass
+
+                return true;
+
+            case R.id.selfGenExp: //self gen qr code for an experiment
+
+                return true;
+
         }
 
         return true;
