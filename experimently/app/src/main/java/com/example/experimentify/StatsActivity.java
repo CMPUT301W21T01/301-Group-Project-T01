@@ -14,8 +14,20 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.PointsGraphSeries;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
@@ -42,9 +54,17 @@ public class StatsActivity extends AppCompatActivity {
     private String expType;
     private String expID;
     private DescriptiveStatistics stats;
+    private ArrayList<Double> rawResultsDouble;
+    private ArrayList<Integer> rawResultsInt;
+    private ArrayList<String> rawResultsDate;
+
+    private GraphView graph;
+    private GraphView graph1;
+
+    private int maxOccurrences;
 
 
-    public void setUI() {
+    public void setUI() throws ParseException {
 
         double mean = stats.getMean();
         meanTV.setText("Mean: " + Double.toString(mean));
@@ -72,7 +92,113 @@ public class StatsActivity extends AppCompatActivity {
         Min.setText("Min: " + minText);
         Max.setText("Max: " + maxText);
 
+        // now create our graphs
+        Collections.sort(rawResultsDouble);
+        Collections.reverse(rawResultsDouble);
 
+        graph = (GraphView) findViewById(R.id.results);
+        graph1 = (GraphView) findViewById(R.id.resultsovertime);
+
+
+        // all our database stores date in the same way
+        DateFormat dateFormat = new SimpleDateFormat("YYYY/d/M");
+
+        if (expType.equals("Measurement")) {
+
+            // for the first graph for measurements we will show the value measured(x-axis) and frequency(y-axis)
+            // we need to count the duplicates, this method used is created by  Deva44 (edited by Haboryme) on StackOverflow at https://stackoverflow.com/questions/8098601/java-count-occurrence-of-each-item-in-an-array
+
+            Map<Double, Integer> dupes = new HashMap();
+
+            for (Double x : rawResultsDouble) {
+
+                if (!dupes.containsKey(x)) {
+                    dupes.put(x, 1);
+                    maxOccurrences = 1;
+                } else {
+                    dupes.put(x, dupes.get(x) + 1);
+                    maxOccurrences = dupes.get(x);
+                    Log.d("measurement, occurences: ", Double.toString(x)+ " : " + maxOccurrences);
+                }
+            }
+
+            // iterate over our map and plot measurement on x-axis and frequency on y-axis
+            Iterator it = dupes.entrySet().iterator();
+
+            PointsGraphSeries<DataPoint> series = new PointsGraphSeries<DataPoint>();
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry) it.next();
+                series.appendData(new DataPoint((Integer) pair.getValue(),(Double) pair.getKey()), true, 50);
+                it.remove();
+            }
+            graph.setTitle(exp.getDescription() + ": Results for " + ((int) stats.getN()) + " Trials");
+            // remember to set x and y axis
+            graph.getGridLabelRenderer().setHorizontalAxisTitle("Frequency");
+            graph.getGridLabelRenderer().setVerticalAxisTitle("Measurement");
+
+            graph.getViewport().setScalable(true);
+            graph.getViewport().setScrollable(true);
+
+            graph.getViewport().setYAxisBoundsManual(true);
+            graph.getViewport().setMinY(0);
+            graph.getViewport().setMaxY(stats.getMax()+100);
+
+            graph.getViewport().setXAxisBoundsManual(true);
+            graph.getViewport().setMinX(0);
+            graph.getViewport().setMaxX(maxOccurrences +5);
+            //series.setSpacing(10);
+
+            graph.addSeries(series);
+
+
+            // do the second graph (over time)
+
+            //LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>();
+            LineGraphSeries<DataPoint> series1 = new LineGraphSeries<DataPoint>(new DataPoint[] { // place holder
+                    new DataPoint(0, 1),
+                    new DataPoint(1, 5),
+                    new DataPoint(2, 3),
+                    new DataPoint(3, 2),
+                    new DataPoint(4, 6)
+            });
+/*
+            for (String s : rawResultsDate){
+                Date d1 = dateFormat.parse(s);
+                series1.appendData(new DataPoint(d1, 15), true, 50);
+            }
+*/
+            //new DataPoint(0, -1),
+            graph1.setTitle(exp.getDescription() + ": Results for " + ((int) stats.getN()) + " Trials");
+            // remember to set x and y axis
+            graph1.getGridLabelRenderer().setHorizontalAxisTitle("Date");
+            graph1.getGridLabelRenderer().setVerticalAxisTitle("Measurement");
+
+            //graph1.getViewport().setScalable(true);
+            //graph1.getViewport().setScrollable(true);
+
+            /*
+            graph1.getViewport().setYAxisBoundsManual(true);
+            graph1.getViewport().setMinY(0);
+            graph1.getViewport().setMaxY(stats.getMax()+100);
+
+            graph1.getViewport().setXAxisBoundsManual(true);
+            graph1.getViewport().setMinX(0);
+            graph1.getViewport().setMaxX(maxOccurrences +5);
+            */
+
+            graph1.addSeries(series1);
+
+
+        }
+        else if(expType.equals("Integer")){
+
+        }
+        else if(expType.equals("Count")){
+
+        }
+        else if(expType.equals("Binomial")){
+
+        }
     }
 
     private void updateList(QuerySnapshot value, FirebaseFirestoreException error) {
@@ -96,35 +222,51 @@ public class StatsActivity extends AppCompatActivity {
                     //TODO design pattern?
                     if (expType.equals("Measurement")) {
                         stats.addValue((double) result);
-
+                        rawResultsDouble.add((Double) result);
+                        //rawResultsDate.add(date);
 
                         MeasurementTrial newTrial = new MeasurementTrial(UID, expID, (double) result);
                         newTrial.setDate(date);
                         newTrial.setTID(TID);
                         trials.add(newTrial);
+
                     } else if (expType.equals("Integer")) {
-                        stats.addValue((int) result);
+                        stats.addValue(Integer.parseInt(String.valueOf(result)));
+                        rawResultsInt.add(Integer.parseInt(String.valueOf(result)));
 
 
                         IntegerTrial newTrial = new IntegerTrial(UID, expID, (int) result);
                         newTrial.setDate(date);
                         newTrial.setTID(TID);
                         trials.add(newTrial);
+
+
                     } else if (expType.equals("Count")) {
+                        stats.addValue(Integer.parseInt(String.valueOf(result)));
+                        rawResultsInt.add(Integer.parseInt(String.valueOf(result)));
+
                         CountTrial newTrial = new CountTrial(UID, expID);
                         newTrial.setDate(date);
                         newTrial.setTID(TID);
                         trials.add(newTrial);
-                    } else if (expType.equals("Binomial")) {
-                        stats.addValue((int) result);
 
-                        BinomialTrial newTrial = new BinomialTrial(UID, expID, (int) result);
+
+                    } else if (expType.equals("Binomial")) {
+                        stats.addValue(Integer.parseInt(String.valueOf(result)));
+                        rawResultsInt.add(Integer.parseInt(String.valueOf(result)));
+
+                        BinomialTrial newTrial = new BinomialTrial(UID, expID, Integer.parseInt(String.valueOf(result)));
                         newTrial.setDate(date);
                         newTrial.setTID(TID);
                         trials.add(newTrial);
+
                     }
                 }
-                setUI();
+                try {
+                    setUI();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -145,6 +287,7 @@ public class StatsActivity extends AppCompatActivity {
         collectionReference = db.collection("Experiments").document(exp.getUID()).collection("Trials");
         trials = new ArrayList<Trial>();
 
+
         quartilesTV = findViewById(R.id.quartiles);
         medianTV = findViewById(R.id.median);
         meanTV = findViewById(R.id.mean);
@@ -152,12 +295,17 @@ public class StatsActivity extends AppCompatActivity {
         Max = findViewById(R.id.Max);
         Min = findViewById(R.id.Min);
 
+        rawResultsDouble = new ArrayList<Double>();
+
+        rawResultsInt = new ArrayList<Integer>();
+
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 updateList(value, error);
             }
         });
+
 
     }
 }

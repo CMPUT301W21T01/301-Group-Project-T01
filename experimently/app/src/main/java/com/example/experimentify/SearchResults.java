@@ -111,7 +111,6 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 expController.viewExperiment(SearchResults.this, experimentList.get(position));
-
             }
         });
 
