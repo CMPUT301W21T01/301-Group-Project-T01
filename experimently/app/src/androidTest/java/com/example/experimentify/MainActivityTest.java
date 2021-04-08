@@ -1,8 +1,12 @@
 package com.example.experimentify;
 
 import android.app.Activity;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -52,12 +56,31 @@ public class MainActivityTest {
         Activity activity = solo.getCurrentActivity();
         //showAddExpUiButton is the FloatActionButton
         View button = activity.findViewById(R.id.showAddExpUiButton);
+//        Log.d(TAG, "addExpFragmentTest: " + button.getX() + button.getY());
         //Clicks on View since FloatActionButton is not considered a button.
-        solo.clickOnView(button);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        int x = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int y = Resources.getSystem().getDisplayMetrics().heightPixels;
+        int dpi = (int) Resources.getSystem().getDisplayMetrics().density;
+//        System.out.println(x + "/" + y + "/" + dpi);
+        int distButton = 30 * dpi;
+
+//        solo.waitForView(button);
+//        solo.clickOnScreen(x - distButton, y - distButton);
+        solo.clickOnScreen(button.getX() + distButton, button.getY() + distButton);
         //Waits for Fragment
-        solo.waitForFragmentById(R.id.addExpCL);
+//        solo.waitForFragmentById(R.id.addExpCL);
         EditText description = (EditText) solo.getView(R.id.expDescription);
+        EditText date = (EditText) solo.getView(R.id.date);
+        EditText region = (EditText) solo.getView(R.id.date);
+        EditText minTrials = (EditText) solo.getView(R.id.date);
+        CheckBox locationRequired = (CheckBox) solo.getView(R.id.locationRequiredBox);
+        Spinner expType = (Spinner) solo.getView(R.id.expType);
+        //solo.pressSpinnerItem(0, -5)
+
         solo.enterText(description, "Edmonton");
+
 
 //        FragmentManager showFrag = activity.getFragmentManager().findFragmentById(R.id.mainActivityCL).getChildFragmentManager();
 
