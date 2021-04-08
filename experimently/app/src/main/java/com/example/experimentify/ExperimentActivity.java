@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,6 +66,12 @@ public class ExperimentActivity extends AppCompatActivity {
     private String dateThatHasBeenSet;
     TrialController trialController;
 
+    private MenuItem qrGenExp;
+    private MenuItem qrPassMenu;
+    private MenuItem qrFailMenu;
+    private MenuItem qrIncreMenu;
+
+
     private Location locationInfo = null;
     private String dateInfo;
 
@@ -119,18 +128,15 @@ public class ExperimentActivity extends AppCompatActivity {
 
         if (resultCode == 0) {
             return;
-        }
-        else {
+        } else {
             dateInfo = data.getStringExtra("date");
             trial.setDate(dateInfo);
         }
 
 
-
-
-        if(resultCode == 2){
+        if (resultCode == 2) {
             locationInfo = data.getParcelableExtra("location");
-            Log.d(TAG, "onActivityResult: "+ locationInfo);
+            Log.d(TAG, "onActivityResult: " + locationInfo);
             trial.setTrialLocation(locationInfo);
         }
         trialController.addTrialToDB(trial, trial.getValue(), trial.getTrialLocation());
@@ -160,7 +166,7 @@ public class ExperimentActivity extends AppCompatActivity {
         submitButton = findViewById(R.id.submitTrials);
 
 
-        qrCodeGene = findViewById(R.id.qrCode);
+        //qrCodeGene = findViewById(R.id.qrCode);
         qrCodeShow = findViewById(R.id.qrCodeView);
 
         db = FirebaseFirestore.getInstance();
@@ -171,7 +177,6 @@ public class ExperimentActivity extends AppCompatActivity {
 
         ExperimentController experimentController = new ExperimentController(this);
         trialController = new TrialController();
-
 
 
         Intent intent = getIntent();
@@ -191,7 +196,7 @@ public class ExperimentActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(ExperimentActivity.this, chatQuestionActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("experiment",exp.getUID());
+                    bundle.putString("experiment", exp.getUID());
                     System.out.println("experiment before..." + exp.getUID());
                     intent.putExtras(bundle);
                     startActivity(intent);
@@ -206,25 +211,30 @@ public class ExperimentActivity extends AppCompatActivity {
                 }
             });
 
-            qrCodeGene.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bitmap temp = null;
-                    String tempID = (exp.getUID().toString());
-                    try {
-                        temp = qrCodeGen.textToImage(tempID,500,500);
-                    } catch (WriterException e) {
-                        e.printStackTrace();
-                    }
-                    qrCodeShow.setImageBitmap(temp);
-                    //System.out.println("testtest"+temp);
-                    qrCodeShow.setVisibility(View.VISIBLE);
-                }
-            });
+
+//            qrCodeGene.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Bitmap temp = null;
+//                    String genID = exp.getUID();
+//                    try {
+//                        temp = qrCodeGen.textToImage(genID, 500, 500, 0, exp.getExpType());
+//                    } catch (WriterException e) {
+//                        e.printStackTrace();
+//                    }
+//                    qrCodeShow.setImageBitmap(temp);
+//                    //System.out.println("testtest"+temp);
+//                    qrCodeShow.setVisibility(View.VISIBLE);
+//                }
+//            });
+
             // If editable then display ui for conducting trials, else show message
             if (exp.isEditable()) {
                 String expUID = exp.getUID();
-                if (exp.getExpType().equals("Count")) {
+                System.out.println("Before if " + exp.getExpType());
+                //(exp.getExpType().equals("Count"))
+                if (("Count").equals(exp.getExpType())) {
+                    System.out.println("after if " + exp.getExpType());
                     count.setVisibility(View.VISIBLE);
                     trial = new CountTrial(localUID, expUID);
                     countButton.setOnClickListener(new View.OnClickListener() {
@@ -244,8 +254,8 @@ public class ExperimentActivity extends AppCompatActivity {
 
                 }
 
-
-                if (exp.getExpType().equals("Binomial")) {
+//exp.getExpType().equals("Binomial")
+                if (("Binomial").equals(exp.getExpType())) {
                     binomial.setVisibility(View.VISIBLE);
                     passButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -275,7 +285,7 @@ public class ExperimentActivity extends AppCompatActivity {
                     });
                 }
 
-                if (exp.getExpType().equals("Integer")) {
+                if (("Integer").equals(exp.getExpType())) {
                     integer.setVisibility(View.VISIBLE);
                     showSubmitButton();
                     submitButton.setOnClickListener(new View.OnClickListener() {
@@ -283,8 +293,7 @@ public class ExperimentActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             try {
                                 intInfo = Integer.parseInt(intInput.getText().toString());
-                            }
-                            catch (NumberFormatException e){
+                            } catch (NumberFormatException e) {
                                 Log.d(TAG, "Integer/onClick/NumberFormatException: " + intInput + e);
                                 return;
                             }
@@ -300,7 +309,7 @@ public class ExperimentActivity extends AppCompatActivity {
                     });
                 }
 
-                if (exp.getExpType() .equals("Measurement")) {
+                if (("Measurement").equals(exp.getExpType())) {
                     measure.setVisibility(View.VISIBLE);
                     showSubmitButton();
                     submitButton.setOnClickListener(new View.OnClickListener() {
@@ -308,8 +317,7 @@ public class ExperimentActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             try {
                                 measurementInfo = Float.parseFloat(measureInput.getText().toString());
-                            }
-                            catch (NumberFormatException e){
+                            } catch (NumberFormatException e) {
                                 Log.d(TAG, "Measurement/onClick/NumberFormatException: " + measureInput + e);
                                 return;
                             }
@@ -327,12 +335,92 @@ public class ExperimentActivity extends AppCompatActivity {
                 }
 
 
-            }
-            else {
+            } else {
                 showExpEndedMessage();
             }
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.experiment_qr_options_menu, menu);
+        qrPassMenu = menu.findItem(R.id.qrPassMenu);
+        qrFailMenu = menu.findItem(R.id.qrFailMenu);
+        qrIncreMenu = menu.findItem(R.id.qrIncreMenu);
+        qrGenExp = menu.findItem(R.id.qrGenExp);
 
+        if (exp.getExpType().equals("Count")){
+            System.out.println("exp type" + exp.getExpType());
+            qrGenExp.setVisible(true);
+            qrPassMenu.setVisible(false);
+            qrFailMenu.setVisible(false);
+            qrIncreMenu.setVisible(true);
+        }
+        else if (exp.getExpType().equals("Binomial")){
+            System.out.println("exp type" + exp.getExpType());
+            qrGenExp.setVisible(true);
+            qrPassMenu.setVisible(true);
+            qrFailMenu.setVisible(true);
+            qrIncreMenu.setVisible(false);
+        }
+
+        else if(exp.getExpType().equals("Integer") || exp.getExpType().equals("Measurement")){
+            qrGenExp.setVisible(true);
+            qrPassMenu.setVisible(false);
+            qrFailMenu.setVisible(false);
+            qrIncreMenu.setVisible(false);
+        }
+
+        return true;
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        String expUID = exp.getUID();
+        Bitmap codeQR = null;
+        String expType = exp.getExpType();
+        switch (item.getItemId()) {
+            case R.id.qrFailMenu:
+                try{
+                    codeQR = qrCodeGen.textToImage(expUID, 500, 500, 0, expType);
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
+                qrCodeShow.setImageBitmap(codeQR);
+                qrCodeShow.setVisibility(View.VISIBLE);
+                return true;
+
+            case R.id.qrIncreMenu:
+            case R.id.qrPassMenu:
+                try{
+                    codeQR = qrCodeGen.textToImage(expUID, 500, 500, 1, expType);
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
+                qrCodeShow.setImageBitmap(codeQR);
+                System.out.println("qrPassMenu: " + codeQR);
+                qrCodeShow.setVisibility(View.VISIBLE);
+                return true;
+
+            case R.id.qrGenExp:
+                try {
+                    codeQR = qrCodeGen.textToImage(expUID, 500, 500, 2, expType);
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
+                qrCodeShow.setImageBitmap(codeQR);
+                System.out.println("testtest" + codeQR);
+                qrCodeShow.setVisibility(View.VISIBLE);
+                return true;
+
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+
+        return true;
+    }
 }

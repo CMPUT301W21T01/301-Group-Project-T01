@@ -52,6 +52,9 @@ public class Experiment implements Parcelable {
         viewable = true;
         trialCount = 0;
         questionCount = 0;
+
+
+
     }
 
     protected Experiment(Parcel in) {
@@ -70,6 +73,8 @@ public class Experiment implements Parcelable {
         uid = in.readString();
         trialCount = in.readLong();
         questionCount = in.readLong();
+
+
     }
 
     public static final Creator<Experiment> CREATOR = new Creator<Experiment>() {

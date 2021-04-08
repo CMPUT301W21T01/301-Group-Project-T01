@@ -119,7 +119,6 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
         exListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 expController.viewExperiment(SearchResults.this, experimentList.get(position));
 
             }
@@ -159,7 +158,7 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
                                 String date         = (String)  doc.getData().get("date");
 
                                 boolean locationReq = (boolean) doc.getData().get("locationRequired");
-                                String expType = (String) doc.getData().get("experimentType");
+                                String expType = (String) doc.getData().get("ExperimentType");
                                 String ownerID = (String) doc.getData().get("ownerID");
                                 String uId = (String) doc.getData().get("uid");
                                 boolean viewable = (boolean) doc.getData().get("viewable");
