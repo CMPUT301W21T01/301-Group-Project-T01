@@ -257,10 +257,8 @@ public class ExperimentActivity extends AppCompatActivity {
             // If editable then display ui for conducting trials, else show message
             if (exp.isEditable()) {
                 String expUID = exp.getUID();
-                System.out.println("Before if " + exp.getExpType());
                 //(exp.getExpType().equals("Count"))
                 if (("Count").equals(exp.getExpType())) {
-                    System.out.println("after if " + exp.getExpType());
                     count.setVisibility(View.VISIBLE);
                     trial = new CountTrial(localUID, expUID);
                     countButton.setOnClickListener(new View.OnClickListener() {
@@ -301,8 +299,8 @@ public class ExperimentActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             trial = new BinomialTrial(localUID, expUID, 0);
                             Intent intent = new Intent(ExperimentActivity.this, MapActivity.class);
-                            activity.startActivityForResult(intent, 1);
                             intent.putExtra("experiment", exp);
+                            activity.startActivityForResult(intent, 1);
                             trial.setDate(dateInfo);
                             if (locationInfo != null) {
                                 trial.setTrialLocation(locationInfo);
