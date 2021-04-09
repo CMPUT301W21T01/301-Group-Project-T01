@@ -22,7 +22,17 @@ public class TrialController {
 
     }
 
-    public void addTrialToDB(Trial newTrial, Number result, @Nullable Location location, String localUserID){
+    /**
+     * This method adds a new trial to the database
+     * @param location
+     * @param newTrial
+     * @param result
+     */
+    public void addTrialToDB(Trial newTrial, Number result, @Nullable Location location){
+
+
+    //public void addTrialToDB(Trial newTrial, Number result, @Nullable Location location, String localUserID){
+
 
         Map<String, Object> enterData = new HashMap<>();
 

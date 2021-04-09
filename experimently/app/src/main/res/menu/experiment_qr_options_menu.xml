@@ -20,6 +20,20 @@
         </menu>
     </item>
     <item
-        android:id="@+id/qrSelfCode"
-        android:title="Set Own Code" />
+        android:id="@+id/setOwnMenu"
+        android:title="Set Own Code" >
+        <menu >
+            <item
+                android:id="@+id/selfSetPass"
+                android:title="Set Pass Code" />
+
+            <item
+                android:id="@+id/selfSetFail"
+                android:title="Set Fail Code" />
+
+            <item
+                android:id="@+id/selfSetIncre"
+                android:title="Set Increment Code" />
+        </menu>
+    </item>
 </menu>

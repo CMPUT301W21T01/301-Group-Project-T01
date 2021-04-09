@@ -21,6 +21,11 @@ import androidx.cardview.widget.CardView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.WriterException;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+import java.util.HashMap;
+import java.util.Map;
 
 // AppCompatActivity
 public class ExperimentActivity extends AppCompatActivity {
@@ -72,6 +77,16 @@ public class ExperimentActivity extends AppCompatActivity {
     private MenuItem qrFailMenu;
     private MenuItem qrIncreMenu;
 
+    private MenuItem selfGenMenu;
+
+    private MenuItem selfGenExp;
+    private MenuItem selfGenPass;
+    private MenuItem selfGenFail;
+    private MenuItem selfGenIncre;
+
+    private String encodedValue;
+
+    private final int REQUESTQR = 301;
 
     private Location locationInfo = null;
     private String dateInfo;
@@ -134,23 +149,36 @@ public class ExperimentActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult: " + requestCode + " " + resultCode);
+        if (requestCode == 1) {
+            if (resultCode == 0) {
+                return;
+            } else {
+                dateInfo = data.getStringExtra("date");
+                trial.setDate(dateInfo);
+            }
 
-        Log.d("requestCode", Integer.toString(resultCode));
 
-
-        if (resultCode == 0) {
-            return;
-        } else {
-            dateInfo = data.getStringExtra("date");
-            trial.setDate(dateInfo);
+            if (resultCode == 2) {
+                locationInfo = data.getParcelableExtra("location");
+                Log.d(TAG, "onActivityResult: " + locationInfo);
+                trial.setTrialLocation(locationInfo);
+            }
+            trialController.addTrialToDB(trial, trial.getValue(), trial.getTrialLocation());
+        } else if (requestCode == REQUESTQR) {
+//            String encodeValue = data.getStringExtra("encode");
+            IntentResult experimentValue = IntentIntegrator.parseActivityResult(resultCode, data);
+            if (experimentValue != null) {
+                if (experimentValue.getContents() != null) {
+                    Log.d(TAG, "does this get here?");
+                    Map<String, Object> enterData = new HashMap<>();
+                    String barcodeValue = experimentValue.getContents();
+                    enterData.put("contributingTrial", encodedValue);
+                    db.collection("Barcodes").document(barcodeValue).set(enterData);
+                }
+            }
         }
 
-
-        if (resultCode == 2) {
-            locationInfo = data.getParcelableExtra("location");
-            Log.d(TAG, "onActivityResult: " + locationInfo);
-            trial.setTrialLocation(locationInfo);
-        }
         trialController.addTrialToDB(trial, trial.getValue(), trial.getTrialLocation(), localUID);
     }
 
@@ -256,10 +284,8 @@ public class ExperimentActivity extends AppCompatActivity {
             // If editable then display ui for conducting trials, else show message
             if (exp.isEditable()) {
                 String expUID = exp.getUID();
-                System.out.println("Before if " + exp.getExpType());
                 //(exp.getExpType().equals("Count"))
                 if (("Count").equals(exp.getExpType())) {
-                    System.out.println("after if " + exp.getExpType());
                     count.setVisibility(View.VISIBLE);
                     trial = new CountTrial(localUID, expUID);
                     countButton.setOnClickListener(new View.OnClickListener() {
@@ -300,8 +326,8 @@ public class ExperimentActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             trial = new BinomialTrial(localUID, expUID, 0);
                             Intent intent = new Intent(ExperimentActivity.this, MapActivity.class);
-                            activity.startActivityForResult(intent, 1);
                             intent.putExtra("experiment", exp);
+                            activity.startActivityForResult(intent, 1);
                             trial.setDate(dateInfo);
                             if (locationInfo != null) {
                                 trial.setTrialLocation(locationInfo);
@@ -375,12 +401,22 @@ public class ExperimentActivity extends AppCompatActivity {
         qrIncreMenu = menu.findItem(R.id.qrIncreMenu);
         qrGenExp = menu.findItem(R.id.qrGenExp);
 
+        selfGenMenu = menu.findItem(R.id.setOwnMenu);
+
+        selfGenPass = menu.findItem(R.id.selfSetPass);
+        selfGenFail = menu.findItem(R.id.selfSetFail);
+        selfGenIncre = menu.findItem(R.id.selfSetIncre);
+
         if (exp.getExpType().equals("Count")){
             System.out.println("exp type" + exp.getExpType());
             qrGenExp.setVisible(true);
             qrPassMenu.setVisible(false);
             qrFailMenu.setVisible(false);
             qrIncreMenu.setVisible(true);
+
+            selfGenPass.setVisible(false);
+            selfGenFail.setVisible(false);
+            selfGenIncre.setVisible(true);
         }
         else if (exp.getExpType().equals("Binomial")){
             System.out.println("exp type" + exp.getExpType());
@@ -388,6 +424,10 @@ public class ExperimentActivity extends AppCompatActivity {
             qrPassMenu.setVisible(true);
             qrFailMenu.setVisible(true);
             qrIncreMenu.setVisible(false);
+
+            selfGenIncre.setVisible(false);
+            selfGenPass.setVisible(true);
+            selfGenFail.setVisible(true);
         }
 
         else if(exp.getExpType().equals("Integer") || exp.getExpType().equals("Measurement")){
@@ -395,6 +435,8 @@ public class ExperimentActivity extends AppCompatActivity {
             qrPassMenu.setVisible(false);
             qrFailMenu.setVisible(false);
             qrIncreMenu.setVisible(false);
+
+            selfGenMenu.setVisible(false);
         }
 
         return true;
@@ -441,11 +483,32 @@ public class ExperimentActivity extends AppCompatActivity {
                 qrCodeShow.setVisibility(View.VISIBLE);
                 return true;
 
-            case android.R.id.home:
-                this.finish();
+            //Need to differentiate between pass fail from barcode.
+            //No control over ResultCode from OnActivityResult
+            //Set global variable?
+            case R.id.selfSetPass: //self gen QR / barcode Pass
+            case R.id.selfSetIncre: //self gen QR / barcode Increment
+                Log.d(TAG, "onOptionsItemSelected: 1");
+                getQrScan(ExperimentActivity.this, expUID + "/" + expType + "/" + "1");
+
                 return true;
+            case R.id.selfSetFail: //self gen QR / barcode fail
+                getQrScan(ExperimentActivity.this, expUID + "/" + expType + "/" + "0");
+
+                return true;
+
         }
 
         return true;
+    }
+    /**
+     * This method initiates the QR scanning by using the Zxing library and then uses our scanning interface layout
+     */
+    public void getQrScan(Activity activity, String encode) {
+        IntentIntegrator integrator = new IntentIntegrator(activity);
+        integrator.setOrientationLocked(false);
+        integrator.setCaptureActivity(qrScanActivity.class);
+        encodedValue = encode;
+        integrator.setRequestCode(REQUESTQR).initiateScan();
     }
 }

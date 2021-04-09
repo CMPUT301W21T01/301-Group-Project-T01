@@ -53,17 +53,26 @@ public class Location implements Parcelable {
             return new Location[size];
         }
     };
-
+    /**
+     * The method gets the latitudue of a location
+     * @return latitude
+     */
     public double getLatitude(){
         double latitude = address.getLatitude();
         return latitude;
     }
-
+    /**
+     * The method gets the longitude of a location
+     * @return longitude
+     */
     public double getLong(){
         double longitude = address.getLongitude();
         return longitude;
     }
-
+    /**
+     * The method gets the geo point which is a long and lat in a single object
+     * @return geoPoint
+     */
     public GeoPoint getGeoPoint(){
         geoPoint = new GeoPoint(latitude, longitude);
         return geoPoint;

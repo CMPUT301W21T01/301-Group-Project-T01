@@ -55,6 +55,9 @@ import java.util.Map;
  * and add new experiments to the list.
  */
 public class MainActivity extends AppCompatActivity implements AddExpFragment.OnFragmentInteractionListener, ExpOptionsFragment.OnFragmentInteractionListener, UserProfileFragment.OnFragmentInteractionListener {
+    private static final String FAIL = "0";
+    private static final String PASS = "1";
+    private static final String VIEW = "2";
     private ExperimentController experimentController;
     private ExperimentListAdapter experimentAdapter;
     private ListView exListView;
@@ -329,58 +332,52 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        final String VIEW = "2";
-        final String PASS = "1";
-        final String FAIL = "0";
+        String experimentID = null;
+        String experimentType = null;
+        String experimentMode = null;
+
         IntentResult experimentValue = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (experimentValue != null) {
             if (experimentValue.getContents() != null) {
                 String[] temp = experimentValue.getContents().split("/");
-                String experimentID = temp[0];
-                String experimentType = temp[1];
-                String experimentMode = temp[2];
-                for (Experiment experiment : experimentList) {
-                    if (experiment.getUID() != null && experiment.getUID().contains(experimentID)) {
-                        if (experimentMode.equals(VIEW)) {
-                            experimentController.viewExperiment(this, experiment);
-                        } else if (experimentMode.equals(PASS)) {
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-                            String date = sdf.format(new Date(System.currentTimeMillis()));
-                            Trial trial = createTrialFromQR(experimentID, experimentType, localUID, experimentMode);
-                            trial.setDate(date);
-                            //TODO: Get Location from Android Built-in Locations
-                            //Initialize fusedLocationProviderClient
-                            com.example.experimentify.Location location = null;
-                            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-                            if (ActivityCompat.checkSelfPermission(MainActivity.this,
-                                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                                //Permission Granted
-                                location = getLocation();
+                Log.d(TAG, "onActivityResult: tempsplit = :" + temp[0]);
+                if (temp.length == 3) {
+                    experimentID = temp[0];
+                    experimentType = temp[1];
+                    experimentMode = temp[2];
+                    parsedStringToDB(experimentID, experimentType, experimentMode);
+                } else if (temp.length == 1) {
+//                    Log.d(TAG, "onActivityResult: temp - RYAN" + temp[0]);
+//                    final String test;
+                    ArrayList<String> trialTokens = new ArrayList<>();
+                    DocumentReference docRef = db.collection("Barcodes").document(temp[0]);
+                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    String[] trialString = document.getString("contributingTrial").split("/");
+                                    String experimentID   = trialString[0];
+                                    String experimentType = trialString[1];
+                                    String experimentMode = trialString[2];
+                                    trialTokens.add(experimentID);
+                                    trialTokens.add(experimentType);
+                                    trialTokens.add(experimentMode);
+                                    parsedStringToDB(experimentID, experimentType, experimentMode);
+//                                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                                } else {
+                                    Log.d(TAG, "No such document");
+                                }
+
                             } else {
-                                //When permission is denied
-                                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                                Log.d(TAG, "get failed with ", task.getException());
                             }
-                            trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location, localUID);
-                        } else if (experimentMode.equals(FAIL)){
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-                            String date = sdf.format(new Date(System.currentTimeMillis()));
-                            Trial trial = createTrialFromQR(experimentID, experimentType, localUID, experimentMode);
-                            trial.setDate(date);
-                            //TODO: Get Location from Android Built-in Locations
-                            //Initialize fusedLocationProviderClient
-                            com.example.experimentify.Location location = null;
-                            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-                            if (ActivityCompat.checkSelfPermission(MainActivity.this,
-                                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                                //Permission Granted
-                                location = getLocation();
-                            } else {
-                                //When permission is denied
-                                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
-                            }
+
                             trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location, localUID);
                         }
-                    }
+                    });
                 }
             }
         } else {
@@ -388,6 +385,50 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         }
     }
 
+    private void parsedStringToDB(String experimentID, String experimentType, String experimentMode){
+        for (Experiment experiment : experimentList) {
+            if (experiment.getUID() != null && experiment.getUID().contains(experimentID)) {
+                if (experimentMode.equals(VIEW)) {
+                    experimentController.viewExperiment(this, experiment);
+                } else if (experimentMode.equals(PASS)) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                    String date = sdf.format(new Date(System.currentTimeMillis()));
+                    Trial trial = createTrialFromQR(experimentID, experimentType, localUID, experimentMode);
+                    trial.setDate(date);
+                    //TODO: Get Location from Android Built-in Locations
+                    //Initialize fusedLocationProviderClient
+                    com.example.experimentify.Location location = null;
+                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+                    if (ActivityCompat.checkSelfPermission(MainActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        //Permission Granted
+                        location = getLocation();
+                    } else {
+                        //When permission is denied
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                    }
+                    trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location);
+                } else if (experimentMode.equals(FAIL)) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                    String date = sdf.format(new Date(System.currentTimeMillis()));
+                    Trial trial = createTrialFromQR(experimentID, experimentType, localUID, experimentMode);
+                    trial.setDate(date);
+                    //Initialize fusedLocationProviderClient
+                    com.example.experimentify.Location location = null;
+                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+                    if (ActivityCompat.checkSelfPermission(MainActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        //Permission Granted
+                        location = getLocation();
+                    } else {
+                        //When permission is denied
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                    }
+                    trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location);
+                }
+            }
+        }
+    }
 
     @SuppressLint("MissingPermission")
     private com.example.experimentify.Location getLocation() {
