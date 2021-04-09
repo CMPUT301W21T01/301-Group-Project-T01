@@ -13,6 +13,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginEnd="20dp"
         android:text="Enter"
+        android:visibility="gone"
         app:layout_constraintBaseline_toBaselineOf="@+id/answerInput"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/answerInput" />
@@ -26,6 +27,7 @@
         android:layout_marginEnd="5dp"
         android:ems="10"
         android:hint="Enter Answer Here"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/answerInputButton"
         app:layout_constraintHorizontal_bias="0.312"
         app:layout_constraintStart_toStartOf="parent"
