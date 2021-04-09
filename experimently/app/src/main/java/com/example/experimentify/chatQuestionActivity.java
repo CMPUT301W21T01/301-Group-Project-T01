@@ -26,7 +26,7 @@ public class chatQuestionActivity extends AppCompatActivity {
 
     private EditText userQuestionInput;
     private ArrayList<chatQuestion> questionsList;
-    private ListView questionsListView;
+    public ListView questionsListView;
     private Button questionEnter;
     private SharedPreferences settings;
     public static final String PREFS_NAME = "PrefsFile";

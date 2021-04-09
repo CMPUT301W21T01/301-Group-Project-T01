@@ -26,7 +26,7 @@ public class chatAnswerActivity extends AppCompatActivity {
 
     private EditText userAnswerInput;
     private ArrayList<chatAnswer> answersList;
-    private ListView answersListView;
+    public ListView answersListView;
     private Button answersEnter;
     private SharedPreferences settings;
     public static final String PREFS_NAME = "PrefsFile";

@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 public class ChatControllerTests {
 
     private FirebaseFirestore dbs;
+    private FirebaseFirestore db;
     private chatQuestion mockQues;
     private chatAnswer mockAns;
     private String ownerID;
@@ -49,16 +50,11 @@ public class ChatControllerTests {
         ownerID = "Gnt580viu6ErzEnqTFiS";
         mockQues = new chatQuestion("unitTest for adding to db","edmonton","123","01/01/01","123");
         dbs = FirebaseFirestore.getInstance();
-       // dbs = DatabaseSingleton.getDB();
-
         testController = new chatQuestionController();
-
         // add the mock experiment to the DB
         testController.addQuestionToDB(mockQues, dbs);
-
         // now prove it worked by querying the db in the experiment collection
         DocumentReference docRef = dbs.collection("Experiments").document(mockQues.getEID()).collection("Questions").document();
-
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -74,11 +70,11 @@ public class ChatControllerTests {
 
 
                         // will pass these assertions the added document exists
-                        assertTrue((dbEID == mockQues.getEID()));
-                        assertTrue((dbDescription == mockQues.getDescription()));
-                        assertTrue((dbDate == mockQues.getDate()));
-                        assertTrue((dbQID == mockQues.getQID()));
-                        assertTrue((dbUID == mockQues.getUID()));
+                        assertTrue((dbEID.equals(mockQues.getEID())));
+                        assertTrue((dbDescription.equals(mockQues.getDescription())));
+                        assertTrue((dbDate.equals(mockQues.getDate())));
+                        assertTrue((dbQID.equals(mockQues.getQID())));
+                        assertTrue((dbUID.equals(mockQues.getUID())));
                     } else {
                         Log.d("unit test failed", "No such document");
                     }
@@ -101,15 +97,11 @@ public class ChatControllerTests {
         ownerID = "Gnt580viu6ErzEnqTFiS";
         mockAns = new chatAnswer("unitTest for adding to db","edmonton","123","01/01/01","123");
         dbs = FirebaseFirestore.getInstance();
-
         testControllerAns = new chatAnswerController();
-
         // add the mock experiment to the DB
         testControllerAns.addAnswerToDB(mockAns, dbs);
-
         // now prove it worked by querying the db in the experiment collection
-        DocumentReference docRef = dbs.collection("Experiments").document("123").collection("Answers").document();
-
+        DocumentReference docRef = dbs.collection("Experiments").document(mockAns.getEID()).collection("Answers").document();
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -121,15 +113,13 @@ public class ChatControllerTests {
                         dbUID = document.getData().get("uid").toString();
                         dbDate = document.getData().get("date").toString();
                         dbDescription = document.getData().get("description").toString();
-                        dbQID = document.getData().get("qid").toString();
 
 
                         // will pass these assertions the added document exists
-                        assertTrue((dbEID == mockQues.getEID()));
-                        assertTrue((dbDescription == mockQues.getDescription()));
-                        assertTrue((dbDate == mockQues.getDate()));
-                        assertTrue((dbQID == mockQues.getQID()));
-                        assertTrue((dbUID == mockQues.getUID()));
+                        assertTrue((dbEID.equals(mockAns.getEID())));
+                        assertTrue((dbDescription.equals(mockAns.getDescription())));
+                        assertTrue((dbDate.equals(mockAns.getDate())));
+                        assertTrue((dbUID.equals(mockAns.getUID())));
                     } else {
                         Log.d("unit test failed", "No such document");
                     }
