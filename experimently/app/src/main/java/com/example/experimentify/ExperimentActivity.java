@@ -486,6 +486,12 @@ public class ExperimentActivity extends AppCompatActivity {
 
                 return true;
 
+            case R.id.statsGraphsMenu: //self gen QR / barcode fail
+                Intent intent = new Intent(this, graphsActivity.class);
+                intent.putExtra("experiment", exp);
+                startActivity(intent);
+                return true;
+
         }
 
         return true;

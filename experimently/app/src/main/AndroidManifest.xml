@@ -13,11 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Experimentify">
-
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCQvFAt13cGTs9QMLO5a5fH1I3OyfzdZ7g" />
         <activity android:name=".ParticipantsActivity"></activity>
         <activity android:name=".StatsActivity" />
-        <activity
-            android:name=".MapActivity"
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -26,14 +27,13 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCQvFAt13cGTs9QMLO5a5fH1I3OyfzdZ7g" />
-        <activity android:name=".StatsActivity"></activity>
+
 
         <activity
             android:name=".MapActivity"
             android:label="MapActivity" />
+        <activity
+            android:name=".graphsActivity" />
 
         <activity android:name=".chatAnswerActivity" />
         <activity android:name=".chatQuestionActivity" />
