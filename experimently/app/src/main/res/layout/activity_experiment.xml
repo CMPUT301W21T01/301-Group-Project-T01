@@ -28,7 +28,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="20dp"
-        android:text="Stats"
+        android:text="Map"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/participantsButton"
         app:layout_constraintStart_toStartOf="parent" />
