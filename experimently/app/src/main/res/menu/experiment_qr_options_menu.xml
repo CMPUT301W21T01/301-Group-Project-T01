@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/statsGraphsMenu"
-        android:title="Display Graphs" />
+        android:title="Graphs and Stats" />
     <item
         android:title="Generate QR Code">
         <menu>
