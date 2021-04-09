@@ -65,7 +65,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:ems="10"
-        android:hint="Enter a name here"
+        android:hint="Enter a username here"
         android:inputType="textPersonName"
         android:text="Username"
         app:layout_constraintEnd_toEndOf="parent"
