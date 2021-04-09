@@ -180,7 +180,7 @@ public class ExperimentActivity extends AppCompatActivity {
             }
         }
 
-        trialController.addTrialToDB(trial, trial.getValue(), trial.getTrialLocation(), localUID);
+        trialController.addTrialToDB(trial, trial.getValue(), trial.getTrialLocation());
     }
 
     @Override

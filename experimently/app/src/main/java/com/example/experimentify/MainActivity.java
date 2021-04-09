@@ -374,8 +374,6 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                             } else {
                                 Log.d(TAG, "get failed with ", task.getException());
                             }
-
-                            trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location, localUID);
                         }
                     });
                 }
