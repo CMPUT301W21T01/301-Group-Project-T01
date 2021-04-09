@@ -31,6 +31,7 @@ public class ExperimentActivity extends AppCompatActivity {
     private TextView location;
     private Button statsButton;
     private Button chatButton;
+    private Button usersButton;
     private Experiment exp;
 
     private CardView count;
@@ -75,6 +76,9 @@ public class ExperimentActivity extends AppCompatActivity {
     private Location locationInfo = null;
     private String dateInfo;
 
+    private SharedPreferences settings;
+    private String localUID;
+
     /**
      * This method sets text in the UI.
      */
@@ -83,6 +87,14 @@ public class ExperimentActivity extends AppCompatActivity {
         date.setText(this.getResources().getString(R.string.date_header) + exp.getDate());
         expType.setText(this.getResources().getString(R.string.exp_type_header) + exp.getExpType());
         location.setText(this.getResources().getString(R.string.region_header) + exp.getRegion());
+
+        
+        if (localUID.equals(exp.getOwnerID())) {
+            usersButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            usersButton.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -139,7 +151,7 @@ public class ExperimentActivity extends AppCompatActivity {
             Log.d(TAG, "onActivityResult: " + locationInfo);
             trial.setTrialLocation(locationInfo);
         }
-        trialController.addTrialToDB(trial, trial.getValue(), trial.getTrialLocation());
+        trialController.addTrialToDB(trial, trial.getValue(), trial.getTrialLocation(), localUID);
     }
 
     @Override
@@ -164,6 +176,7 @@ public class ExperimentActivity extends AppCompatActivity {
         measureInput = findViewById(R.id.meaasurementInput);
         endedMessageBox = findViewById(R.id.trialEndedMessage);
         submitButton = findViewById(R.id.submitTrials);
+        usersButton = findViewById(R.id.participantsButton);
 
 
         //qrCodeGene = findViewById(R.id.qrCode);
@@ -172,8 +185,8 @@ public class ExperimentActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         activity = ExperimentActivity.this;
 
-        SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
-        String localUID = settings.getString("uid", "0");
+        settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
+        localUID = settings.getString("uid", "0");
 
         ExperimentController experimentController = new ExperimentController(this);
         trialController = new TrialController();
@@ -198,6 +211,18 @@ public class ExperimentActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle.putString("experiment", exp.getUID());
                     System.out.println("experiment before..." + exp.getUID());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+
+                }
+            });
+
+            usersButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ExperimentActivity.this, ParticipantsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("experiment", exp);
                     intent.putExtras(bundle);
                     startActivity(intent);
 

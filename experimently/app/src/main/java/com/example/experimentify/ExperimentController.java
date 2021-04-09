@@ -65,6 +65,9 @@ public class ExperimentController{
         Map<String, Object> enterData = new HashMap<>();
 
         List<String> searchable = new ArrayList<String>();
+        List<String> participants = new ArrayList<String>();
+        List<String> ignoredUsers = new ArrayList<String>();
+
         //https://stackoverflow.com/a/36456911 add citation for below
         searchable.addAll(Arrays.asList(newExp.getDescription().toLowerCase().split("\\W+")));
 
@@ -84,6 +87,10 @@ public class ExperimentController{
         enterData.put("ExperimentType", newExp.getExpType());
         enterData.put("questionCount", newExp.getQuestionCount());
         enterData.put("trialCount", newExp.getTrialCount());
+
+        enterData.put("participants", participants);
+        enterData.put("ignoredUsers", ignoredUsers);
+
         newRef.set(enterData);
 
         String experimentID = newRef.getId();

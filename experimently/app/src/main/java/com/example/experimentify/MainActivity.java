@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private TrialController trialController;
     private String localUID;
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocalUserSingleton LUS;
 
 
     /**
@@ -179,6 +180,8 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
         db = FirebaseFirestore.getInstance();
         currentUser = initializeUser(db);
+        LUS.setLocalUser(currentUser);
+
 
         final CollectionReference collectionReference = db.collection("Experiments");
         trialController = new TrialController();
@@ -357,7 +360,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                                 //When permission is denied
                                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
                             }
-                            trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location);
+                            trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location, localUID);
                         } else if (experimentMode.equals(FAIL)){
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
                             String date = sdf.format(new Date(System.currentTimeMillis()));
@@ -375,7 +378,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                                 //When permission is denied
                                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
                             }
-                            trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location);
+                            trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location, localUID);
                         }
                     }
                 }
