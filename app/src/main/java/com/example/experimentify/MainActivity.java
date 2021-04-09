@@ -217,6 +217,12 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
         searchBar = findViewById(R.id.searchBar);
         searchButton = findViewById(R.id.searchButton);
+        searchSpinner = findViewById(R.id.search_spinner);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.search, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        searchSpinner.setAdapter(adapter);
         // search button on click listener, pass query with intent
         searchButton.setOnClickListener((v) -> {
             if (searchBar.getText().toString().trim().length() > 0) { // search if the edit text is not empty
