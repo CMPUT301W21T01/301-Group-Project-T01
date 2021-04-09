@@ -299,7 +299,7 @@ public class StatsActivity extends AppCompatActivity implements OnMapReadyCallba
                     LatLng latlng = new LatLng(lat, lon);
 
                     Log.d("123123", latlng.toString());
-                    MarkerOptions mark = new MarkerOptions().position(latlng).title("Trial #" + i+1);
+                    MarkerOptions mark = new MarkerOptions().position(latlng).title("Trial #" + i);
                     gMap.addMarker(mark);
                     gMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
                     gMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
@@ -314,6 +314,11 @@ public class StatsActivity extends AppCompatActivity implements OnMapReadyCallba
         });
     }
 
+    @Override
+    public void onResume() {
+        map.onResume();
+        super.onResume();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -364,7 +369,6 @@ public class StatsActivity extends AppCompatActivity implements OnMapReadyCallba
         gMap = googleMap;
 
         }
-
 
     }
 
