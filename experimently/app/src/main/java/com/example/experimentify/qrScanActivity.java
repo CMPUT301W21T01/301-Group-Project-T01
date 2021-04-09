@@ -62,6 +62,8 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
         capture.setShowMissingCameraPermissionDialog(false);
         capture.decode();
 
+
+
         changeMaskColor(null);
         changeLaserVisibility(true);
 

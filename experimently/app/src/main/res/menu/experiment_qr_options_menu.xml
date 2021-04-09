@@ -24,9 +24,6 @@
         android:title="Set Own Code" >
         <menu >
             <item
-                android:id="@+id/selfGenExp"
-                android:title="Experiment QR Code" />
-            <item
                 android:id="@+id/selfSetPass"
                 android:title="Set Pass Code" />
 
