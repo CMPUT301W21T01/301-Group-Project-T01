@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -224,7 +225,9 @@ public class ExperimentActivity extends AppCompatActivity {
         if (intent.hasExtra("clickedExp")) {
             exp = intent.getParcelableExtra("clickedExp");
             initUi();
-
+            if (exp.isLocationRequired()){
+                Toast.makeText(activity, "This experiment requires a location to enter a trial.", Toast.LENGTH_SHORT).show();
+            }
             statsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
