@@ -307,7 +307,7 @@ public class Experiment implements Parcelable {
 
     public void removeIgnore(String userToModifyID, FirebaseFirestore db) {
         DocumentReference ref = db.collection("Experiments").document(uid);
-        ref.update("participants", FieldValue.arrayRemove(userToModifyID));
+        ref.update("ignoredUsers", FieldValue.arrayRemove(userToModifyID));
     }
 
 

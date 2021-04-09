@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -106,11 +107,11 @@ public class UserOptionsFragment extends DialogFragment {
      * The edited experiment is passed to MainActivity where it is
      * uploaded to the database.
      */
-    private void subscribeHandler() {
+    private void editHandler() {
         boolean ignoring = ignoreBox.isChecked();
 
         handleIgnoreChange(ignoring);
-        //listener.onConfirmEdits(experiment);
+        //listener.onConfirmEdits(exp);
     }
 
     /**
@@ -165,7 +166,7 @@ public class UserOptionsFragment extends DialogFragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        subscribeHandler();
+                        editHandler();
 
                     }
                 }).create();

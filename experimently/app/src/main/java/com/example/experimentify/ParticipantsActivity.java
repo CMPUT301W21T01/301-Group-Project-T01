@@ -15,13 +15,19 @@ import android.widget.ListView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ParticipantsActivity extends AppCompatActivity implements UserOptionsFragment.OnFragmentInteractionListener {
 
@@ -141,7 +147,31 @@ public class ParticipantsActivity extends AppCompatActivity implements UserOptio
 
 
     @Override
-    public void onConfirmEdits(Experiment exp) {
+    public void onConfirmEdits(Experiment newExp) {
+
+        /*
+        Map<String, Object> enterData = new HashMap<>();
+
+        List<String> searchable = new ArrayList<String>();
+        //https://stackoverflow.com/a/36456911 add citation for below
+        searchable.addAll(Arrays.asList(newExp.getDescription().toLowerCase().split("\\W+")));
+
+        DocumentReference newRef = db.collection("Experiments").document(newExp.getUID());
+
+        CollectionReference experiments = db.collection("Experiment");
+        enterData.put("description", newExp.getDescription());
+        enterData.put("isEnded", newExp.isEnded());
+        enterData.put("minTrials", newExp.getMinTrials());
+        enterData.put("region", newExp.getRegion());
+        enterData.put("editable", newExp.isEditable());
+        enterData.put("searchable", searchable);
+        enterData.put("locationRequired", newExp.isLocationRequired());
+        enterData.put("viewable", newExp.isViewable());
+        enterData.put("date", newExp.getDate());
+        enterData.put("uid", newExp.getUID());  // an edited experiment should still have the SAME uid
+
+        newRef.set(enterData, SetOptions.merge());
+        */
 
     }
 
