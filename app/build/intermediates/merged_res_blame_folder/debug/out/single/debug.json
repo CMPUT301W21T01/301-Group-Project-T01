@@ -1,0 +1,150 @@
+[
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_launcher_background.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\drawable_line2.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\drawable\\line2.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_map_activity.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\map_activity.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_chat_question_content.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\chat_question_content.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\drawable-v24\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_user_profile.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\fragment_user_profile.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_experiment_list_content.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\experiment_list_content.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_chat_question.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\activity_chat_question.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\drawable_border.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\drawable\\border.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_content_experiment.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\content_experiment.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\menu_experiment_qr_options_menu.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\menu\\experiment_qr_options_menu.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher.png.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_stats.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\activity_stats.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_main.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_user_options.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\fragment_user_options.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_qr_scan.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\activity_qr_scan.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_experiment.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\activity_experiment.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\navigation_nav_graph.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\navigation\\nav_graph.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_add_exp.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\add_exp.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_search_results.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\activity_search_results.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_participants.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\activity_participants.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_subscribed.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\activity_subscribed.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\drawable_line.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\drawable\\line.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_chat_answer.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\activity_chat_answer.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher.png.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_exp_options.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\fragment_exp_options.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_chat_answer_content.xml.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\chat_answer_content.xml"
+    },
+    {
+        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png"
+    }
+]

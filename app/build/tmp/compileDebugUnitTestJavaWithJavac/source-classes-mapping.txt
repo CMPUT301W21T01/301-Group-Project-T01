@@ -1,0 +1,20 @@
+com/example/experimentify/QrTests.java
+ com.example.experimentify.QrTests
+com/example/experimentify/ExperimentTests.java
+ com.example.experimentify.ExperimentTests
+com/example/experimentify/UserTests.java
+ com.example.experimentify.UserTests
+com/example/experimentify/ChatControllerTests.java
+ com.example.experimentify.ChatControllerTests
+ com.example.experimentify.ChatControllerTests$1
+ com.example.experimentify.ChatControllerTests$2
+com/example/experimentify/ExampleUnitTest.java
+ com.example.experimentify.ExampleUnitTest
+com/example/experimentify/ExperimentControllerTests.java
+ com.example.experimentify.ExperimentControllerTests
+ com.example.experimentify.ExperimentControllerTests$1
+ com.example.experimentify.ExperimentControllerTests$2
+ com.example.experimentify.ExperimentControllerTests$3
+ com.example.experimentify.ExperimentControllerTests$4
+com/example/experimentify/ChatTests.java
+ com.example.experimentify.ChatTests

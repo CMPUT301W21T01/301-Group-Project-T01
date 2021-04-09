@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">990448954590-e9kr8j88uhjmiof8nvshj0c7jc5op73l.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">990448954590</string>
+    <string name="google_api_key" translatable="false">AIzaSyDD_wwoepojanfKJfNpg-uN-Qi68VqNAOI</string>
+    <string name="google_app_id" translatable="false">1:990448954590:android:5667d3b2ff95d115db664f</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDD_wwoepojanfKJfNpg-uN-Qi68VqNAOI</string>
+    <string name="google_storage_bucket" translatable="false">witdaboyz-4f04c.appspot.com</string>
+    <string name="project_id" translatable="false">witdaboyz-4f04c</string>
+</resources>

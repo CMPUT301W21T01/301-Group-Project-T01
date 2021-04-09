@@ -1,0 +1,147 @@
+com/example/experimentify/UserProfileFragment.java
+ com.example.experimentify.UserProfileFragment
+ com.example.experimentify.UserProfileFragment$1
+ com.example.experimentify.UserProfileFragment$2
+ com.example.experimentify.UserProfileFragment$3
+ com.example.experimentify.UserProfileFragment$4
+ com.example.experimentify.UserProfileFragment$5
+ com.example.experimentify.UserProfileFragment$6
+ com.example.experimentify.UserProfileFragment$7
+ com.example.experimentify.UserProfileFragment$8
+ com.example.experimentify.UserProfileFragment$9
+ com.example.experimentify.UserProfileFragment$OnFragmentInteractionListener
+com/example/experimentify/StatsActivity.java
+ com.example.experimentify.StatsActivity
+com/example/experimentify/Experiment.java
+ com.example.experimentify.Experiment
+ com.example.experimentify.Experiment$1
+ com.example.experimentify.Experiment$2
+ com.example.experimentify.Experiment$3
+ com.example.experimentify.Experiment$4
+ com.example.experimentify.Experiment$GetDataListener
+com/example/experimentify/SubscribedActivity.java
+ com.example.experimentify.SubscribedActivity
+ com.example.experimentify.SubscribedActivity$1
+ com.example.experimentify.SubscribedActivity$2
+ com.example.experimentify.SubscribedActivity$3
+ com.example.experimentify.SubscribedActivity$4
+ com.example.experimentify.SubscribedActivity$5
+com/example/experimentify/DatabaseSingleton.java
+ com.example.experimentify.DatabaseSingleton
+com/example/experimentify/MeasurementTrial.java
+ com.example.experimentify.MeasurementTrial
+com/example/experimentify/qrScanActivity.java
+ com.example.experimentify.qrScanActivity
+com/example/experimentify/chatAnswerAdaptor.java
+ com.example.experimentify.chatAnswerAdaptor
+com/example/experimentify/AddExpFragment.java
+ com.example.experimentify.AddExpFragment
+ com.example.experimentify.AddExpFragment$1
+ com.example.experimentify.AddExpFragment$2
+ com.example.experimentify.AddExpFragment$3
+ com.example.experimentify.AddExpFragment$OnFragmentInteractionListener
+com/example/experimentify/ParticipantsActivity.java
+ com.example.experimentify.ParticipantsActivity
+ com.example.experimentify.ParticipantsActivity$1
+ com.example.experimentify.ParticipantsActivity$2
+ com.example.experimentify.ParticipantsActivity$3
+com/example/experimentify/BuildConfig.java
+ com.example.experimentify.BuildConfig
+com/example/experimentify/chatQuestionController.java
+ com.example.experimentify.chatQuestionController
+com/example/experimentify/LocalUserSingleton.java
+ com.example.experimentify.LocalUserSingleton
+com/example/experimentify/chatAnswer.java
+ com.example.experimentify.chatAnswer
+com/example/experimentify/chatQuestion.java
+ com.example.experimentify.chatQuestion
+com/example/experimentify/UserOptionsFragment.java
+ com.example.experimentify.UserOptionsFragment
+ com.example.experimentify.UserOptionsFragment$1
+ com.example.experimentify.UserOptionsFragment$2
+ com.example.experimentify.UserOptionsFragment$3
+ com.example.experimentify.UserOptionsFragment$4
+ com.example.experimentify.UserOptionsFragment$OnFragmentInteractionListener
+com/example/experimentify/chatQuestionActivity.java
+ com.example.experimentify.chatQuestionActivity
+ com.example.experimentify.chatQuestionActivity$1
+ com.example.experimentify.chatQuestionActivity$2
+ com.example.experimentify.chatQuestionActivity$3
+com/example/experimentify/Location.java
+ com.example.experimentify.Location
+ com.example.experimentify.Location$1
+com/example/experimentify/ExperimentController.java
+ com.example.experimentify.ExperimentController
+ com.example.experimentify.ExperimentController$1
+ com.example.experimentify.ExperimentController$2
+com/example/experimentify/chatAnswerController.java
+ com.example.experimentify.chatAnswerController
+com/example/experimentify/CountTrial.java
+ com.example.experimentify.CountTrial
+com/example/experimentify/TrialController.java
+ com.example.experimentify.TrialController
+com/example/experimentify/BinomialTrial.java
+ com.example.experimentify.BinomialTrial
+com/example/experimentify/chatAnswerActivity.java
+ com.example.experimentify.chatAnswerActivity
+ com.example.experimentify.chatAnswerActivity$1
+ com.example.experimentify.chatAnswerActivity$2
+ com.example.experimentify.chatAnswerActivity$3
+ com.example.experimentify.chatAnswerActivity$4
+ com.example.experimentify.chatAnswerActivity$GetDataListener
+com/example/experimentify/chatQuestionAdaptor.java
+ com.example.experimentify.chatQuestionAdaptor
+com/example/experimentify/SearchResults.java
+ com.example.experimentify.SearchResults
+ com.example.experimentify.SearchResults$1
+ com.example.experimentify.SearchResults$2
+ com.example.experimentify.SearchResults$3
+ com.example.experimentify.SearchResults$4
+com/example/experimentify/MainActivity.java
+ com.example.experimentify.MainActivity
+ com.example.experimentify.MainActivity$1
+ com.example.experimentify.MainActivity$2
+ com.example.experimentify.MainActivity$3
+ com.example.experimentify.MainActivity$4
+ com.example.experimentify.MainActivity$5
+ com.example.experimentify.MainActivity$6
+ com.example.experimentify.MainActivity$7
+ com.example.experimentify.MainActivity$8
+com/example/experimentify/MapActivity.java
+ com.example.experimentify.MapActivity
+ com.example.experimentify.MapActivity$1
+ com.example.experimentify.MapActivity$2
+ com.example.experimentify.MapActivity$3
+ com.example.experimentify.MapActivity$4
+com/example/experimentify/ExperimentActivity.java
+ com.example.experimentify.ExperimentActivity
+ com.example.experimentify.ExperimentActivity$1
+ com.example.experimentify.ExperimentActivity$2
+ com.example.experimentify.ExperimentActivity$3
+ com.example.experimentify.ExperimentActivity$4
+ com.example.experimentify.ExperimentActivity$5
+ com.example.experimentify.ExperimentActivity$6
+ com.example.experimentify.ExperimentActivity$7
+ com.example.experimentify.ExperimentActivity$8
+ com.example.experimentify.ExperimentActivity$9
+com/example/experimentify/ExpOptionsFragment.java
+ com.example.experimentify.ExpOptionsFragment
+ com.example.experimentify.ExpOptionsFragment$1
+ com.example.experimentify.ExpOptionsFragment$2
+ com.example.experimentify.ExpOptionsFragment$3
+ com.example.experimentify.ExpOptionsFragment$4
+ com.example.experimentify.ExpOptionsFragment$5
+ com.example.experimentify.ExpOptionsFragment$OnFragmentInteractionListener
+com/example/experimentify/qrCodeGen.java
+ com.example.experimentify.qrCodeGen
+com/example/experimentify/User.java
+ com.example.experimentify.User
+ com.example.experimentify.User$1
+com/example/experimentify/ExperimentListAdapter.java
+ com.example.experimentify.ExperimentListAdapter
+com/example/experimentify/UserListAdapter.java
+ com.example.experimentify.UserListAdapter
+com/example/experimentify/IntegerTrial.java
+ com.example.experimentify.IntegerTrial
+com/example/experimentify/Trial.java
+ com.example.experimentify.Trial
