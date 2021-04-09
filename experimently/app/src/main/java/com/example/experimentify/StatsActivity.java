@@ -81,6 +81,7 @@ public class StatsActivity extends AppCompatActivity implements OnMapReadyCallba
 
     private MapView map;
     private GoogleMap gMap;
+    private Location looc = null;
 
 
     public void setUI() throws ParseException {
@@ -233,18 +234,17 @@ public class StatsActivity extends AppCompatActivity implements OnMapReadyCallba
                     String UID = doc.getString("UID");
                     String date = doc.getString("date");
                     GeoPoint location = doc.getGeoPoint("location");
+                    if(location != null) {
+                        double lat = location.getLatitude();
+                        double lon = location.getLongitude();
+                        LatLng latlng = new LatLng(lat, lon);
+                        Address loc = new Address(Locale.getDefault());
+                        loc.setLatitude(lat);
+                        loc.setLongitude(lon);
+                        Location looc = new Location(loc);
 
-                    double lat = location.getLatitude();
-                    double lon = location.getLongitude();
-                    LatLng latlng = new LatLng(lat,lon);
-
-                    Address loc = new Address(Locale.getDefault());
-                    loc.setLatitude(lat);
-                    loc.setLongitude(lon);
-                    Location looc = new Location(loc);
+                    }
                     Number result = (Number) doc.getData().get("result");
-
-
                     //TODO add filter for owner's ignored experiments
 
 
@@ -257,6 +257,8 @@ public class StatsActivity extends AppCompatActivity implements OnMapReadyCallba
                         MeasurementTrial newTrial = new MeasurementTrial(UID, expID, (double) result);
                         newTrial.setDate(date);
                         newTrial.setTID(TID);
+                        newTrial.setValue((result.doubleValue()));
+                        newTrial.setTrialLocation(looc);
                         trials.add(newTrial);
 
                     } else if (expType.equals("Integer")) {
@@ -264,9 +266,11 @@ public class StatsActivity extends AppCompatActivity implements OnMapReadyCallba
                         rawResultsInt.add(Integer.parseInt(String.valueOf(result)));
 
 
-                        IntegerTrial newTrial = new IntegerTrial(UID, expID, (int) result);
+                        IntegerTrial newTrial = new IntegerTrial(UID, expID, result.intValue());
                         newTrial.setDate(date);
                         newTrial.setTID(TID);
+                        newTrial.setValue((result.intValue()));
+                        newTrial.setTrialLocation(looc);
                         trials.add(newTrial);
 
 
@@ -287,6 +291,7 @@ public class StatsActivity extends AppCompatActivity implements OnMapReadyCallba
                         BinomialTrial newTrial = new BinomialTrial(UID, expID, Integer.parseInt(String.valueOf(result)));
                         newTrial.setDate(date);
                         newTrial.setTID(TID);
+                        newTrial.setTrialLocation(looc);
                         trials.add(newTrial);
 
                     }
@@ -294,15 +299,17 @@ public class StatsActivity extends AppCompatActivity implements OnMapReadyCallba
                 System.out.println("geopoint2:" + trials.size() );
                 for (int i = 0; i < trials.size(); i++) {
                     Location trial = trials.get(i).getTrialLocation();
-                    double lat = trial.getLatitude();
-                    double lon = trial.getLong();
-                    LatLng latlng = new LatLng(lat, lon);
+                    if(trial != null) {
+                        double lat = trial.getLatitude();
+                        double lon = trial.getLong();
+                        LatLng latlng = new LatLng(lat, lon);
 
-                    Log.d("123123", latlng.toString());
-                    MarkerOptions mark = new MarkerOptions().position(latlng).title("Trial #" + i);
-                    gMap.addMarker(mark);
-                    gMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
-                    gMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+                        Log.d("123123", latlng.toString());
+                        MarkerOptions mark = new MarkerOptions().position(latlng).title("Trial #" + (i + 1));
+                        gMap.addMarker(mark);
+                        gMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
+                        gMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+                    }
                 }
                     try {
                     setUI();
@@ -356,14 +363,13 @@ public class StatsActivity extends AppCompatActivity implements OnMapReadyCallba
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 updateList(value, error);
-                System.out.println("geopoint:" + trials.size() );
+                System.out.println("geopoint:" + trials.size());
 
             }
         });
-
+        if (exp.isLocationRequired() == false) { map.setVisibility(View.GONE);}
     }
 
-//this shit dont work
     @Override
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
