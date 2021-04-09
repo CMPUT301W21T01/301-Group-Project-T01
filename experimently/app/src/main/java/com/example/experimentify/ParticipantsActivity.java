@@ -75,23 +75,20 @@ public class ParticipantsActivity extends AppCompatActivity implements UserOptio
             tempUser.setParticipatingExperiments(participatingExp);
             tempUser.setOwnedExperiments(ownedExp);
             tempUser.setUsername(username);
-            userList.add(tempUser);
-        }
-        /*
-            //TODO check if user is participant
-            newExperiment.userIsSubscribed(localUID, new Experiment.GetDataListener() {
+
+
+            exp.isUserParticipant(userID, new Experiment.GetDataListener() {
                 @Override
                 public void onSuccess(boolean result) {
                     if (result) {
-                        experimentList.add(newExperiment);
-                        experimentController.getAdapter().notifyDataSetChanged();
+                        userList.add(tempUser);
+                        userAdapter.notifyDataSetChanged();
                     }
                 }
             });
-
-         */
-        userAdapter.notifyDataSetChanged();
         }
+
+    }
 
 
     @Override
@@ -146,32 +143,11 @@ public class ParticipantsActivity extends AppCompatActivity implements UserOptio
     }
 
 
+
+
     @Override
     public void onConfirmEdits(Experiment newExp) {
 
-        /*
-        Map<String, Object> enterData = new HashMap<>();
-
-        List<String> searchable = new ArrayList<String>();
-        //https://stackoverflow.com/a/36456911 add citation for below
-        searchable.addAll(Arrays.asList(newExp.getDescription().toLowerCase().split("\\W+")));
-
-        DocumentReference newRef = db.collection("Experiments").document(newExp.getUID());
-
-        CollectionReference experiments = db.collection("Experiment");
-        enterData.put("description", newExp.getDescription());
-        enterData.put("isEnded", newExp.isEnded());
-        enterData.put("minTrials", newExp.getMinTrials());
-        enterData.put("region", newExp.getRegion());
-        enterData.put("editable", newExp.isEditable());
-        enterData.put("searchable", searchable);
-        enterData.put("locationRequired", newExp.isLocationRequired());
-        enterData.put("viewable", newExp.isViewable());
-        enterData.put("date", newExp.getDate());
-        enterData.put("uid", newExp.getUID());  // an edited experiment should still have the SAME uid
-
-        newRef.set(enterData, SetOptions.merge());
-        */
 
     }
 

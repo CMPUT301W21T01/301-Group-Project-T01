@@ -300,6 +300,45 @@ public class Experiment implements Parcelable {
                 });
     }
 
+    public void isUserParticipant(String userID, GetDataListener callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        /*
+            Author: Joseph Varghese
+            Date published: Sep 29 '14 at 10:20
+            License: Attribution-ShareAlike 3.0 Unported
+            Link: https://stackoverflow.com/a/46997517
+
+            I used this post to help with returning a value after the database is done
+            retrieving data.
+        */
+        db.collection("Experiments")
+                .whereArrayContains("participants", userID)//gets all users that are ignoring the specified user
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                callback.onSuccess(false);
+                            }
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                if (document.getId().equals(uid)) {
+                                    callback.onSuccess(true);
+                                    break; // Prevents result from being changed
+                                }
+                                else {
+                                    callback.onSuccess(false);
+                                }
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
     public void addIgnore(String userToModifyID, FirebaseFirestore db) {
         DocumentReference ref = db.collection("Experiments").document(uid);
         ref.update("ignoredUsers", FieldValue.arrayUnion(userToModifyID));
