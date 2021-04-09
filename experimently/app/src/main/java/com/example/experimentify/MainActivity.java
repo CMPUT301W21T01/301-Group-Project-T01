@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private TrialController trialController;
     private String localUID;
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocalUserSingleton LUS;
 
 
     /**
@@ -182,6 +183,8 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
         db = FirebaseFirestore.getInstance();
         currentUser = initializeUser(db);
+        LUS.setLocalUser(currentUser);
+
 
         final CollectionReference collectionReference = db.collection("Experiments");
         trialController = new TrialController();
@@ -367,9 +370,12 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                                 } else {
                                     Log.d(TAG, "No such document");
                                 }
+
                             } else {
                                 Log.d(TAG, "get failed with ", task.getException());
                             }
+
+                            trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location, localUID);
                         }
                     });
                 }

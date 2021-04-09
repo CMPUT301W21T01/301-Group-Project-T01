@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +30,7 @@ public class UserOptionsFragment extends DialogFragment {
     private User user;
     private User userToModify;
     private FirebaseFirestore db;
+    private Experiment exp;
 
     private OnFragmentInteractionListener listener;
 
@@ -38,11 +40,12 @@ public class UserOptionsFragment extends DialogFragment {
         void onDeletePressed(Experiment current);
     }
 
-    public static UserOptionsFragment newInstance(User userToModify, String localUID, User user) {
+    public static UserOptionsFragment newInstance(User userToModify, String localUID, User user, Experiment exp) {
         Bundle args = new Bundle();
         args.putParcelable("userToModify", userToModify);
         args.putString("localUID", localUID);
         args.putSerializable("user", user);
+        args.putParcelable("experiment", exp);
 
         UserOptionsFragment fragment = new UserOptionsFragment();
         fragment.setArguments(args);
@@ -88,8 +91,7 @@ public class UserOptionsFragment extends DialogFragment {
      * This method sets the state of the checkboxes
      */
     private void setUi() {
-        ignoreBox.setChecked(true);
-        user.isIgnoringUser(localUID, new User.GetDataListener() {
+        exp.isUserIgnored(userToModify.getUid(), new Experiment.GetDataListener() {
             @Override
             public void onSuccess(boolean result) {
                 ignoreBox.setChecked(result);
@@ -98,16 +100,18 @@ public class UserOptionsFragment extends DialogFragment {
     }
 
 
+
+
     /**
      * This method handles the case of a user submitting their changes.
      * The edited experiment is passed to MainActivity where it is
      * uploaded to the database.
      */
-    private void subscribeHandler() {
+    private void editHandler() {
         boolean ignoring = ignoreBox.isChecked();
 
         handleIgnoreChange(ignoring);
-        //listener.onConfirmEdits(experiment);
+        //listener.onConfirmEdits(exp);
     }
 
     /**
@@ -116,10 +120,12 @@ public class UserOptionsFragment extends DialogFragment {
      */
     private void handleIgnoreChange(boolean isIgnoring) {
         if (isIgnoring) {
-            user.addIgnore(localUID, userToModify.getUid(), db);
+            exp.addIgnore(userToModify.getUid(), db);
+            //user.addIgnore(localUID, userToModify.getUid(), db);
         }
         else {
-            user.deleteIgnore(localUID, userToModify.getUid(), db);
+            exp.removeIgnore(userToModify.getUid(), db);
+            //user.deleteIgnore(localUID, userToModify.getUid(), db);
         }
     }
 
@@ -148,6 +154,7 @@ public class UserOptionsFragment extends DialogFragment {
             userToModify = bundle.getParcelable("userToModify");
             localUID = bundle.getString("localUID");
             user = (User) bundle.getSerializable("user");
+            exp = bundle.getParcelable("experiment");
             setUi();
         }
 
@@ -159,7 +166,7 @@ public class UserOptionsFragment extends DialogFragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        subscribeHandler();
+                        editHandler();
 
                     }
                 }).create();

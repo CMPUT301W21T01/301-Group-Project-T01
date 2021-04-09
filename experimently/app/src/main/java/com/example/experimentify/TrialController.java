@@ -1,5 +1,7 @@
 package com.example.experimentify;
 
+import android.content.SharedPreferences;
+
 import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.DocumentReference;
@@ -11,12 +13,15 @@ import java.util.Map;
 
 public class TrialController {
     FirebaseFirestore db;
+    private String localUserID;
     private static final String TAG = ExperimentActivity.class.getName();
 
     public TrialController(){
         DatabaseSingleton databaseSingleton = new DatabaseSingleton();
         db = databaseSingleton.getDB();
+
     }
+
     /**
      * This method adds a new trial to the database
      * @param location
@@ -25,7 +30,12 @@ public class TrialController {
      */
     public void addTrialToDB(Trial newTrial, Number result, @Nullable Location location){
 
+
+    //public void addTrialToDB(Trial newTrial, Number result, @Nullable Location location, String localUserID){
+
+
         Map<String, Object> enterData = new HashMap<>();
+
 
         DocumentReference newRef = db.collection("Experiments").document(newTrial.getEID()).collection("Trials").document();
 //        enterData.put("TID", newTrial.getTID());
@@ -46,5 +56,12 @@ public class TrialController {
 
         DocumentReference trialRef = db.collection("Experiments").document(newTrial.getEID()).collection("Trials").document(TID);
         trialRef.update("TID", TID);
+
+
+        SharedPreferences settings;
+
+
+        DocumentReference expRef = db.collection("Experiments").document(newTrial.getEID());
+        expRef.update("participants", FieldValue.arrayUnion(localUserID));
     };
 }

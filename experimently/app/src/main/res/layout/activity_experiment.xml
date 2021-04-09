@@ -30,8 +30,22 @@
         android:layout_marginBottom="20dp"
         android:text="Stats"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/chat"
+        app:layout_constraintEnd_toStartOf="@+id/participantsButton"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/participantsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="20dp"
+        android:text="Participants"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/chat"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/stats" />
 
     <Button
         android:id="@+id/chat"
@@ -43,8 +57,7 @@
         android:text="Chat"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.897"
-        app:layout_constraintStart_toEndOf="@+id/stats" />
+        app:layout_constraintStart_toEndOf="@+id/participantsButton" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/Count"
