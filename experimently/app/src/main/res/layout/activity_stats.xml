@@ -95,13 +95,21 @@
             app:layout_constraintTop_toBottomOf="@+id/Max" />
 
         <com.jjoe64.graphview.GraphView
-            android:id="@+id/resultsovertime"
+            android:id="@+id/resultspoint"
             android:layout_width="match_parent"
             android:layout_height="200dip"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/results" />
+
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/resultsdate"
+            android:layout_width="match_parent"
+            android:layout_height="200dip"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/resultspoint" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
