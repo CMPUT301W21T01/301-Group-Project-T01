@@ -28,5 +28,7 @@ public class UserInfoTest {
     }
 
     @Test
-    public void addUserInfoTest
+    public void addUserInfoTest(){
+
+    }
 }
