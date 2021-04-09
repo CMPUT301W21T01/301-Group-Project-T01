@@ -12,6 +12,8 @@ com/example/experimentify/UserProfileFragment.java
  com.example.experimentify.UserProfileFragment$OnFragmentInteractionListener
 com/example/experimentify/StatsActivity.java
  com.example.experimentify.StatsActivity
+ com.example.experimentify.StatsActivity$1
+ com.example.experimentify.StatsActivity$2
 com/example/experimentify/Experiment.java
  com.example.experimentify.Experiment
  com.example.experimentify.Experiment$1
@@ -49,6 +51,9 @@ com/example/experimentify/BuildConfig.java
  com.example.experimentify.BuildConfig
 com/example/experimentify/chatQuestionController.java
  com.example.experimentify.chatQuestionController
+com/example/experimentify/graphsActivity.java
+ com.example.experimentify.graphsActivity
+ com.example.experimentify.graphsActivity$1
 com/example/experimentify/LocalUserSingleton.java
  com.example.experimentify.LocalUserSingleton
 com/example/experimentify/chatAnswer.java

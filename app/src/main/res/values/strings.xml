@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">Experimentify</string>
+    <string-array name="experiments">
+        <item>Measurement</item>
+        <item>Integer</item>
+        <item>Binomial</item>
+        <item>Count</item>
+    </string-array>
+
+
+    // this is dropdown options is for search user or experiment
+
+    <string-array name="search">
+        <item>Experiment</item>
+        <item>User</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_experiment">Experimentify</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="turn_on_flashlight">Turn On Flashlight</string>
+    <string name="description_header">"Description: "</string>
+    <string name="date_header">"Date: "</string>
+    <string name="region_header">"Region: "</string>
+    <string name="exp_type_header">"Experiment type: "</string>
+    <string name="sub_activity_label">Your Subscriptions</string>
+    <string name="name_header">"Name: "</string>
+    <string name="email_header">"Email: "</string>
+    <string name="uid_header">"UID: "</string>
+    <string name="replies_header">"Replies: "</string>
+    <string name="user_ID">userID</string>
+    <string name="replies_count">replyCount</string>
+    <string name="mean_header">"Mean: "</string>
+    <string name="median_header">"Median: "</string>
+    <string name="std_dev_header">"Standard deviation: "</string>
+    <string name="quartiles_header">"Quartiles (Q1, Q2, Q3): "</string>
+
+
+</resources>

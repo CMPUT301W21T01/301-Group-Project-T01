@@ -1,12 +1,14 @@
 com/example/experimentify/TestSearchResultsActivity.java
  com.example.experimentify.TestSearchResultsActivity
+com/example/experimentify/UserInfoTest.java
+ com.example.experimentify.UserInfoTest
 com/example/experimentify/test/BuildConfig.java
  com.example.experimentify.test.BuildConfig
 com/example/experimentify/chatAnswerActivityTest.java
  com.example.experimentify.chatAnswerActivityTest
+com/example/experimentify/AddExperimentTest.java
+ com.example.experimentify.AddExperimentTest
 com/example/experimentify/chatQuestionActivityTest.java
  com.example.experimentify.chatQuestionActivityTest
 com/example/experimentify/ExampleInstrumentedTest.java
  com.example.experimentify.ExampleInstrumentedTest
-com/example/experimentify/MainActivityTest.java
- com.example.experimentify.MainActivityTest
