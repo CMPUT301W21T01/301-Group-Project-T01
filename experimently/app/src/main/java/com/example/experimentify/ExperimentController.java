@@ -36,13 +36,7 @@ public class ExperimentController{
         experiments = new ArrayList<Experiment>();
         listAdapter = new ExperimentListAdapter(context, experiments);
     }
-    /**
-     * THIS CONSTRUCTOR WITH EMPTY PARAMETERS IS FOR TESTING PURPOSES ONLY, DON'T USE IT IN PRODUCTION (CANT MOCK CONTEXT CURRENTLY) IN ExperimentControllerTests
-     */
-    public ExperimentController(){
-        experiments = new ArrayList<Experiment>();
-    }
-
+    
     public ArrayAdapter<Experiment> getAdapter() {
         return listAdapter;
     }
