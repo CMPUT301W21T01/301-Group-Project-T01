@@ -131,6 +131,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
 
     }
+    /**
+     * Initialise the calender object to be used in other spots
+     */
 
     private void createCalendar() {
         Calendar calendar = Calendar.getInstance();

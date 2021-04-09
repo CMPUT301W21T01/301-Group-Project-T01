@@ -279,12 +279,19 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // back button to main activity
 
     }
-
+    /**
+     * This method confirms the edits to an experiment
+     * @param exp
+     */
     @Override
     public void onConfirmEdits(Experiment exp) {
         editExperiment(exp);
     }
 
+    /**
+     * This method deletes an experiment if the delete options is pressed
+     * @param exp
+     */
     public void onDeletePressed(Experiment exp) {
         delExperiment(exp);
         experimentList.remove(exp);
