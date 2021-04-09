@@ -1,5 +1,6 @@
 package com.example.experimentify;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,7 +29,7 @@ public class chatAnswerActivity extends AppCompatActivity {
 
     private EditText userAnswerInput;
     private ArrayList<chatAnswer> answersList;
-    private ListView answersListView;
+    public ListView answersListView;
     private Button answersEnter;
     private SharedPreferences settings;
     public static final String PREFS_NAME = "PrefsFile";
@@ -37,6 +40,57 @@ public class chatAnswerActivity extends AppCompatActivity {
     private Intent intent;
     private chatAnswerController answerController;
     private FirebaseFirestore db;
+
+    /**
+     * This interface gives access to the result of isUserOwner
+     */
+    interface GetDataListener {
+        void onSuccess(boolean result);
+    }
+
+    /**
+     * This method checks if the current user is the owner of the experiment
+     * @param callback Interface for listener that returns the result once the database is done
+     *                 with its task.
+     */
+    public void isUserOwner(chatAnswerActivity.GetDataListener callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        /*
+            Author: Joseph Varghese
+            Date published: Sep 29 '14 at 10:20
+            License: Attribution-ShareAlike 3.0 Unported
+            Link: https://stackoverflow.com/a/46997517
+
+            I used this post to help with returning a value after the database is done
+            retrieving data.
+        */
+        db.collection("Users")
+                .whereArrayContains("ownedExperiments", experimentID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                callback.onSuccess(false);
+                            }
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                if (document.getId().equals(userID)) {
+
+                                    callback.onSuccess(true);
+                                    break; // Prevents result from being changed
+                                }
+                                else {
+                                    callback.onSuccess(false);
+                                }
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,14 +121,30 @@ public class chatAnswerActivity extends AppCompatActivity {
         answerController = new chatAnswerController(this);
         answersList = answerController.getAnswers();
         answersListView.setAdapter(answerController.getAdapter());
+        isUserOwner(new GetDataListener() {
+            @Override
+            public void onSuccess(boolean result) {
+                if (result) {
+                    answersEnter.setVisibility(View.VISIBLE);
+                    userAnswerInput.setVisibility(View.VISIBLE);
+
+                }
+                else {
+                    answersEnter.setVisibility(View.GONE);
+                    userAnswerInput.setVisibility(View.GONE);
+                }
+            }
+
+
+        });
+
 
 
         answersEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String description = userAnswerInput.getText().toString();
-//                System.out.println("userinput..." + description);
+//              System.out.println("userinput..." + description);
                 chatAnswer answer = new chatAnswer(description, userID, experimentID, questionID);
 
                 answerController.addAnswerToDB(answer, db);

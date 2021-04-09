@@ -1,8 +1,5 @@
 package com.example.experimentify;
 
-import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Bitmap;
 
 import com.google.zxing.BarcodeFormat;
@@ -28,10 +25,11 @@ public class qrCodeGen extends ExperimentActivity {
      * @param height
      * @throws null pointer exception
      */
-    public static Bitmap textToImage(String input, int width, int height) throws WriterException, NullPointerException {
+    public static Bitmap textToImage(String input, int width, int height, int mode, String expType) throws WriterException, NullPointerException {
+        //Modes: 1 = Pass/Count, 0 = Fail, 2 = View
         BitMatrix bitMatrix;
         try {
-            bitMatrix = new MultiFormatWriter().encode(input, BarcodeFormat.DATA_MATRIX.QR_CODE,
+            bitMatrix = new MultiFormatWriter().encode(input + "/" + expType + "/"  + mode, BarcodeFormat.DATA_MATRIX.QR_CODE,
                     width, height, null);
         } catch (IllegalArgumentException Illegalargumentexception) {
             return null;
@@ -54,4 +52,12 @@ public class qrCodeGen extends ExperimentActivity {
         return qrbitmap;
     }
     //END OF CODE USED
+
+
+
+
+
+
+
+
 }

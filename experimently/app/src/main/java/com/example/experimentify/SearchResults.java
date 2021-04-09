@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * SearchResults Activity that displays the results of searching a specific keyword of matching experiments
  * that will display a listview of Experiments that match with the search (searchable field in db)
  */
-public class SearchResults extends AppCompatActivity implements ExpOptionsFragment.OnFragmentInteractionListener {
+public class SearchResults extends AppCompatActivity implements ExpOptionsFragment.OnFragmentInteractionListener, UserOptionsFragment.OnFragmentInteractionListener {
 
     private ExperimentController expController;
     private ExperimentListAdapter experimentAdapter;
@@ -54,6 +54,16 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
         String localUID = settings.getString("uid","0");
         ExpOptionsFragment fragment = ExpOptionsFragment.newInstance(experiment, localUID, currentUser);
         fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
+    }
+
+    /**
+     * This method shows the fragment that gives users options for the experiment they long clicked on.
+     * @param newUser experiment whose options will be edited
+     */
+    private void showUserOptionsUI(User newUser, User currentUser) {
+        //String localUID = settings.getString("uid","0");
+        //UserOptionsFragment fragment = UserOptionsFragment.newInstance(newUser, localUID, currentUser, );
+        //fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
     }
 
     /**
@@ -109,7 +119,6 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
         exListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 expController.viewExperiment(SearchResults.this, experimentList.get(position));
             }
         });
@@ -148,7 +157,7 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
                                 String date         = (String)  doc.getData().get("date");
 
                                 boolean locationReq = (boolean) doc.getData().get("locationRequired");
-                                String expType = (String) doc.getData().get("experimentType");
+                                String expType = (String) doc.getData().get("ExperimentType");
                                 String ownerID = (String) doc.getData().get("ownerID");
                                 String uId = (String) doc.getData().get("uid");
                                 boolean viewable = (boolean) doc.getData().get("viewable");
@@ -214,6 +223,8 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
         userAdapter = new UserListAdapter(this, userList);
         exListView.setAdapter(userAdapter);
 
+
+
         // the search results should be a one time thing and do not auto update
         collectionReference
                 .whereEqualTo("cleanedUsername", cleanedKeyword)//query line, can be combined and turned into complex queries (this one queries for name)
@@ -261,12 +272,19 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // back button to main activity
 
     }
-
+    /**
+     * This method confirms the edits to an experiment
+     * @param exp
+     */
     @Override
     public void onConfirmEdits(Experiment exp) {
         editExperiment(exp);
     }
 
+    /**
+     * This method deletes an experiment if the delete options is pressed
+     * @param exp
+     */
     public void onDeletePressed(Experiment exp) {
         delExperiment(exp);
         experimentList.remove(exp);
