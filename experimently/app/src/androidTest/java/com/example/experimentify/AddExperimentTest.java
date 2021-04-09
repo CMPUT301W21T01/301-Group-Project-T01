@@ -31,7 +31,7 @@ public class AddExperimentTest {
     //    private Fragment addExpFragment;
     private FloatingActionButton addExpButton;
     private String TAG = "sample";
-    FirebaseFirestore db;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Rule
     public ActivityTestRule<MainActivity> rule =
@@ -41,8 +41,8 @@ public class AddExperimentTest {
     @Before
     public void setUp() {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
-        db = FirebaseFirestore.getInstance();
         db.disableNetwork();
+        db.clearPersistence();
     }
 
     @Test
