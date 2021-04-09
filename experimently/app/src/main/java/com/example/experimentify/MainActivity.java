@@ -380,9 +380,6 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     }
 
     private void parsedStringToDB(String experimentID, String experimentType, String experimentMode){
-//        String experimentID = null;
-//        String experimentType = null;
-//        String experimentMode = null;
         for (Experiment experiment : experimentList) {
             if (experiment.getUID() != null && experiment.getUID().contains(experimentID)) {
                 if (experimentMode.equals(VIEW)) {
