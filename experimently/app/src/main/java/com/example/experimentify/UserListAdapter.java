@@ -49,7 +49,9 @@ public class UserListAdapter extends ArrayAdapter<User> {
         dateBox.setText(context.getResources().getString(R.string.uid_header) + user.getUid());
     }
 
-    //TODO add javadocs comment
+    /**
+     * This method sets views of the inflated views
+     */
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
 

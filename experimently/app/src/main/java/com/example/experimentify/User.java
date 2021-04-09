@@ -110,6 +110,9 @@ public class User implements Serializable, Parcelable {
         uid = in.readString();
         username = in.readString();
     }
+    /**
+     * This method sets the parcel for the User
+     */
 
     public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
@@ -123,58 +126,109 @@ public class User implements Serializable, Parcelable {
         }
     };
 
+    /**
+     * This method returns the snubbed experiments
+     */
     public ExperimentController getSubbedExperiments() {
         return subbedExperiments;
     }
 
+    /**
+     * This method sets the snubbed experiments
+     */
     public void setSubbedExperiments(ExperimentController subbedExperiments) {
         this.subbedExperiments = subbedExperiments;
     }
+    /**
+     * This method gets the email
+     */
 
     public String getEmail() {
         return email;
     }
 
+    /**
+     * This method sets the email
+     * @param email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * This method gets the name
+     *
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * This method sets the name
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
-
+    /**
+     * This method gets the owned experiments
+     *
+     */
     public ArrayList<String> getOwnedExperiments() {
         return ownedExperiments;
     }
 
+    /**
+     * This method sets the owned experiments
+     * @param ownedExperiments
+     */
     public void setOwnedExperiments(ArrayList<String> ownedExperiments) {
         this.ownedExperiments = ownedExperiments;
     }
-
+    /**
+     * This method gets the participating experiments
+     *
+     */
     public ArrayList<String> getParticipatingExperiments() {
         return participatingExperiments;
     }
 
+    /**
+     * This method sets the participatinf experiments
+     * @param participatingExperiments
+     */
     public void setParticipatingExperiments(ArrayList<String> participatingExperiments) {
         this.participatingExperiments = participatingExperiments;
     }
 
+    /**
+     * This method gets the owned user id
+     *
+     */
     public String getUid() {
         return uid;
     }
 
+    /**
+     * This method set the owned user id
+     * @param uid
+     */
     public void setUid(String uid) {
         this.uid = uid;
     }
 
+    /**
+     * This method gets the owned username
+     *
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * This method sers the owned username
+     * @param username
+     */
     public void setUsername(String username) {
         this.username = username;
     }

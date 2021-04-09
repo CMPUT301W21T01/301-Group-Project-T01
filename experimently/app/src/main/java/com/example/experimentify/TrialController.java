@@ -17,7 +17,12 @@ public class TrialController {
         DatabaseSingleton databaseSingleton = new DatabaseSingleton();
         db = databaseSingleton.getDB();
     }
-
+    /**
+     * This method adds a new trial to the database
+     * @param location
+     * @param newTrial
+     * @param result
+     */
     public void addTrialToDB(Trial newTrial, Number result, @Nullable Location location){
 
         Map<String, Object> enterData = new HashMap<>();

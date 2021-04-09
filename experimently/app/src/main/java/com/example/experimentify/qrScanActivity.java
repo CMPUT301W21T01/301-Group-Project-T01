@@ -107,7 +107,9 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
         return getApplicationContext().getPackageManager()
                 .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }
-
+    /**
+     * switches device flash from on to off
+     */
     public void switchFlashlight(View view) {
         if (getString(R.string.turn_on_flashlight).equals(switchFlashlightButton.getText())) {
             barcodeScannerView.setTorchOn();

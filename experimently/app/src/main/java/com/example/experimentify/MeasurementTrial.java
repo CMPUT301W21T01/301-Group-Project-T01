@@ -6,7 +6,10 @@ public class MeasurementTrial extends Trial {
         super(userId, eID);
         this.value = measurement;
     }
-
+    /**
+     * Sets the value of a measurement trial
+     * @param value
+     */
     public void setValue(Double value) {
         this.value = value;
     }
