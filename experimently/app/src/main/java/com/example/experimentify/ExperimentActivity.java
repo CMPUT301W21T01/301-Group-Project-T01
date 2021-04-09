@@ -28,7 +28,7 @@ import com.google.zxing.integration.android.IntentResult;
 import java.util.HashMap;
 import java.util.Map;
 
-// AppCompatActivity
+
 public class ExperimentActivity extends AppCompatActivity {
 
     private TextView description;
@@ -133,8 +133,8 @@ public class ExperimentActivity extends AppCompatActivity {
      * This method brings the user to the stats activity
      */
     private void launchStatsActivity() {
-        Log.d("ughhh", "dfsfsdf");
         Intent intent = new Intent(this, StatsActivity.class);
+        intent.putExtra("experiment", exp);
         startActivity(intent);
     }
 
@@ -235,6 +235,7 @@ public class ExperimentActivity extends AppCompatActivity {
                 }
             });
 
+
             chatButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -268,21 +269,6 @@ public class ExperimentActivity extends AppCompatActivity {
             });
 
 
-//            qrCodeGene.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Bitmap temp = null;
-//                    String genID = exp.getUID();
-//                    try {
-//                        temp = qrCodeGen.textToImage(genID, 500, 500, 0, exp.getExpType());
-//                    } catch (WriterException e) {
-//                        e.printStackTrace();
-//                    }
-//                    qrCodeShow.setImageBitmap(temp);
-//                    //System.out.println("testtest"+temp);
-//                    qrCodeShow.setVisibility(View.VISIBLE);
-//                }
-//            });
 
             // If editable then display ui for conducting trials, else show message
             if (exp.isEditable()) {

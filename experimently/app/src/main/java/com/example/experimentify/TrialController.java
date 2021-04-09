@@ -8,6 +8,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ public class TrialController {
     FirebaseFirestore db;
     private String localUserID;
     private static final String TAG = ExperimentActivity.class.getName();
+    private ArrayList<Trial> trials;
 
     public TrialController(){
         DatabaseSingleton databaseSingleton = new DatabaseSingleton();
@@ -64,4 +66,8 @@ public class TrialController {
         DocumentReference expRef = db.collection("Experiments").document(newTrial.getEID());
         expRef.update("participants", FieldValue.arrayUnion(localUserID));
     };
+
+    public ArrayList<Trial> getTrials() {
+        return trials;
+    }
 }

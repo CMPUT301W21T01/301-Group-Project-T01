@@ -38,6 +38,10 @@
     <string name="replies_header">"Replies: "</string>
     <string name="user_ID">userID</string>
     <string name="replies_count">replyCount</string>
+    <string name="mean_header">"Mean: "</string>
+    <string name="median_header">"Median: "</string>
+    <string name="std_dev_header">"Standard deviation: "</string>
+    <string name="quartiles_header">"Quartiles (Q1, Q2, Q3): "</string>
 
 
 </resources>

@@ -152,6 +152,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onResume();
     }
 
+    /*
+                implemented a map api to record trial location
+                CITATION for map:
+                CSE Labs, "Mapview with search option in android studio (Ex-13)",
+                Feb-13-2020, Public Domain, https://www.youtube.com/watch?v=hwe1abDO2Ag&ab_channel=CodingWithMitch
+.
+   */
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
