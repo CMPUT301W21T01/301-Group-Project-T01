@@ -38,26 +38,42 @@ public class chatAnswer {
         this.QID = QID;
     }
 
+    /**
+     * This method gets the answer description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * This method gets the answer userid
+     */
     public String getUID() {
         return UID;
     }
-
+    /**
+     * This method gets the answer date
+     */
     public String getDate() {
         return date;
     }
 
-
+    /**
+     * This method sets the answer question id
+     * @param QID
+     */
     public void setQID(String QID) {
         this.QID = QID;
     }
-
+    /**
+     * This method gets the answer experiment id
+     */
     public String getEID() {
         return EID;
     }
+    /**
+     * This method gets the answer question id
+     */
     public String getQID() {
         return QID;
     }

@@ -35,38 +35,64 @@ public class chatQuestion {
         this.date = date;
         this.QID = QID;
     }
-
+    /**
+     * This method gets the question description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * This method gets the question user id
+     */
     public String getUID() {
         return UID;
     }
-
+    /**
+     * This method gets the question date
+     */
     public String getDate() {
         return date;
     }
 
+    /**
+     * This method gets the question id
+     */
     public String getQID() {
         return QID;
     }
 
+    /**
+     * This method sets the question id
+     * @param QID
+     */
     public void setQID(String QID) {
         this.QID = QID;
     }
 
+    /**
+     * This method sets the question replies
+     */
     public long getNumReplies() {
         return numReplies;
     }
-
+    /**
+     * This method sets the question id
+     * @param numReplies
+     */
     public void setNumReplies(long numReplies) {
         this.numReplies = numReplies;
     }
 
+    /**
+     * This method gets the question experiment id
+     */
     public String getEID() {
         return EID;
     }
+    /**
+     * This method increments the num replies
+     */
     public void incrementNumReplies(){
         numReplies++;
     }
