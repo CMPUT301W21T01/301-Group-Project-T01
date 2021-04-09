@@ -12,8 +12,6 @@
 
 package com.example.experimentify;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,16 +21,12 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 
-import com.example.experimentify.MainActivity;
-import com.example.experimentify.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.ViewfinderView;
 
 import java.util.Random;
-
-import javax.xml.transform.Result;
 
 /**
  * Custom Scannner Activity extending from Activity to display a custom layout form scanner view.
@@ -67,6 +61,9 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
         capture.initializeFromIntent(getIntent(), savedInstanceState);
         capture.setShowMissingCameraPermissionDialog(false);
         capture.decode();
+
+
+
         changeMaskColor(null);
         changeLaserVisibility(true);
 
@@ -110,7 +107,9 @@ public class qrScanActivity extends MainActivity implements DecoratedBarcodeView
         return getApplicationContext().getPackageManager()
                 .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }
-
+    /**
+     * switches device flash from on to off
+     */
     public void switchFlashlight(View view) {
         if (getString(R.string.turn_on_flashlight).equals(switchFlashlightButton.getText())) {
             barcodeScannerView.setTorchOn();

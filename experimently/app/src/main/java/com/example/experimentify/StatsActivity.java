@@ -2,18 +2,41 @@
 package com.example.experimentify;
 
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
+
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.jjoe64.graphview.GraphView;
@@ -23,7 +46,11 @@ import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 
+
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+
+import java.io.IOException;
+import java.text.DateFormat;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,6 +58,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Date;
@@ -41,10 +70,12 @@ import java.util.Date;
  * our implementation uses DescriptiveStatistics found on: http://commons.apache.org/proper/commons-math/javadocs/api-3.3/org/apache/commons/math3/stat/descriptive/DescriptiveStatistics.html
  * and we make use of jjoe64's GraphView library for plotting and drawing our graphs (found on: https://github.com/jjoe64/GraphView)
  */
-public class StatsActivity extends AppCompatActivity {
+
+public class StatsActivity extends AppCompatActivity implements OnMapReadyCallback {
     // Database Elements
     private FirebaseFirestore db;
     private CollectionReference collectionReference;
+
 
     // UI Elements
     private TextView quartilesTV;
@@ -65,6 +96,10 @@ public class StatsActivity extends AppCompatActivity {
     private Experiment exp;
     private int maxOccurrences;
     private int dateOccurrences;
+    private MapView map;
+    private GoogleMap gMap;
+    private Location looc = null;
+
 
 
 
@@ -75,6 +110,7 @@ public class StatsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         // get our intent and set up database connection
         exp = intent.getParcelableExtra("experiment");
+
 
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("Experiments").document(exp.getUID()).collection("Trials");
@@ -369,6 +405,7 @@ public class StatsActivity extends AppCompatActivity {
                 }
             }
 
+
             Map<Integer, Integer> treeMap = new TreeMap<>(result_dupes);
             Iterator it = treeMap.entrySet().iterator();
 
@@ -398,6 +435,33 @@ public class StatsActivity extends AppCompatActivity {
             graph.getViewport().setXAxisBoundsManual(true);
             graph.getViewport().setMinX(stats.getMin());
             graph.getViewport().setMaxX(stats.getMax() + 2); //padding to the right
+
+    private void updateList(QuerySnapshot value, FirebaseFirestoreException error) {
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                trials.clear();
+                expType = exp.getExpType();
+                expID = exp.getUID();
+                for (QueryDocumentSnapshot doc : value) {
+                    Log.d(TAG, String.valueOf(doc.getData().get("EID")));
+                    String TID = doc.getString("TID");
+                    String UID = doc.getString("UID");
+                    String date = doc.getString("date");
+                    GeoPoint location = doc.getGeoPoint("location");
+                    if(location != null) {
+                        double lat = location.getLatitude();
+                        double lon = location.getLongitude();
+                        LatLng latlng = new LatLng(lat, lon);
+                        Address loc = new Address(Locale.getDefault());
+                        loc.setLatitude(lat);
+                        loc.setLongitude(lon);
+                        Location looc = new Location(loc);
+
+                    }
+                    Number result = (Number) doc.getData().get("result");
+                    //TODO add filter for owner's ignored experiments
+
 
             series.setSpacing(0);
 
@@ -444,6 +508,7 @@ public class StatsActivity extends AppCompatActivity {
                     firstDate = (Date) pair.getKey();
                 }
 
+
                 if (!dateit.hasNext())
                 {
                     lastDate = (Date) pair.getKey();
@@ -451,6 +516,14 @@ public class StatsActivity extends AppCompatActivity {
                 i += 1;
                 dateit.remove();
             }
+
+                        MeasurementTrial newTrial = new MeasurementTrial(UID, expID, (double) result);
+                        newTrial.setDate(date);
+                        newTrial.setTID(TID);
+                        newTrial.setValue((result.doubleValue()));
+                        newTrial.setTrialLocation(looc);
+                        trials.add(newTrial);
+
 
             graph2.setTitle(exp.getDescription() + ": Date Points for " + ((int) stats.getN()) + " Trials");
             // remember to set x and y axis
@@ -461,6 +534,14 @@ public class StatsActivity extends AppCompatActivity {
             graph2.getViewport().setScrollable(true);
 
 
+                        IntegerTrial newTrial = new IntegerTrial(UID, expID, result.intValue());
+                        newTrial.setDate(date);
+                        newTrial.setTID(TID);
+                        newTrial.setValue((result.intValue()));
+                        newTrial.setTrialLocation(looc);
+                        trials.add(newTrial);
+
+
             graph2.getViewport().setYAxisBoundsManual(true);
             graph2.getViewport().setMinY(0);
             graph2.getViewport().setMaxY(dateOccurrences + 2); //padding on top
@@ -468,6 +549,7 @@ public class StatsActivity extends AppCompatActivity {
             //
             graph2.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(StatsActivity.this));
             graph2.getGridLabelRenderer().setNumHorizontalLabels(4);
+
 
             graph2.getGridLabelRenderer().setHorizontalLabelsAngle(150);
             graph2.getGridLabelRenderer().setLabelHorizontalHeight(100);
@@ -478,6 +560,23 @@ public class StatsActivity extends AppCompatActivity {
             graph2.getViewport().setXAxisBoundsManual(true);
 
             graph2.addSeries(series2);
+
+
+                        CountTrial newTrial = new CountTrial(UID, expID);
+                        newTrial.setDate(date);
+                        newTrial.setTID(TID);
+                        newTrial.setTrialLocation(looc);
+                        trials.add(newTrial);
+
+                    } else if (expType.equals("Binomial")) {
+                        stats.addValue(Integer.parseInt(String.valueOf(result)));
+                        rawResultsInt.add(Integer.parseInt(String.valueOf(result)));
+
+                        BinomialTrial newTrial = new BinomialTrial(UID, expID, Integer.parseInt(String.valueOf(result)));
+                        newTrial.setDate(date);
+                        newTrial.setTID(TID);
+                        newTrial.setTrialLocation(looc);
+                        trials.add(newTrial);
 
 
         }
@@ -499,6 +598,7 @@ public class StatsActivity extends AppCompatActivity {
                     }
                     Log.d("measurement, occurences: ", x + " : " + maxOccurrences);
                 }
+
             }
 
             Map<Integer, Integer> treeMap = new TreeMap<>(result_dupes);
@@ -573,6 +673,27 @@ public class StatsActivity extends AppCompatActivity {
 
                 if(i == 0){
                     firstDate = (Date) pair.getKey();
+
+                System.out.println("geopoint2:" + trials.size() );
+                for (int i = 0; i < trials.size(); i++) {
+                    Location trial = trials.get(i).getTrialLocation();
+                    if(trial != null) {
+                        double lat = trial.getLatitude();
+                        double lon = trial.getLong();
+                        LatLng latlng = new LatLng(lat, lon);
+
+                        Log.d("123123", latlng.toString());
+                        MarkerOptions mark = new MarkerOptions().position(latlng).title("Trial #" + (i + 1));
+                        gMap.addMarker(mark);
+                        gMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
+                        gMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+                    }
+                }
+                    try {
+                    setUI();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+
                 }
 
                 if (!dateit.hasNext())
@@ -583,10 +704,22 @@ public class StatsActivity extends AppCompatActivity {
                 dateit.remove();
             }
 
+
             graph2.setTitle(exp.getDescription() + ": Date Points for " + ((int) stats.getN()) + " Trials");
             // remember to set x and y axis
             graph2.getGridLabelRenderer().setHorizontalAxisTitle("Date");
             graph2.getGridLabelRenderer().setVerticalAxisTitle("Frequency");
+
+
+        });
+    }
+
+    @Override
+    public void onResume() {
+        map.onResume();
+        super.onResume();
+    }
+
 
             graph2.getViewport().setScalable(true);
             graph2.getViewport().setScrollable(true);
@@ -610,6 +743,7 @@ public class StatsActivity extends AppCompatActivity {
 
             graph2.addSeries(series2);
 
+
         }
         else if(exp.getExpType().equals("Binomial")){
             Map<Integer, Integer> result_dupes = new HashMap();
@@ -631,8 +765,17 @@ public class StatsActivity extends AppCompatActivity {
                 }
             }
 
+        map = findViewById(R.id.mapView2);
+        map.onCreate(savedInstanceState);
+        map.getMapAsync(this);
+
+
+        rawResultsDouble = new ArrayList<Double>();
+
+
             Map<Integer, Integer> treeMap = new TreeMap<>(result_dupes);
             Iterator it = treeMap.entrySet().iterator();
+
 
             BarGraphSeries<DataPoint> series = new BarGraphSeries<DataPoint>();
             PointsGraphSeries<DataPoint> series1 = new PointsGraphSeries<DataPoint>();
@@ -755,9 +898,26 @@ public class StatsActivity extends AppCompatActivity {
 
         }
 
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                updateList(value, error);
+                System.out.println("geopoint:" + trials.size());
 
+            }
+        });
+        if (exp.isLocationRequired() == false) { map.setVisibility(View.GONE);}
     }
 
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        gMap = googleMap;
+
+        }
+
+    }
 }
+
 
 

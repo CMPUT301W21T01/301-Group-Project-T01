@@ -56,6 +56,7 @@ public class chatQuestionController {
         enterData.put("uid", newQuestion.getUID());
         enterData.put("date", newQuestion.getDate());
         enterData.put("eid", EID);
+        enterData.put("answerTotal", 0);
         newRef.set(enterData);
 
         db.collection("Experiments").document(newQuestion.getEID()).update("questionCount", FieldValue.increment(1));

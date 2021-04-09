@@ -64,15 +64,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Bundle extras = intent.getExtras();
         if (extras != null) {
             exp = intent.getParcelableExtra("experiment");
+            Log.d("exp123", "onCreate: " + exp.isLocationRequired());
         }
-        if(exp.isLocationRequired() == false){
+
+        if(!exp.isLocationRequired()){
             map.setVisibility(View.GONE);
             search.setVisibility(View.GONE);
             searchLoc.setVisibility(View.GONE);
 
         }
-        Log.d("exp123", "onCreate: ");
-        
+
         selectDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -130,6 +131,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
 
     }
+    /**
+     * Initialise the calender object to be used in other spots
+     */
 
     private void createCalendar() {
         Calendar calendar = Calendar.getInstance();
@@ -147,6 +151,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         map.onResume();
         super.onResume();
     }
+
+    /*
+                implemented a map api to record trial location
+                CITATION for map:
+                CSE Labs, "Mapview with search option in android studio (Ex-13)",
+                Feb-13-2020, Public Domain, https://www.youtube.com/watch?v=hwe1abDO2Ag&ab_channel=CodingWithMitch
+.
+   */
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

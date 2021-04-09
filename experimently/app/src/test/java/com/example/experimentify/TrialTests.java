@@ -1,69 +1,86 @@
-//package com.example.experimentify;
-//import com.google.firebase.firestore.FirebaseFirestore;
-//
-//import org.junit.*;
-//
-//import static org.junit.Assert.*;
-////Experiment newExp, FirebaseFirestore db, String ownerID
-//
-///**
-// * test for experiment controller methods (addtodb, edit in db, delete from db)
-// * currently not working yet because cant initialize experimentControllerObject
-// */
-//public class TrialTests {
-//
-//    /**
-//     * tests CountTrial
-//     */
-//    @Test
-//    public void testCount(){
-//        // make mock variables
-//        Trial trial = new Trial("userID", "Edmonton", "ID");
-//        Trial.CountTrial countTrial = trial.new CountTrial(trial, 0);
-//        assertEquals(countTrial.getTotalCount(), 0);
-//        countTrial.incrementCount();
-//        assertEquals(countTrial.getTotalCount(), 1);
-//
-//    }
-//
-//    /**
-//     * tests BinomialTrial
-//     */
-//    @Test
-//    public void testBinomial(){
-//        // make mock variables
-//        Trial trial = new Trial("userID", "Edmonton", "ID");
-//        Trial.BinomialTrial binomialTrial = trial.new BinomialTrial(trial, 0, 0);
-//        assertEquals(binomialTrial.getBinomialTrials(), 0);
-//        binomialTrial.incrementBinomialFail();
-//        assertEquals(binomialTrial.getBinomialTrials(), 1);
-//        assertEquals(binomialTrial.getBinomialFails(), 1);
-//        binomialTrial.incrementBinomialPass();
-//        assertEquals(binomialTrial.getBinomialTrials(), 2);
-//        assertEquals(binomialTrial.getBinomialPasses(), 1);
-//    }
-//
-//    /**
-//     * tests IntegerTrial
-//     */
-//    @Test
-//    public void testInteger(){
-//        // make mock variables
-//        Trial trial = new Trial("userID", "Edmonton", "ID");
-//        Trial.IntegerTrial integerTrial = trial.new IntegerTrial(trial, 7);
-//        assertEquals(integerTrial.getIntEntered(), 7);
-//    }
-//
-//    /**
-//     * tests MeasurementTrial
-//     */
-//    @Test
-//    public void testMeasurement(){
-//        // make mock variables
-//        Trial trial = new Trial("userID", "Edmonton", "ID");
-//        Trial.MeasurementTrial measurementTrial = trial.new MeasurementTrial(trial, 7);
-//        assertEquals(measurementTrial.getMeasurementEntered(), 7, 0.0);
-//        measurementTrial = trial.new MeasurementTrial(trial, 7.1f);
-//        assertEquals(measurementTrial.getMeasurementEntered(), 7.1f, 0.0);
-//    }
-//}
+package com.example.experimentify;
+import android.location.Address;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.junit.*;
+
+import static org.junit.Assert.*;
+//Experiment newExp, FirebaseFirestore db, String ownerID
+
+/**
+ * test for experiment controller methods (addtodb, edit in db, delete from db)
+ * currently not working yet because cant initialize experimentControllerObject
+ */
+public class TrialTests {
+
+    private Trial mockCountTrial() {
+        return new CountTrial("UID", "EXPID");
+    }
+
+    private Trial mockBinomialTrialPass(){
+        return new BinomialTrial("UID1", "EXPID1", 1);
+    }
+    private Trial mockBinomialTrialFail(){
+        return new BinomialTrial("UID1.5", "EXPID1.5", -1);
+    }
+
+    private Trial mockIntegerTrial(){
+        return new IntegerTrial("UID2", "EXPID2", 25);
+    }
+
+    private Trial mockMeasurementTrial(){
+        return new MeasurementTrial("UID3", "EXPID3", (float) 12.5);
+    }
+
+    /**
+     * tests get and set Date
+     */
+    @Test
+    public void testDate(){
+        String date = "01/22/2000";
+        mockIntegerTrial().setDate(date);
+       assertEquals(date, mockIntegerTrial().getDate());
+    }
+
+    /**
+     * tests set and get UID
+     */
+    @Test
+    public void testUID(){
+        String UID = "User12";
+        mockCountTrial().setUID(UID);
+        assertEquals(UID, mockCountTrial().getUID());
+    }
+
+    /**
+     * tests get and set trial location
+     */
+    @Test
+    public void testLocation(){
+        //Location loc = new Address(53.5461245,-113.49382290000001);
+       // mockBinomialTrialFail().setTrialLocation(loc);
+        //assertEquals(loc, mockBinomialTrialPass().getTrialLocation());
+    }
+
+    /**
+     * tests TID
+     */
+    @Test
+    public void tesTID(){
+        String TID = "Trial Count";
+       mockCountTrial().setTID(TID);
+       assertEquals(TID, mockCountTrial().getTID());
+
+    }
+
+    /**
+     * tests EID
+     */
+    @Test
+    public void tesEID(){
+        String EID = "Experiment 24";
+        mockCountTrial().setEID(EID);
+        assertEquals(EID, mockCountTrial().getEID());
+    }
+}
