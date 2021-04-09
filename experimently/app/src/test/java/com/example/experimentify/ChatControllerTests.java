@@ -52,7 +52,9 @@ public class ChatControllerTests {
         dbs = FirebaseFirestore.getInstance();
         testController = new chatQuestionController();
         // add the mock experiment to the DB
+
         testController.addQuestionToDB(mockQues, dbs);
+
         // now prove it worked by querying the db in the experiment collection
         DocumentReference docRef = dbs.collection("Experiments").document(mockQues.getEID()).collection("Questions").document();
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -95,13 +97,16 @@ public class ChatControllerTests {
         // make mock variables
 
         ownerID = "Gnt580viu6ErzEnqTFiS";
-        mockAns = new chatAnswer("unitTest for adding to db","edmonton","123","01/01/01","123");
+        String mockAnsID = "1234abcd";
+        mockQues = new chatQuestion("unitTest for adding to db","edmonton","123","01/01/01","321");
+        mockAns = new chatAnswer("unitTest for adding to db","edmonton","123","01/01/01","321");
         dbs = FirebaseFirestore.getInstance();
         testControllerAns = new chatAnswerController();
         // add the mock experiment to the DB
         testControllerAns.addAnswerToDB(mockAns, dbs);
         // now prove it worked by querying the db in the experiment collection
-        DocumentReference docRef = dbs.collection("Experiments").document(mockAns.getEID()).collection("Answers").document();
+
+        DocumentReference docRef = dbs.collection("Experiments").document("123").collection("Questions").document("321").collection("Answers").document();
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
