@@ -13,10 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Experimentify">
-        <activity android:name=".StatsActivity"></activity>
-        <activity
-            android:name=".MapActivity"
-            android:label="MapActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -28,6 +24,14 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCQvFAt13cGTs9QMLO5a5fH1I3OyfzdZ7g" />
+
+        <activity android:name=".StatsActivity"></activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCQvFAt13cGTs9QMLO5a5fH1I3OyfzdZ7g" />
+        <activity
+            android:name=".MapActivity"
+            android:label="MapActivity" />
 
         <activity android:name=".chatAnswerActivity" />
         <activity android:name=".chatQuestionActivity" />

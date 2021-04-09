@@ -2,16 +2,29 @@ package com.example.experimentify;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.jjoe64.graphview.GraphView;
@@ -19,6 +32,7 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,6 +41,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
@@ -38,7 +54,7 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
  * which accurately calculates the stats for us, and keeps the design of this activity straightforward(initialize the object, add the data, then simply call the methods for the statistics we want to show)
  * which is simple and keeps the code relatively shorter
  */
-public class StatsActivity extends AppCompatActivity {
+public class StatsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private TextView quartilesTV;
     private TextView medianTV;
@@ -62,6 +78,9 @@ public class StatsActivity extends AppCompatActivity {
     private GraphView graph1;
 
     private int maxOccurrences;
+
+    private MapView map;
+    private GoogleMap gMap;
 
 
     public void setUI() throws ParseException {
@@ -213,6 +232,16 @@ public class StatsActivity extends AppCompatActivity {
                     String TID = doc.getString("TID");
                     String UID = doc.getString("UID");
                     String date = doc.getString("date");
+                    GeoPoint location = doc.getGeoPoint("location");
+
+                    double lat = location.getLatitude();
+                    double lon = location.getLongitude();
+                    LatLng latlng = new LatLng(lat,lon);
+
+                    Address loc = new Address(Locale.getDefault());
+                    loc.setLatitude(lat);
+                    loc.setLongitude(lon);
+                    Location looc = new Location(loc);
                     Number result = (Number) doc.getData().get("result");
 
 
@@ -248,8 +277,8 @@ public class StatsActivity extends AppCompatActivity {
                         CountTrial newTrial = new CountTrial(UID, expID);
                         newTrial.setDate(date);
                         newTrial.setTID(TID);
+                        newTrial.setTrialLocation(looc);
                         trials.add(newTrial);
-
 
                     } else if (expType.equals("Binomial")) {
                         stats.addValue(Integer.parseInt(String.valueOf(result)));
@@ -295,6 +324,10 @@ public class StatsActivity extends AppCompatActivity {
         Max = findViewById(R.id.Max);
         Min = findViewById(R.id.Min);
 
+        map = findViewById(R.id.mapView2);
+        map.onCreate(savedInstanceState);
+        map.getMapAsync(this);
+
         rawResultsDouble = new ArrayList<Double>();
 
         rawResultsInt = new ArrayList<Integer>();
@@ -303,9 +336,36 @@ public class StatsActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 updateList(value, error);
+
+                System.out.println("geopoint:" + trials.size() );
+
             }
         });
 
 
     }
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+       System.out.println("geopoint2:" + trials.size() );
+       for (int i = 0; i < trials.size(); i++){
+           Location trial = trials.get(i).getTrialLocation();
+           double lat = trial.getLatitude();
+           double lon =  trial.getLong();
+           LatLng latlng = new LatLng(lat,lon);
+
+           Log.d("123123", latlng.toString());
+           MarkerOptions mark = new MarkerOptions().position(latlng).title("Trial #" + i);
+           gMap.addMarker(mark);
+           gMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
+           gMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+
+        }
+
+
+    }
+
+
 }
