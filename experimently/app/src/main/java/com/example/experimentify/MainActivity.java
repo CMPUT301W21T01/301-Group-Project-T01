@@ -329,14 +329,34 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         final String VIEW = "2";
         final String PASS = "1";
         final String FAIL = "0";
+        String experimentID = null;
+        String experimentType = null;
+        String experimentMode = null;
+
         IntentResult experimentValue = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (experimentValue != null) {
             if (experimentValue.getContents() != null) {
                 String[] temp = experimentValue.getContents().split("/");
-                if (temp.length == 3){
-                String experimentID = temp[0];
-                String experimentType = temp[1];
-                String experimentMode = temp[2];
+                Log.d(TAG, "onActivityResult: tempsplit = :" + temp[0]);
+                if (temp.length == 3) {
+                    experimentID = temp[0];
+                    experimentType = temp[1];
+                    experimentMode = temp[2];
+                } else if (temp.length == 1) {
+                    Log.d(TAG, "onActivityResult: temp - RYAN" + temp[0]);
+                    DocumentSnapshot docRef = db.collection("Barcodes").document(temp[0]).get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    task.getResult();
+                                }
+                            });
+                    String[] barcodeToTrial = docRef.getString("contributingTrial").split("/");
+
+                    experimentID = barcodeToTrial[0];
+                    experimentType = barcodeToTrial[1];
+                    experimentMode = barcodeToTrial[2];
+                }
                 for (Experiment experiment : experimentList) {
                     if (experiment.getUID() != null && experiment.getUID().contains(experimentID)) {
                         if (experimentMode.equals(VIEW)) {
@@ -378,13 +398,12 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
                             }
                             trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location);
                         }
-                        else if (temp.length == 1){
-                            //Read from collection called Barcodes
-                            DocumentSnapshot docRef = db.collection("Barcodes").document(temp[0]).get().getResult();
-                            String trialString = docRef.getString("contributingTrial");
-                            //TODO: Split the string. Then call add databaseTrialToDB.
-                            }
-                        }
+//                        else if (temp.length == 1){
+//                            //Read from collection called Barcodes
+//                            DocumentSnapshot docRef = db.collection("Barcodes").document(temp[0]).get().getResult();
+//                            String trialString = docRef.getString("contributingTrial");
+//                            //TODO: Split the string. Then call add databaseTrialToDB.
+//                            }
                     }
                 }
             }
