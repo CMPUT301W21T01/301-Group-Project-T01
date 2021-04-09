@@ -61,9 +61,9 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
      * @param newUser experiment whose options will be edited
      */
     private void showUserOptionsUI(User newUser, User currentUser) {
-        String localUID = settings.getString("uid","0");
-        UserOptionsFragment fragment = UserOptionsFragment.newInstance(newUser, localUID, currentUser);
-        fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
+        //String localUID = settings.getString("uid","0");
+        //UserOptionsFragment fragment = UserOptionsFragment.newInstance(newUser, localUID, currentUser, );
+        //fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
     }
 
     /**
@@ -119,7 +119,6 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
         exListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 expController.viewExperiment(SearchResults.this, experimentList.get(position));
 
             }
@@ -159,7 +158,7 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
                                 String date         = (String)  doc.getData().get("date");
 
                                 boolean locationReq = (boolean) doc.getData().get("locationRequired");
-                                String expType = (String) doc.getData().get("experimentType");
+                                String expType = (String) doc.getData().get("ExperimentType");
                                 String ownerID = (String) doc.getData().get("ownerID");
                                 String uId = (String) doc.getData().get("uid");
                                 boolean viewable = (boolean) doc.getData().get("viewable");
@@ -225,13 +224,7 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
         userAdapter = new UserListAdapter(this, userList);
         exListView.setAdapter(userAdapter);
 
-        exListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> parent, View v, int pos, long id) {
-                User userToModify = userList.get(pos);
-                showUserOptionsUI(userToModify, user);
-                return true;
-            }
-        });
+
 
         // the search results should be a one time thing and do not auto update
         collectionReference
@@ -280,12 +273,19 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // back button to main activity
 
     }
-
+    /**
+     * This method confirms the edits to an experiment
+     * @param exp
+     */
     @Override
     public void onConfirmEdits(Experiment exp) {
         editExperiment(exp);
     }
 
+    /**
+     * This method deletes an experiment if the delete options is pressed
+     * @param exp
+     */
     public void onDeletePressed(Experiment exp) {
         delExperiment(exp);
         experimentList.remove(exp);

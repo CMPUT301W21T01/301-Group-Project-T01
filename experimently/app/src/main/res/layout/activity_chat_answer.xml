@@ -8,22 +8,26 @@
 
     <Button
         android:id="@+id/answerInputButton"
-        android:layout_width="93dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:layout_marginEnd="20dp"
         android:text="Enter"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@+id/answerInput"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/answerInput" />
 
     <EditText
         android:id="@+id/answerInput"
-        android:layout_width="270dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
         android:ems="10"
         android:hint="Enter Answer Here"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/answerInputButton"
         app:layout_constraintHorizontal_bias="0.312"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,11 +35,12 @@
 
     <ListView
         android:id="@+id/answerList"
-        android:layout_width="360dp"
-        android:layout_height="614dp"
-        android:layout_marginTop="40dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/answerInput" />

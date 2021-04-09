@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="Generate QR Code">
+        <menu>
+            <item
+                android:id="@+id/qrGenExp"
+                android:title="Experiment QR Code" />
+            <item
+                android:id="@+id/qrPassMenu"
+                android:title="Pass QR Code" />
+            <item
+                android:id="@+id/qrFailMenu"
+                android:title="Fail QR Code" />
+            <item
+                android:id="@+id/qrIncreMenu"
+                android:title="Increment QR Code" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/setOwnMenu"
+        android:title="Set Own Code" >
+        <menu >
+            <item
+                android:id="@+id/selfSetPass"
+                android:title="Set Pass Code" />
+
+            <item
+                android:id="@+id/selfSetFail"
+                android:title="Set Fail Code" />
+
+            <item
+                android:id="@+id/selfSetIncre"
+                android:title="Set Increment Code" />
+        </menu>
+    </item>
+</menu>

@@ -47,7 +47,12 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
         dateBox.setText(context.getResources().getString(R.string.date_header) + exp.getDate());
     }
 
-    //TODO add javadocs comment
+    /**
+     * This method sets the overall view of the experiment adapter.
+     * @param position the location of the object in list
+     * @param convertView is the view converter can be null
+     * @param convertView is the view groups parent can be null
+     */
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
 

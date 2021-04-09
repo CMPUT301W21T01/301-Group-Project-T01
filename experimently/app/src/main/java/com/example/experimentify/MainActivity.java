@@ -1,8 +1,15 @@
 package com.example.experimentify;
 
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.icu.text.SimpleDateFormat;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,13 +21,13 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import android.widget.Toast;
-
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -35,8 +42,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -45,6 +55,9 @@ import java.util.Map;
  * and add new experiments to the list.
  */
 public class MainActivity extends AppCompatActivity implements AddExpFragment.OnFragmentInteractionListener, ExpOptionsFragment.OnFragmentInteractionListener, UserProfileFragment.OnFragmentInteractionListener {
+    private static final String FAIL = "0";
+    private static final String PASS = "1";
+    private static final String VIEW = "2";
     private ExperimentController experimentController;
     private ExperimentListAdapter experimentAdapter;
     private ListView exListView;
@@ -58,8 +71,12 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private User currentUser;
     final String TAG = MainActivity.class.getName();
     public static final String PREFS_NAME = "PrefsFile";
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
     private Spinner searchSpinner;
+    private TrialController trialController;
+    private String localUID;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocalUserSingleton LUS;
 
 
     /**
@@ -71,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     /**
      * This method shows the fragment that gives users options for the experiment they long clicked on.
+     *
      * @param experiment experiment whose options will be edited
      */
     private void showExpOptionsUI(Experiment experiment) {
@@ -90,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     /**
      * This method adds an experiment to the database and automatically subscribed the creator.
      * It also adds the experiment to the user's list of owned experiments in the DB
+     *
      * @param experiment experiment to be added
      */
     private void addExperiment(Experiment experiment) {
@@ -100,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     /**
      * This method brings the user to the experiment screen for the experiment they clicked on.
+     *
      * @param pos position of experiment in ListView
      */
     private void handleExpClick(int pos) {
@@ -109,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     /**
      * This method brings the user from the home screen to the opening scanner then to the next screen
-     *  its a successful scan to the experiment activity
+     * its a successful scan to the experiment activity
      */
     private void handleScanClick() {
         experimentController.getQrScan(MainActivity.this);
@@ -117,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     /**
      * This method deletes an experiment from the database
+     *
      * @param expToDel experiment to delete
      */
     private void delExperiment(Experiment expToDel) {
@@ -125,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     /**
      * This method edits existing experiments in the database
+     *
      * @param expToEdit experiment to edit
      */
     private void editExperiment(Experiment expToEdit) {
@@ -133,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
     /**
      * This method gets the user id saved locally on the user's device.
+     *
      * @return Returns string of locally stored user id.
      */
     private String getLocalUID() {
@@ -160,9 +183,11 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
         db = FirebaseFirestore.getInstance();
         currentUser = initializeUser(db);
+        LUS.setLocalUser(currentUser);
+
 
         final CollectionReference collectionReference = db.collection("Experiments");
-
+        trialController = new TrialController();
 
 
         //get ui resources
@@ -172,21 +197,21 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         qrScanner = findViewById(R.id.qrScanner);
         subButton = findViewById(R.id.subButton);
 
-//        // used documentation at https://developer.android.com/guide/topics/ui/controls/spinner
-//        searchSpinner = (Spinner) findViewById(R.id.search_spinner);
-//
-//        // Create an ArrayAdapter using the string array and a default spinner layout
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-//                R.array.search, android.R.layout.simple_spinner_item);
-//        // Specify the layout to use when the list of choices appears
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        // Apply the adapter to the spinner
-//        searchSpinner.setAdapter(adapter);
-//
-//        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.experiments, android.R.layout.simple_spinner_item);
-//        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        //expType.setAdapter(adapter);
-//        //expType.setOnItemSelectedListener(this);
+
+//        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            ActivityCompat.requestPermissions();
+//            return;
+//        }
+//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) this);
+
 
         // used documentation at https://developer.android.com/guide/topics/ui/controls/spinner
         searchSpinner = (Spinner) findViewById(R.id.search_spinner);
@@ -208,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         searchButton = findViewById(R.id.searchButton);
         // search button on click listener, pass query with intent
         searchButton.setOnClickListener((v) -> {
-            if(searchBar.getText().toString().trim().length() > 0) { // search if the edit text is not empty
+            if (searchBar.getText().toString().trim().length() > 0) { // search if the edit text is not empty
                 openSearchResults(searchBar.getText().toString());
             }
         });
@@ -260,18 +285,18 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 experimentController.getExperiments().clear();
-                for (QueryDocumentSnapshot doc : value){
+                for (QueryDocumentSnapshot doc : value) {
                     Log.d(TAG, String.valueOf(doc.getData().get("EID")));
-                    String description  = (String)  doc.getData().get("description");
-                    String region       = (String)  doc.getData().get("region");
-                    long minTrials      = (long)    doc.getData().get("minTrials");
-                    String date         = (String)  doc.getData().get("date");
+                    String description = (String) doc.getData().get("description");
+                    String region = (String) doc.getData().get("region");
+                    long minTrials = (long) doc.getData().get("minTrials");
+                    String date = (String) doc.getData().get("date");
                     boolean locationReq = (boolean) doc.getData().get("locationRequired");
-                    String expType      = (String)  doc.getData().get("ExperimentType");
-                    String ownerID      = (String)  doc.getData().get("ownerID");
-                    String uId          = (String)  doc.getData().get("uid");
-                    boolean viewable    = (boolean) doc.getData().get("viewable");
-                    boolean editable    = (boolean) doc.getData().get("editable");
+                    String expType = (String) doc.getData().get("ExperimentType");
+                    String ownerID = (String) doc.getData().get("ownerID");
+                    String uId = (String) doc.getData().get("uid");
+                    boolean viewable = (boolean) doc.getData().get("viewable");
+                    boolean editable = (boolean) doc.getData().get("editable");
                     //commented out to fix error
                     //long questionCount  = (long)    doc.getData().get("questionCount");
                     //long trialCount     = (long)    doc.getData().get("trialCount");
@@ -298,26 +323,149 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
             }
         });
     }
+
     /**
      * This method is what is used to direct the from the scan to the correct activity, it first will check
      * if we make sure that the scan its self isnt null and then we make sure the contents of the values arent null adn then direct
      * the user to the new experiment page
      */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent){
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        String experimentID = null;
+        String experimentType = null;
+        String experimentMode = null;
+
         IntentResult experimentValue = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if(experimentValue != null){
-            if(experimentValue.getContents() != null){
-                String temp = experimentValue.getContents();
-                for (Experiment experiment: experimentList){
-                    if (experiment.getUID() != null && experiment.getUID().contains(temp)){
-                        experimentController.viewExperiment(this, experiment);
+        if (experimentValue != null) {
+            if (experimentValue.getContents() != null) {
+                String[] temp = experimentValue.getContents().split("/");
+                Log.d(TAG, "onActivityResult: tempsplit = :" + temp[0]);
+                if (temp.length == 3) {
+                    experimentID = temp[0];
+                    experimentType = temp[1];
+                    experimentMode = temp[2];
+                    parsedStringToDB(experimentID, experimentType, experimentMode);
+                } else if (temp.length == 1) {
+//                    Log.d(TAG, "onActivityResult: temp - RYAN" + temp[0]);
+//                    final String test;
+                    ArrayList<String> trialTokens = new ArrayList<>();
+                    DocumentReference docRef = db.collection("Barcodes").document(temp[0]);
+                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    String[] trialString = document.getString("contributingTrial").split("/");
+                                    String experimentID   = trialString[0];
+                                    String experimentType = trialString[1];
+                                    String experimentMode = trialString[2];
+                                    trialTokens.add(experimentID);
+                                    trialTokens.add(experimentType);
+                                    trialTokens.add(experimentMode);
+                                    parsedStringToDB(experimentID, experimentType, experimentMode);
+//                                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                                } else {
+                                    Log.d(TAG, "No such document");
+                                }
+
+                            } else {
+                                Log.d(TAG, "get failed with ", task.getException());
+                            }
+                        }
+                    });
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, intent);
+        }
+    }
+
+    private void parsedStringToDB(String experimentID, String experimentType, String experimentMode){
+        for (Experiment experiment : experimentList) {
+            if (experiment.getUID() != null && experiment.getUID().contains(experimentID)) {
+                if (experimentMode.equals(VIEW)) {
+                    experimentController.viewExperiment(this, experiment);
+                } else if (experimentMode.equals(PASS)) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                    String date = sdf.format(new Date(System.currentTimeMillis()));
+                    Trial trial = createTrialFromQR(experimentID, experimentType, localUID, experimentMode);
+                    trial.setDate(date);
+                    //TODO: Get Location from Android Built-in Locations
+                    //Initialize fusedLocationProviderClient
+                    com.example.experimentify.Location location = null;
+                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+                    if (ActivityCompat.checkSelfPermission(MainActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        //Permission Granted
+                        location = getLocation();
+                    } else {
+                        //When permission is denied
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                    }
+                    trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location);
+                } else if (experimentMode.equals(FAIL)) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                    String date = sdf.format(new Date(System.currentTimeMillis()));
+                    Trial trial = createTrialFromQR(experimentID, experimentType, localUID, experimentMode);
+                    trial.setDate(date);
+                    //Initialize fusedLocationProviderClient
+                    com.example.experimentify.Location location = null;
+                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+                    if (ActivityCompat.checkSelfPermission(MainActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        //Permission Granted
+                        location = getLocation();
+                    } else {
+                        //When permission is denied
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                    }
+                    trialController.addTrialToDB(trial, Integer.parseInt(experimentMode), location);
+                }
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private com.example.experimentify.Location getLocation() {
+        final com.example.experimentify.Location[] dataLocation = {null};
+        //This function only gets called when permissions is true therefore we suppressed the warning.
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                //Initialize Location from Android
+                Location location = task.getResult();
+                Address address = null;
+
+
+                if(location != null){
+                    //Initialize Geocoder
+                    Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+                    try {
+                        //Returns a list, but only one result so get the 0th element.
+                        address = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1).get(0);
+                        dataLocation[0] = new com.example.experimentify.Location(address);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
             }
-        } else{
-            super.onActivityResult(requestCode, resultCode, intent);
+        });
+        return dataLocation[0];
+    }
+
+    //0 is fail, 1 is success, 2 is view.
+    private Trial createTrialFromQR(String EID, String expType, String UID, String result){
+        Trial trial = null;
+        if (expType.equals("Count")){
+            trial = new CountTrial(UID, EID);
         }
+        else if (expType.equals("Binomial")){
+            trial = new BinomialTrial(UID, EID, Integer.parseInt(result));
+        }
+        return trial;
     }
 
     //AddExpFragment
@@ -361,7 +509,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         User user = new User();
         if(settings.contains("uid")){
 
-            String localUID = settings.getString("uid", "0");
+            localUID = settings.getString("uid", "0");
 
 
             DocumentReference docRef = db.collection("Users").document(localUID);

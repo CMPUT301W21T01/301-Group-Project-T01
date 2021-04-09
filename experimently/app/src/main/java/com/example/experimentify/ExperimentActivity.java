@@ -6,11 +6,15 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +22,11 @@ import androidx.cardview.widget.CardView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.WriterException;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+import java.util.HashMap;
+import java.util.Map;
 
 // AppCompatActivity
 public class ExperimentActivity extends AppCompatActivity {
@@ -28,6 +37,7 @@ public class ExperimentActivity extends AppCompatActivity {
     private TextView location;
     private Button statsButton;
     private Button chatButton;
+    private Button usersButton;
     private Experiment exp;
 
     private CardView count;
@@ -63,8 +73,27 @@ public class ExperimentActivity extends AppCompatActivity {
     private String dateThatHasBeenSet;
     TrialController trialController;
 
+    private MenuItem qrGenExp;
+    private MenuItem qrPassMenu;
+    private MenuItem qrFailMenu;
+    private MenuItem qrIncreMenu;
+
+    private MenuItem selfGenMenu;
+
+    private MenuItem selfGenExp;
+    private MenuItem selfGenPass;
+    private MenuItem selfGenFail;
+    private MenuItem selfGenIncre;
+
+    private String encodedValue;
+
+    private final int REQUESTQR = 301;
+
     private Location locationInfo = null;
     private String dateInfo;
+
+    private SharedPreferences settings;
+    private String localUID;
 
     /**
      * This method sets text in the UI.
@@ -74,6 +103,14 @@ public class ExperimentActivity extends AppCompatActivity {
         date.setText(this.getResources().getString(R.string.date_header) + exp.getDate());
         expType.setText(this.getResources().getString(R.string.exp_type_header) + exp.getExpType());
         location.setText(this.getResources().getString(R.string.region_header) + exp.getRegion());
+
+        
+        if (localUID.equals(exp.getOwnerID())) {
+            usersButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            usersButton.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -113,26 +150,36 @@ public class ExperimentActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult: " + requestCode + " " + resultCode);
+        if (requestCode == 1) {
+            if (resultCode == 0) {
+                return;
+            } else {
+                dateInfo = data.getStringExtra("date");
+                trial.setDate(dateInfo);
+            }
 
-        Log.d("requestCode", Integer.toString(resultCode));
 
-
-        if (resultCode == 0) {
-            return;
+            if (resultCode == 2) {
+                locationInfo = data.getParcelableExtra("location");
+                Log.d(TAG, "onActivityResult: " + locationInfo);
+                trial.setTrialLocation(locationInfo);
+            }
+            trialController.addTrialToDB(trial, trial.getValue(), trial.getTrialLocation());
+        } else if (requestCode == REQUESTQR) {
+//            String encodeValue = data.getStringExtra("encode");
+            IntentResult experimentValue = IntentIntegrator.parseActivityResult(resultCode, data);
+            if (experimentValue != null) {
+                if (experimentValue.getContents() != null) {
+                    Log.d(TAG, "does this get here?");
+                    Map<String, Object> enterData = new HashMap<>();
+                    String barcodeValue = experimentValue.getContents();
+                    enterData.put("contributingTrial", encodedValue);
+                    db.collection("Barcodes").document(barcodeValue).set(enterData);
+                }
+            }
         }
-        else {
-            dateInfo = data.getStringExtra("date");
-            trial.setDate(dateInfo);
-        }
 
-
-
-
-        if(resultCode == 2){
-            locationInfo = data.getParcelableExtra("location");
-            Log.d(TAG, "onActivityResult: "+ locationInfo);
-            trial.setTrialLocation(locationInfo);
-        }
         trialController.addTrialToDB(trial, trial.getValue(), trial.getTrialLocation());
     }
 
@@ -158,27 +205,29 @@ public class ExperimentActivity extends AppCompatActivity {
         measureInput = findViewById(R.id.meaasurementInput);
         endedMessageBox = findViewById(R.id.trialEndedMessage);
         submitButton = findViewById(R.id.submitTrials);
+        usersButton = findViewById(R.id.participantsButton);
 
 
-        qrCodeGene = findViewById(R.id.qrCode);
+        //qrCodeGene = findViewById(R.id.qrCode);
         qrCodeShow = findViewById(R.id.qrCodeView);
 
         db = FirebaseFirestore.getInstance();
         activity = ExperimentActivity.this;
 
-        SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
-        String localUID = settings.getString("uid", "0");
+        settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
+        localUID = settings.getString("uid", "0");
 
         ExperimentController experimentController = new ExperimentController(this);
         trialController = new TrialController();
-
 
 
         Intent intent = getIntent();
         if (intent.hasExtra("clickedExp")) {
             exp = intent.getParcelableExtra("clickedExp");
             initUi();
-
+            if (exp.isLocationRequired()){
+                Toast.makeText(activity, "This experiment requires a location to enter a trial.", Toast.LENGTH_SHORT).show();
+            }
             statsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -191,8 +240,20 @@ public class ExperimentActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(ExperimentActivity.this, chatQuestionActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("experiment",exp.getUID());
+                    bundle.putString("experiment", exp.getUID());
                     System.out.println("experiment before..." + exp.getUID());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+
+                }
+            });
+
+            usersButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ExperimentActivity.this, ParticipantsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("experiment", exp);
                     intent.putExtras(bundle);
                     startActivity(intent);
 
@@ -206,25 +267,28 @@ public class ExperimentActivity extends AppCompatActivity {
                 }
             });
 
-            qrCodeGene.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bitmap temp = null;
-                    String tempID = (exp.getUID().toString());
-                    try {
-                        temp = qrCodeGen.textToImage(tempID,500,500);
-                    } catch (WriterException e) {
-                        e.printStackTrace();
-                    }
-                    qrCodeShow.setImageBitmap(temp);
-                    //System.out.println("testtest"+temp);
-                    qrCodeShow.setVisibility(View.VISIBLE);
-                }
-            });
+
+//            qrCodeGene.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Bitmap temp = null;
+//                    String genID = exp.getUID();
+//                    try {
+//                        temp = qrCodeGen.textToImage(genID, 500, 500, 0, exp.getExpType());
+//                    } catch (WriterException e) {
+//                        e.printStackTrace();
+//                    }
+//                    qrCodeShow.setImageBitmap(temp);
+//                    //System.out.println("testtest"+temp);
+//                    qrCodeShow.setVisibility(View.VISIBLE);
+//                }
+//            });
+
             // If editable then display ui for conducting trials, else show message
             if (exp.isEditable()) {
                 String expUID = exp.getUID();
-                if (exp.getExpType().equals("Count")) {
+                //(exp.getExpType().equals("Count"))
+                if (("Count").equals(exp.getExpType())) {
                     count.setVisibility(View.VISIBLE);
                     trial = new CountTrial(localUID, expUID);
                     countButton.setOnClickListener(new View.OnClickListener() {
@@ -244,8 +308,8 @@ public class ExperimentActivity extends AppCompatActivity {
 
                 }
 
-
-                if (exp.getExpType().equals("Binomial")) {
+//exp.getExpType().equals("Binomial")
+                if (("Binomial").equals(exp.getExpType())) {
                     binomial.setVisibility(View.VISIBLE);
                     passButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -265,8 +329,8 @@ public class ExperimentActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             trial = new BinomialTrial(localUID, expUID, 0);
                             Intent intent = new Intent(ExperimentActivity.this, MapActivity.class);
-                            activity.startActivityForResult(intent, 1);
                             intent.putExtra("experiment", exp);
+                            activity.startActivityForResult(intent, 1);
                             trial.setDate(dateInfo);
                             if (locationInfo != null) {
                                 trial.setTrialLocation(locationInfo);
@@ -275,7 +339,7 @@ public class ExperimentActivity extends AppCompatActivity {
                     });
                 }
 
-                if (exp.getExpType().equals("Integer")) {
+                if (("Integer").equals(exp.getExpType())) {
                     integer.setVisibility(View.VISIBLE);
                     showSubmitButton();
                     submitButton.setOnClickListener(new View.OnClickListener() {
@@ -283,8 +347,7 @@ public class ExperimentActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             try {
                                 intInfo = Integer.parseInt(intInput.getText().toString());
-                            }
-                            catch (NumberFormatException e){
+                            } catch (NumberFormatException e) {
                                 Log.d(TAG, "Integer/onClick/NumberFormatException: " + intInput + e);
                                 return;
                             }
@@ -300,7 +363,7 @@ public class ExperimentActivity extends AppCompatActivity {
                     });
                 }
 
-                if (exp.getExpType() .equals("Measurement")) {
+                if (("Measurement").equals(exp.getExpType())) {
                     measure.setVisibility(View.VISIBLE);
                     showSubmitButton();
                     submitButton.setOnClickListener(new View.OnClickListener() {
@@ -308,8 +371,7 @@ public class ExperimentActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             try {
                                 measurementInfo = Float.parseFloat(measureInput.getText().toString());
-                            }
-                            catch (NumberFormatException e){
+                            } catch (NumberFormatException e) {
                                 Log.d(TAG, "Measurement/onClick/NumberFormatException: " + measureInput + e);
                                 return;
                             }
@@ -327,12 +389,129 @@ public class ExperimentActivity extends AppCompatActivity {
                 }
 
 
-            }
-            else {
+            } else {
                 showExpEndedMessage();
             }
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.experiment_qr_options_menu, menu);
+        qrPassMenu = menu.findItem(R.id.qrPassMenu);
+        qrFailMenu = menu.findItem(R.id.qrFailMenu);
+        qrIncreMenu = menu.findItem(R.id.qrIncreMenu);
+        qrGenExp = menu.findItem(R.id.qrGenExp);
 
+        selfGenMenu = menu.findItem(R.id.setOwnMenu);
+
+        selfGenPass = menu.findItem(R.id.selfSetPass);
+        selfGenFail = menu.findItem(R.id.selfSetFail);
+        selfGenIncre = menu.findItem(R.id.selfSetIncre);
+
+        if (exp.getExpType().equals("Count")){
+            System.out.println("exp type" + exp.getExpType());
+            qrGenExp.setVisible(true);
+            qrPassMenu.setVisible(false);
+            qrFailMenu.setVisible(false);
+            qrIncreMenu.setVisible(true);
+
+            selfGenPass.setVisible(false);
+            selfGenFail.setVisible(false);
+            selfGenIncre.setVisible(true);
+        }
+        else if (exp.getExpType().equals("Binomial")){
+            System.out.println("exp type" + exp.getExpType());
+            qrGenExp.setVisible(true);
+            qrPassMenu.setVisible(true);
+            qrFailMenu.setVisible(true);
+            qrIncreMenu.setVisible(false);
+
+            selfGenIncre.setVisible(false);
+            selfGenPass.setVisible(true);
+            selfGenFail.setVisible(true);
+        }
+
+        else if(exp.getExpType().equals("Integer") || exp.getExpType().equals("Measurement")){
+            qrGenExp.setVisible(true);
+            qrPassMenu.setVisible(false);
+            qrFailMenu.setVisible(false);
+            qrIncreMenu.setVisible(false);
+
+            selfGenMenu.setVisible(false);
+        }
+
+        return true;
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        String expUID = exp.getUID();
+        Bitmap codeQR = null;
+        String expType = exp.getExpType();
+        switch (item.getItemId()) {
+            case R.id.qrFailMenu:
+                try{
+                    codeQR = qrCodeGen.textToImage(expUID, 500, 500, 0, expType);
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
+                qrCodeShow.setImageBitmap(codeQR);
+                qrCodeShow.setVisibility(View.VISIBLE);
+                return true;
+
+            case R.id.qrIncreMenu:
+            case R.id.qrPassMenu:
+                try{
+                    codeQR = qrCodeGen.textToImage(expUID, 500, 500, 1, expType);
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
+                qrCodeShow.setImageBitmap(codeQR);
+                System.out.println("qrPassMenu: " + codeQR);
+                qrCodeShow.setVisibility(View.VISIBLE);
+                return true;
+
+            case R.id.qrGenExp:
+                try {
+                    codeQR = qrCodeGen.textToImage(expUID, 500, 500, 2, expType);
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
+                qrCodeShow.setImageBitmap(codeQR);
+                System.out.println("testtest" + codeQR);
+                qrCodeShow.setVisibility(View.VISIBLE);
+                return true;
+
+            //Need to differentiate between pass fail from barcode.
+            //No control over ResultCode from OnActivityResult
+            //Set global variable?
+            case R.id.selfSetPass: //self gen QR / barcode Pass
+            case R.id.selfSetIncre: //self gen QR / barcode Increment
+                Log.d(TAG, "onOptionsItemSelected: 1");
+                getQrScan(ExperimentActivity.this, expUID + "/" + expType + "/" + "1");
+
+                return true;
+            case R.id.selfSetFail: //self gen QR / barcode fail
+                getQrScan(ExperimentActivity.this, expUID + "/" + expType + "/" + "0");
+
+                return true;
+
+        }
+
+        return true;
+    }
+    /**
+     * This method initiates the QR scanning by using the Zxing library and then uses our scanning interface layout
+     */
+    public void getQrScan(Activity activity, String encode) {
+        IntentIntegrator integrator = new IntentIntegrator(activity);
+        integrator.setOrientationLocked(false);
+        integrator.setCaptureActivity(qrScanActivity.class);
+        encodedValue = encode;
+        integrator.setRequestCode(REQUESTQR).initiateScan();
+    }
 }
