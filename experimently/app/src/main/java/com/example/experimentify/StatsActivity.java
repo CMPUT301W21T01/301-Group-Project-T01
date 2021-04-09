@@ -291,12 +291,26 @@ public class StatsActivity extends AppCompatActivity implements OnMapReadyCallba
 
                     }
                 }
-                try {
+                System.out.println("geopoint2:" + trials.size() );
+                for (int i = 0; i < trials.size(); i++) {
+                    Location trial = trials.get(i).getTrialLocation();
+                    double lat = trial.getLatitude();
+                    double lon = trial.getLong();
+                    LatLng latlng = new LatLng(lat, lon);
+
+                    Log.d("123123", latlng.toString());
+                    MarkerOptions mark = new MarkerOptions().position(latlng).title("Trial #" + i+1);
+                    gMap.addMarker(mark);
+                    gMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
+                    gMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+                }
+                    try {
                     setUI();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }
+
         });
     }
 
@@ -328,6 +342,7 @@ public class StatsActivity extends AppCompatActivity implements OnMapReadyCallba
         map.onCreate(savedInstanceState);
         map.getMapAsync(this);
 
+
         rawResultsDouble = new ArrayList<Double>();
 
         rawResultsInt = new ArrayList<Integer>();
@@ -336,31 +351,17 @@ public class StatsActivity extends AppCompatActivity implements OnMapReadyCallba
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 updateList(value, error);
-
                 System.out.println("geopoint:" + trials.size() );
 
             }
         });
 
-
     }
 
-
+//this shit dont work
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
-       System.out.println("geopoint2:" + trials.size() );
-       for (int i = 0; i < trials.size(); i++){
-           Location trial = trials.get(i).getTrialLocation();
-           double lat = trial.getLatitude();
-           double lon =  trial.getLong();
-           LatLng latlng = new LatLng(lat,lon);
-
-           Log.d("123123", latlng.toString());
-           MarkerOptions mark = new MarkerOptions().position(latlng).title("Trial #" + i);
-           gMap.addMarker(mark);
-           gMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
-           gMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+        gMap = googleMap;
 
         }
 
@@ -368,4 +369,3 @@ public class StatsActivity extends AppCompatActivity implements OnMapReadyCallba
     }
 
 
-}
