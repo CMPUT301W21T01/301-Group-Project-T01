@@ -87,6 +87,14 @@ public class ExperimentActivity extends AppCompatActivity {
         date.setText(this.getResources().getString(R.string.date_header) + exp.getDate());
         expType.setText(this.getResources().getString(R.string.exp_type_header) + exp.getExpType());
         location.setText(this.getResources().getString(R.string.region_header) + exp.getRegion());
+
+        
+        if (localUID.equals(exp.getOwnerID())) {
+            usersButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            usersButton.setVisibility(View.GONE);
+        }
     }
 
     /**

@@ -29,6 +29,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class is an activity that shows a list of users who have submitted a trial to the
+ * experiment passed in from experiment activity. The owner of an experiment can ignore
+ * user results from this activity.
+ */
 public class ParticipantsActivity extends AppCompatActivity implements UserOptionsFragment.OnFragmentInteractionListener {
 
     private UserListAdapter userAdapter;
@@ -53,6 +58,12 @@ public class ParticipantsActivity extends AppCompatActivity implements UserOptio
         fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
     }
 
+    /**
+     * This method updates the list view
+     * @param value QuerySnapshot returned by the addSnapshotListener that detects changes to experiments
+     *              in the database
+     * @param error FirebaseFirestoreException returned by addSnapshotListener
+     */
     private void updateList(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
         userList.clear();
@@ -127,7 +138,7 @@ public class ParticipantsActivity extends AppCompatActivity implements UserOptio
             }
         });
 
-        //TODO find way to pass in currentUser from main activity to this point
+
 
         userLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View v, int pos, long id) {

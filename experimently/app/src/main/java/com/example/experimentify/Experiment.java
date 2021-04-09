@@ -75,6 +75,7 @@ public class Experiment implements Parcelable {
         uid = in.readString();
         trialCount = in.readLong();
         questionCount = in.readLong();
+        ownerID = in.readString();
 
 
     }
@@ -257,7 +258,7 @@ public class Experiment implements Parcelable {
 
 
     /**
-     * This method checks if the current user is subscribed to the experiment it is called on
+     * This method checks if the experiment is ignoring results from the given user
      * @param userID The ID of the user to check for if the current user is ignoring
      * @param callback Interface for listener that returns the result once the database is done
      *                 with its task.
@@ -300,6 +301,12 @@ public class Experiment implements Parcelable {
                 });
     }
 
+    /**
+     * This method checks if the user given is a participant of the experiment
+     * @param userID The ID of the user to check for participation
+     * @param callback Interface for listener that returns the result once the database is done
+     *                 with its task.
+     */
     public void isUserParticipant(String userID, GetDataListener callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         /*
@@ -339,14 +346,24 @@ public class Experiment implements Parcelable {
     }
 
 
-    public void addIgnore(String userToModifyID, FirebaseFirestore db) {
+    /**
+     * This method adds a user to the experiments ignoredUsers list in the database
+     * @param userID id of user to add
+     * @param db database where user's subscription list will be updated
+     */
+    public void addIgnore(String userID, FirebaseFirestore db) {
         DocumentReference ref = db.collection("Experiments").document(uid);
-        ref.update("ignoredUsers", FieldValue.arrayUnion(userToModifyID));
+        ref.update("ignoredUsers", FieldValue.arrayUnion(userID));
     }
 
-    public void removeIgnore(String userToModifyID, FirebaseFirestore db) {
+    /**
+     * This method removes a user from the experiments ignoredUsers list in the database
+     * @param userID id of user to remove
+     * @param db database where user's subscription list will be updated
+     */
+    public void removeIgnore(String userID, FirebaseFirestore db) {
         DocumentReference ref = db.collection("Experiments").document(uid);
-        ref.update("ignoredUsers", FieldValue.arrayRemove(userToModifyID));
+        ref.update("ignoredUsers", FieldValue.arrayRemove(userID));
     }
 
 
@@ -370,6 +387,7 @@ public class Experiment implements Parcelable {
         dest.writeString(uid);
         dest.writeLong(trialCount);
         dest.writeLong(questionCount);
+        dest.writeString(ownerID);
     }
 
 }

@@ -41,6 +41,7 @@
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="20dp"
         android:text="Participants"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/chat"
         app:layout_constraintHorizontal_bias="0.0"
