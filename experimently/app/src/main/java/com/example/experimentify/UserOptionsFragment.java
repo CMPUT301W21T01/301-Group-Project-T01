@@ -29,6 +29,7 @@ public class UserOptionsFragment extends DialogFragment {
     private User user;
     private User userToModify;
     private FirebaseFirestore db;
+    private Experiment exp;
 
     private OnFragmentInteractionListener listener;
 
@@ -38,11 +39,12 @@ public class UserOptionsFragment extends DialogFragment {
         void onDeletePressed(Experiment current);
     }
 
-    public static UserOptionsFragment newInstance(User userToModify, String localUID, User user) {
+    public static UserOptionsFragment newInstance(User userToModify, String localUID, User user, Experiment exp) {
         Bundle args = new Bundle();
         args.putParcelable("userToModify", userToModify);
         args.putString("localUID", localUID);
         args.putSerializable("user", user);
+        args.putParcelable("experiment", exp);
 
         UserOptionsFragment fragment = new UserOptionsFragment();
         fragment.setArguments(args);
@@ -88,14 +90,15 @@ public class UserOptionsFragment extends DialogFragment {
      * This method sets the state of the checkboxes
      */
     private void setUi() {
-        ignoreBox.setChecked(true);
-        user.isIgnoringUser(localUID, new User.GetDataListener() {
+        exp.isUserIgnored(userToModify.getUid(), new Experiment.GetDataListener() {
             @Override
             public void onSuccess(boolean result) {
                 ignoreBox.setChecked(result);
             }
         });
     }
+
+
 
 
     /**
@@ -116,10 +119,12 @@ public class UserOptionsFragment extends DialogFragment {
      */
     private void handleIgnoreChange(boolean isIgnoring) {
         if (isIgnoring) {
-            user.addIgnore(localUID, userToModify.getUid(), db);
+            exp.addIgnore(userToModify.getUid(), db);
+            //user.addIgnore(localUID, userToModify.getUid(), db);
         }
         else {
-            user.deleteIgnore(localUID, userToModify.getUid(), db);
+            exp.removeIgnore(userToModify.getUid(), db);
+            //user.deleteIgnore(localUID, userToModify.getUid(), db);
         }
     }
 
@@ -148,6 +153,7 @@ public class UserOptionsFragment extends DialogFragment {
             userToModify = bundle.getParcelable("userToModify");
             localUID = bundle.getString("localUID");
             user = (User) bundle.getSerializable("user");
+            exp = bundle.getParcelable("experiment");
             setUi();
         }
 

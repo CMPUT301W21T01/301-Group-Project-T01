@@ -23,7 +23,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class ParticipantsActivity extends AppCompatActivity {
+public class ParticipantsActivity extends AppCompatActivity implements UserOptionsFragment.OnFragmentInteractionListener {
 
     private UserListAdapter userAdapter;
     private ArrayList<User> userList;
@@ -31,10 +31,11 @@ public class ParticipantsActivity extends AppCompatActivity {
     FirebaseFirestore db;
     public static final String PREFS_NAME = "PrefsFile";
     private SharedPreferences settings;
-    private User user;
+    private User localUser;
     private Experiment exp;
     private ListView userLV;
     private DatabaseSingleton dbSingleton;
+    private LocalUserSingleton LUS;
 
     /**
      * This method shows the fragment that gives users options for the experiment they long clicked on.
@@ -42,7 +43,7 @@ public class ParticipantsActivity extends AppCompatActivity {
      */
     private void showUserOptionsUI(User newUser, User currentUser) {
         String localUID = settings.getString("uid","0");
-        UserOptionsFragment fragment = UserOptionsFragment.newInstance(newUser, localUID, currentUser);
+        UserOptionsFragment fragment = UserOptionsFragment.newInstance(newUser, localUID, currentUser, exp);
         fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
     }
 
@@ -101,9 +102,13 @@ public class ParticipantsActivity extends AppCompatActivity {
 
 
         db = dbSingleton.getDB();
+        localUser = LUS.getLocalUser();
+
+
         CollectionReference collectionReference = db.collection("Users");
         settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
         userList = new ArrayList<User>();
+
 
 
         userLV = findViewById(R.id.userListView);
@@ -120,17 +125,28 @@ public class ParticipantsActivity extends AppCompatActivity {
         });
 
         //TODO find way to pass in currentUser from main activity to this point
-        /*
+
         userLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View v, int pos, long id) {
                 User userToModify = userList.get(pos);
-                showUserOptionsUI(userToModify, user);
+                showUserOptionsUI(userToModify, localUser);
                 return true;
             }
         });
 
-         */
 
+
+
+    }
+
+
+    @Override
+    public void onConfirmEdits(Experiment exp) {
+
+    }
+
+    @Override
+    public void onDeletePressed(Experiment current) {
 
     }
 }

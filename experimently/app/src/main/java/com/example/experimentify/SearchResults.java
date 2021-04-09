@@ -61,9 +61,9 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
      * @param newUser experiment whose options will be edited
      */
     private void showUserOptionsUI(User newUser, User currentUser) {
-        String localUID = settings.getString("uid","0");
-        UserOptionsFragment fragment = UserOptionsFragment.newInstance(newUser, localUID, currentUser);
-        fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
+        //String localUID = settings.getString("uid","0");
+        //UserOptionsFragment fragment = UserOptionsFragment.newInstance(newUser, localUID, currentUser, );
+        //fragment.show(getSupportFragmentManager(), "EXP_OPTIONS");
     }
 
     /**
@@ -224,13 +224,7 @@ public class SearchResults extends AppCompatActivity implements ExpOptionsFragme
         userAdapter = new UserListAdapter(this, userList);
         exListView.setAdapter(userAdapter);
 
-        exListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> parent, View v, int pos, long id) {
-                User userToModify = userList.get(pos);
-                showUserOptionsUI(userToModify, user);
-                return true;
-            }
-        });
+
 
         // the search results should be a one time thing and do not auto update
         collectionReference

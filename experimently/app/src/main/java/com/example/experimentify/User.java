@@ -31,65 +31,7 @@ public class User implements Serializable, Parcelable {
     final String TAG = Experiment.class.getName();
     public static final String PREFS_NAME = "PrefsFile";
 
-    /**
-     * This interface gives access to the result of isIgnoringUser
-     */
-    interface GetDataListener {
-        void onSuccess(boolean result);
-    }
 
-    /**
-     * This method checks if the current user is subscribed to the experiment it is called on
-     * @param userID The ID of the user to check for if the current user is ignoring
-     * @param callback Interface for listener that returns the result once the database is done
-     *                 with its task.
-     */
-    public void isIgnoringUser(String userID, User.GetDataListener callback) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        /*
-            Author: Joseph Varghese
-            Date published: Sep 29 '14 at 10:20
-            License: Attribution-ShareAlike 3.0 Unported
-            Link: https://stackoverflow.com/a/46997517
-
-            I used this post to help with returning a value after the database is done
-            retrieving data.
-        */
-        db.collection("Users")
-                .whereArrayContains("usersIgnoring", userID)//gets all users that are ignoring the specified user
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (task.getResult().isEmpty()) {
-                                /* There are no users with this experiment in their
-                                   subscription list
-                                 */
-                                callback.onSuccess(false);
-                            }
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                if (document.getId().equals(uid)) {
-                                    /* The local user has the experiment in their
-                                       subscription list.
-                                     */
-                                    callback.onSuccess(true);
-                                    break; // Prevents result from being changed
-                                }
-                                else {
-                                    /* The local user was not one of the users who had the
-                                       experiment in their subscription list
-                                     */
-                                    callback.onSuccess(false);
-                                }
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-    }
 
     /*
     public void isParticipant(String userID, User.GetDataListener callback) {

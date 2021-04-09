@@ -214,7 +214,7 @@ public class ExperimentActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(ExperimentActivity.this, ParticipantsActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("experiment", exp.getUID());
+                    bundle.putParcelable("experiment", exp);
                     intent.putExtras(bundle);
                     startActivity(intent);
 

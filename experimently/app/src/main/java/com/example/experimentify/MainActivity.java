@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
     private TrialController trialController;
     private String localUID;
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocalUserSingleton LUS;
 
 
     /**
@@ -179,6 +180,8 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
 
         db = FirebaseFirestore.getInstance();
         currentUser = initializeUser(db);
+        LUS.setLocalUser(currentUser);
+
 
         final CollectionReference collectionReference = db.collection("Experiments");
         trialController = new TrialController();

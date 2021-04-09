@@ -12,6 +12,8 @@ import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -251,6 +253,61 @@ public class Experiment implements Parcelable {
                         }
                     }
                 });
+    }
+
+
+    /**
+     * This method checks if the current user is subscribed to the experiment it is called on
+     * @param userID The ID of the user to check for if the current user is ignoring
+     * @param callback Interface for listener that returns the result once the database is done
+     *                 with its task.
+     */
+    public void isUserIgnored(String userID, GetDataListener callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        /*
+            Author: Joseph Varghese
+            Date published: Sep 29 '14 at 10:20
+            License: Attribution-ShareAlike 3.0 Unported
+            Link: https://stackoverflow.com/a/46997517
+
+            I used this post to help with returning a value after the database is done
+            retrieving data.
+        */
+        db.collection("Experiments")
+                .whereArrayContains("ignoredUsers", userID)//gets all users that are ignoring the specified user
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                callback.onSuccess(false);
+                            }
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                if (document.getId().equals(uid)) {
+                                    callback.onSuccess(true);
+                                    break; // Prevents result from being changed
+                                }
+                                else {
+                                    callback.onSuccess(false);
+                                }
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void addIgnore(String userToModifyID, FirebaseFirestore db) {
+        DocumentReference ref = db.collection("Experiments").document(uid);
+        ref.update("ignoredUsers", FieldValue.arrayUnion(userToModifyID));
+    }
+
+    public void removeIgnore(String userToModifyID, FirebaseFirestore db) {
+        DocumentReference ref = db.collection("Experiments").document(uid);
+        ref.update("participants", FieldValue.arrayRemove(userToModifyID));
     }
 
 
