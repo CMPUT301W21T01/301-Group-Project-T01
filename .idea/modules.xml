@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Experimentify.iml" filepath="$PROJECT_DIR$/.idea/modules/Experimentify.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Experimentify.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Experimentify.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/301-Group-Project-T01.iml" filepath="$PROJECT_DIR$/.idea/301-Group-Project-T01.iml" />
     </modules>
   </component>
 </project>

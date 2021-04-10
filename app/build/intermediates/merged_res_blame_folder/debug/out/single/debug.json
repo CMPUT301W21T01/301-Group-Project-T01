@@ -104,10 +104,6 @@
         "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
     },
     {
-        "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_graphs_activity.xml.flat",
-        "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\graphs_activity.xml"
-    },
-    {
         "merged": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\build\\intermediates\\res\\merged\\debug\\layout_add_exp.xml.flat",
         "source": "D:\\Code\\GitHub\\301-Group-Project-T01\\app\\src\\main\\res\\layout\\add_exp.xml"
     },

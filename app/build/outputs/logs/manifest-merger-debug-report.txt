@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-64:12
-INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-64:12
-INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-64:12
-INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-64:12
+ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-59:12
+INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-59:12
+INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-59:12
+INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-59:12
 MERGED from [androidx.navigation:navigation-ui:2.3.3] C:\Users\User\.gradle\caches\transforms-2\files-2.1\3144a40448927ef3210835a2f69512b9\navigation-ui-2.3.3\AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.android.material:material:1.2.1] C:\Users\User\.gradle\caches\transforms-2\files-2.1\5cdc1e5dadc61a7f834fac4c956aa1d5\material-1.2.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.4] C:\Users\User\.gradle\caches\transforms-2\files-2.1\1b47bb01ecc6aa52d262badcce0bb4ed\constraintlayout-2.0.4\AndroidManifest.xml:2:1-11:12
@@ -12,7 +12,6 @@ MERGED from [androidx.lifecycle:lifecycle-livedata-ktx:2.2.0] C:\Users\User\.gra
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0] C:\Users\User\.gradle\caches\transforms-2\files-2.1\1385980f4dab0a0e933b3abe362c2ed5\jetified-lifecycle-viewmodel-ktx-2.2.0\AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.firebase:firebase-firestore:22.1.1] C:\Users\User\.gradle\caches\transforms-2\files-2.1\1b5a9ebef469875d1d39c8e5b85769d9\jetified-firebase-firestore-22.1.1\AndroidManifest.xml:2:1-26:12
 MERGED from [com.journeyapps:zxing-android-embedded:4.1.0] C:\Users\User\.gradle\caches\transforms-2\files-2.1\f81815721ae95c2bc6ff89e3ccc3076a\jetified-zxing-android-embedded-4.1.0\AndroidManifest.xml:17:1-56:12
-MERGED from [com.jjoe64:graphview:4.2.2] C:\Users\User\.gradle\caches\transforms-2\files-2.1\3cb235e6cc3c3053c5fe1da369a0338c\jetified-graphview-4.2.2\AndroidManifest.xml:2:1-14:12
 MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\User\.gradle\caches\transforms-2\files-2.1\9467dea77a5cea6c22f80debdbcfbe43\legacy-support-v4-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-fragment:2.3.3] C:\Users\User\.gradle\caches\transforms-2\files-2.1\cf46785161dca45da6cd3aee2ff20e74\navigation-fragment-2.3.3\AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\User\.gradle\caches\transforms-2\files-2.1\8584395d637b6ec6e70bcbc794772af4\jetified-play-services-maps-17.0.0\AndroidManifest.xml:17:1-38:12
@@ -81,20 +80,20 @@ MERGED from [androidx.print:print:1.0.0] C:\Users\User\.gradle\caches\transforms
 MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\User\.gradle\caches\transforms-2\files-2.1\bd68bb064f2db47327311ef87fd77014\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.annotation:annotation-experimental:1.0.0] C:\Users\User\.gradle\caches\transforms-2\files-2.1\1f6b045666a31134b82a56c243bf4255\jetified-annotation-experimental-1.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.firebase:protolite-well-known-types:17.1.1] C:\Users\User\.gradle\caches\transforms-2\files-2.1\e53fbbcf78ffb18c7cd795b35d4efb56\jetified-protolite-well-known-types-17.1.1\AndroidManifest.xml:2:1-11:12
-INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-64:12
-INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-64:12
-INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-64:12
+INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-59:12
+INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-59:12
+INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-59:12
 	package
 		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:3:5-40
 		INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml
 		INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-64:12
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-59:12
 		INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml
 	android:versionCode
 		INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-64:12
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:1-59:12
 		INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:2:11-69
@@ -127,7 +126,7 @@ ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml
 	android:name
 		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:7:22-78
 application
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:9:5-62:19
+ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:9:5-57:19
 MERGED from [com.google.android.material:material:1.2.1] C:\Users\User\.gradle\caches\transforms-2\files-2.1\5cdc1e5dadc61a7f834fac4c956aa1d5\material-1.2.1\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.2.1] C:\Users\User\.gradle\caches\transforms-2\files-2.1\5cdc1e5dadc61a7f834fac4c956aa1d5\material-1.2.1\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.4] C:\Users\User\.gradle\caches\transforms-2\files-2.1\1b47bb01ecc6aa52d262badcce0bb4ed\constraintlayout-2.0.4\AndroidManifest.xml:9:5-20
@@ -136,8 +135,6 @@ MERGED from [com.google.firebase:firebase-firestore:22.1.1] C:\Users\User\.gradl
 MERGED from [com.google.firebase:firebase-firestore:22.1.1] C:\Users\User\.gradle\caches\transforms-2\files-2.1\1b5a9ebef469875d1d39c8e5b85769d9\jetified-firebase-firestore-22.1.1\AndroidManifest.xml:16:5-24:19
 MERGED from [com.journeyapps:zxing-android-embedded:4.1.0] C:\Users\User\.gradle\caches\transforms-2\files-2.1\f81815721ae95c2bc6ff89e3ccc3076a\jetified-zxing-android-embedded-4.1.0\AndroidManifest.xml:46:5-54:19
 MERGED from [com.journeyapps:zxing-android-embedded:4.1.0] C:\Users\User\.gradle\caches\transforms-2\files-2.1\f81815721ae95c2bc6ff89e3ccc3076a\jetified-zxing-android-embedded-4.1.0\AndroidManifest.xml:46:5-54:19
-MERGED from [com.jjoe64:graphview:4.2.2] C:\Users\User\.gradle\caches\transforms-2\files-2.1\3cb235e6cc3c3053c5fe1da369a0338c\jetified-graphview-4.2.2\AndroidManifest.xml:11:5-12:19
-MERGED from [com.jjoe64:graphview:4.2.2] C:\Users\User\.gradle\caches\transforms-2\files-2.1\3cb235e6cc3c3053c5fe1da369a0338c\jetified-graphview-4.2.2\AndroidManifest.xml:11:5-12:19
 MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\User\.gradle\caches\transforms-2\files-2.1\8584395d637b6ec6e70bcbc794772af4\jetified-play-services-maps-17.0.0\AndroidManifest.xml:30:5-36:19
 MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\User\.gradle\caches\transforms-2\files-2.1\8584395d637b6ec6e70bcbc794772af4\jetified-play-services-maps-17.0.0\AndroidManifest.xml:30:5-36:19
 MERGED from [com.google.android.gms:play-services-location:18.0.0] C:\Users\User\.gradle\caches\transforms-2\files-2.1\d90c6c950325ac8869669dd3b01d6e20\jetified-play-services-location-18.0.0\AndroidManifest.xml:7:5-20
@@ -196,80 +193,76 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\Us
 		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:10:9-35
 	android:theme
 		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:15:9-51
-meta-data#com.google.android.geo.API_KEY
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:16:9-18:71
-	android:value
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:18:13-68
-	android:name
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:17:13-58
 activity#com.example.experimentify.ParticipantsActivity
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:19:9-67
+ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:16:9-67
 	android:name
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:19:19-55
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:16:19-55
 activity#com.example.experimentify.StatsActivity
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:20:9-51
+ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:17:9-51
 	android:name
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:20:19-48
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:17:19-48
 activity#com.example.experimentify.MapActivity
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:32:9-34:43
+ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:18:9-20:43
 	android:label
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:34:13-40
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:20:13-40
 	android:name
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:33:13-40
-activity#com.example.experimentify.graphsActivity
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:35:9-36:46
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:19:13-40
+meta-data#com.google.android.geo.API_KEY
+ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:29:9-31:71
+	android:value
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:31:13-68
 	android:name
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:36:13-43
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:30:13-58
 activity#com.example.experimentify.chatAnswerActivity
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:38:9-56
+ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:33:9-56
 	android:name
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:38:19-53
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:33:19-53
 activity#com.example.experimentify.chatQuestionActivity
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:39:9-58
+ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:34:9-58
 	android:name
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:39:19-55
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:34:19-55
 activity#com.example.experimentify.SubscribedActivity
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:40:9-43:58
+ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:35:9-38:58
 	android:parentActivityName
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:43:13-55
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:38:13-55
 	android:label
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:42:13-55
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:37:13-55
 	android:name
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:41:13-47
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:36:13-47
 activity#com.example.experimentify.qrScanActivity
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:44:9-45:46
+ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:39:9-40:46
 	android:name
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:45:13-43
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:40:13-43
 activity#com.example.experimentify.ExperimentActivity
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:46:9-48:65
+ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:41:9-43:65
 	android:label
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:48:13-62
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:43:13-62
 	android:name
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:47:13-47
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:42:13-47
 activity#com.example.experimentify.MainActivity
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:49:9-58:20
+ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:44:9-53:20
 	android:label
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:51:13-45
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:46:13-45
 	android:theme
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:52:13-67
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:47:13-67
 	android:name
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:50:13-41
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:45:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:53:13-57:29
+ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:48:13-52:29
 action#android.intent.action.MAIN
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:54:17-69
+ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:49:17-69
 	android:name
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:54:25-66
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:49:25-66
 category#android.intent.category.LAUNCHER
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:56:17-77
+ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:51:17-77
 	android:name
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:56:27-74
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:51:27-74
 activity#com.example.experimentify.SearchResults
-ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:59:9-61:58
+ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:54:9-56:58
 	android:parentActivityName
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:61:13-55
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:56:13-55
 	android:name
-		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:60:13-42
+		ADDED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml:55:13-42
 uses-sdk
 INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\Code\GitHub\301-Group-Project-T01\app\src\main\AndroidManifest.xml
@@ -290,8 +283,6 @@ MERGED from [com.google.firebase:firebase-firestore:22.1.1] C:\Users\User\.gradl
 MERGED from [com.google.firebase:firebase-firestore:22.1.1] C:\Users\User\.gradle\caches\transforms-2\files-2.1\1b5a9ebef469875d1d39c8e5b85769d9\jetified-firebase-firestore-22.1.1\AndroidManifest.xml:7:5-9:41
 MERGED from [com.journeyapps:zxing-android-embedded:4.1.0] C:\Users\User\.gradle\caches\transforms-2\files-2.1\f81815721ae95c2bc6ff89e3ccc3076a\jetified-zxing-android-embedded-4.1.0\AndroidManifest.xml:20:5-44
 MERGED from [com.journeyapps:zxing-android-embedded:4.1.0] C:\Users\User\.gradle\caches\transforms-2\files-2.1\f81815721ae95c2bc6ff89e3ccc3076a\jetified-zxing-android-embedded-4.1.0\AndroidManifest.xml:20:5-44
-MERGED from [com.jjoe64:graphview:4.2.2] C:\Users\User\.gradle\caches\transforms-2\files-2.1\3cb235e6cc3c3053c5fe1da369a0338c\jetified-graphview-4.2.2\AndroidManifest.xml:7:5-9:41
-MERGED from [com.jjoe64:graphview:4.2.2] C:\Users\User\.gradle\caches\transforms-2\files-2.1\3cb235e6cc3c3053c5fe1da369a0338c\jetified-graphview-4.2.2\AndroidManifest.xml:7:5-9:41
 MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\User\.gradle\caches\transforms-2\files-2.1\9467dea77a5cea6c22f80debdbcfbe43\legacy-support-v4-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\User\.gradle\caches\transforms-2\files-2.1\9467dea77a5cea6c22f80debdbcfbe43\legacy-support-v4-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.navigation:navigation-fragment:2.3.3] C:\Users\User\.gradle\caches\transforms-2\files-2.1\cf46785161dca45da6cd3aee2ff20e74\navigation-fragment-2.3.3\AndroidManifest.xml:20:5-22:41

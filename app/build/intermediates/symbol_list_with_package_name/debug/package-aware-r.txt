@@ -742,10 +742,6 @@ attr seekBarStyle
 attr selectableItemBackground
 attr selectableItemBackgroundBorderless
 attr selectionRequired
-attr seriesColor
-attr seriesData
-attr seriesTitle
-attr seriesType
 attr shapeAppearance
 attr shapeAppearanceLargeComponent
 attr shapeAppearanceMediumComponent
@@ -1728,8 +1724,6 @@ id FUNCTION
 id FirstFragment
 id Integer
 id META
-id Max
-id Min
 id NO_DEBUG
 id SHIFT
 id SHOW_ALL
@@ -1961,7 +1955,6 @@ id list_item
 id locationRequiredBox
 id mainActivityCL
 id mapView
-id mapView2
 id masked
 id meaasurementInput
 id mean
@@ -2049,9 +2042,6 @@ id radio
 id ratio
 id rectangles
 id region
-id results
-id resultsdate
-id resultspoint
 id reverseSawtooth
 id right
 id right_icon
@@ -2119,9 +2109,8 @@ id startVertical
 id staticLayout
 id staticPostLayout
 id stats
-id statsGraphsMenu
 id status_bar_latest_event_content
-id stdDev3
+id stdDev
 id stop
 id stretch
 id subButton
@@ -2312,7 +2301,6 @@ layout experiment_list_content
 layout fragment_exp_options
 layout fragment_user_options
 layout fragment_user_profile
-layout graphs_activity
 layout map_activity
 layout mtrl_alert_dialog
 layout mtrl_alert_dialog_actions
@@ -2471,8 +2459,6 @@ string library_zxingandroidembedded_licenseId
 string library_zxingandroidembedded_repositoryLink
 string material_slider_range_end
 string material_slider_range_start
-string mean_header
-string median_header
 string mtrl_badge_numberless_content_description
 string mtrl_chip_close_icon_content_description
 string mtrl_exceed_max_badge_number_content_description
@@ -2519,14 +2505,12 @@ string path_password_eye_mask_visible
 string path_password_strike_through
 string previous
 string project_id
-string quartiles_header
 string region_header
 string replies_count
 string replies_header
 string search_menu_title
 string second_fragment_label
 string status_bar_notification_info_overflow
-string std_dev_header
 string sub_activity_label
 string title_activity_experiment
 string turn_on_flashlight
@@ -3292,7 +3276,6 @@ styleable FragmentContainerView android_name android_tag
 styleable FragmentNavigator android_name
 styleable GradientColor android_startColor android_endColor android_type android_centerX android_centerY android_gradientRadius android_tileMode android_centerColor android_startX android_startY android_endX android_endY
 styleable GradientColorItem android_color android_offset
-styleable GraphViewXML android_title seriesColor seriesData seriesTitle seriesType
 styleable ImageFilterView altSrc brightness contrast crossfade overlay round roundPercent saturation warmth
 styleable Insets paddingBottomSystemWindowInsets paddingLeftSystemWindowInsets paddingRightSystemWindowInsets
 styleable KeyAttribute android_alpha android_transformPivotX android_transformPivotY android_translationX android_translationY android_scaleX android_scaleY android_rotation android_rotationX android_rotationY android_translationZ android_elevation curveFit framePosition motionProgress motionTarget transitionEasing transitionPathRotate
