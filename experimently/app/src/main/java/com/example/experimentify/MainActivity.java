@@ -196,6 +196,15 @@ public class MainActivity extends AppCompatActivity implements AddExpFragment.On
         userProfileButton = findViewById(R.id.userProfileButton);
         qrScanner = findViewById(R.id.qrScanner);
         subButton = findViewById(R.id.subButton);
+        searchSpinner = findViewById(R.id.search_spinner);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.search, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        searchSpinner.setAdapter(adapter);
+
+
 
 
 //        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
