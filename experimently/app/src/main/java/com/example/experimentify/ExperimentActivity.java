@@ -165,7 +165,7 @@ public class ExperimentActivity extends AppCompatActivity {
                 Log.d(TAG, "onActivityResult: " + locationInfo);
                 trial.setTrialLocation(locationInfo);
             }
-            trialController.addTrialToDB(trial, trial.getValue(), trial.getTrialLocation());
+            
         } else if (requestCode == REQUESTQR) {
 //            String encodeValue = data.getStringExtra("encode");
             IntentResult experimentValue = IntentIntegrator.parseActivityResult(resultCode, data);
